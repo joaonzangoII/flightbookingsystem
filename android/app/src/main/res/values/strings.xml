@@ -1,0 +1,20 @@
+<resources>
+    <string name="app_name">Small Gate Flight Booking System</string>
+
+    <string name="action_sign_in">Login</string>
+    <string name="action_register">Register</string>
+    <string name="prompt_email">Email</string>
+    <string name="prompt_password">Password</string>
+    <string name="action_sign_in_short">Login</string>
+    <string name="prompt_first_name">First Name</string>
+    <string name="prompt_middle_name">Middle Name</string>
+    <string name="prompt_last_name">Last Name</string>
+    <string name="prompt_phone">Mobile Number</string>
+    <string name="prompt_id_number">ID Number</string>
+    <string name="prompt_number_of_people">Number Of People</string>
+    <string name="prompt_destination">Destination</string>
+    <string name="prompt_departure">Departure</string>
+    <string name="departure_date">Departure Date</string>
+    <string name="arrival_date">Arrival Date</string>
+    <string name="check_availability">Check Availability</string>
+</resources>
