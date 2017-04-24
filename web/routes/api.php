@@ -10,7 +10,7 @@ use App\FlightStatus;
 use App\Flight;
 use App\Schedule;
 use Illuminate\Support\Facades\Auth;
-use Validator;
+use Illuminate\Validation\Factory as Validator;
 
 /*
 |--------------------------------------------------------------------------
