@@ -18,8 +18,16 @@ class DatabaseSeeder extends Seeder
         DB::statement("SET FOREIGN_KEY_CHECKS = 0;");
         $this->call(CountriesTableSeeder::class);
         $this->call(AirportsTableSeeder::class);
+        $this->call(FlightStatusesTableSeeder::class);
+        $this->call(TravelClassesTableSeeder::class);
+        $this->call(AircraftManufacturersTableSeeder::class);
+        $this->call(AircraftsTableSeeder::class);
+        $this->call(DrinksTableSeeder::class);
+        $this->call(FoodsTableSeeder::class);
+        $this->call(FlightsTableSeeder::class);
         $this->call(SchedulesTableSeeder::class);
-        // $this->call(UsersTableSeeder::class);
+        $this->call(UserTypesTableSeeder::class);
+        $this->call(UsersTableSeeder::class);
         DB::statement("SET FOREIGN_KEY_CHECKS = 1;");
         Model::reguard();
     }

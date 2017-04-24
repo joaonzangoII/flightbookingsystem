@@ -36,4 +36,9 @@ class LoginController extends Controller
     {
         $this->middleware('guest')->except('logout');
     }
+
+    public function showLoginForm(){
+      $bodyClass = "hold-transition login-page";
+      return view("auth.login", compact('bodyClass'));
+    }
 }

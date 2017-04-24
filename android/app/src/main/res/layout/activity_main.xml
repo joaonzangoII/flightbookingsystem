@@ -52,23 +52,6 @@
                     android:maxLines="1" />
             </tut.flightbookingsystem.views.FloatingLabel>
 
-            <tut.flightbookingsystem.views.FloatingLabel
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:padding="5dp"
-                whatever:floatLabelTextAppearance="@style/TextAppearance.FloatLabel">
-
-                <AutoCompleteTextView
-                    android:id="@+id/number_people"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:background="@drawable/border"
-                    android:hint="@string/prompt_number_of_people"
-                    android:imeOptions="actionUnspecified"
-                    android:inputType="text"
-                    android:maxLines="1" />
-            </tut.flightbookingsystem.views.FloatingLabel>
-
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
@@ -80,15 +63,40 @@
                     android:layout_height="wrap_content"
                     android:text="@string/departure_date"
                     android:textColor="@color/Black"
-                    android:textSize="16sp"
+                    android:textSize="12sp"
                     android:textStyle="bold" />
 
                 <tut.flightbookingsystem.views.DateDisplayPicker
                     android:id="@+id/departure_date"
-                    style="@android:style/Widget.Holo.Spinner"
+                    style="@android:style/Widget.DeviceDefault.Spinner"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="Departure Date" />
+                    android:hint="@string/departure_date"
+                    android:textSize="12sp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:padding="5dp"
+                android:visibility="gone">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/return_date"
+                    android:textColor="@color/Black"
+                    android:textSize="12sp"
+                    android:textStyle="bold" />
+
+                <tut.flightbookingsystem.views.DateDisplayPicker
+                    android:id="@+id/return_date"
+                    style="@android:style/Widget.DeviceDefault.Spinner"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/return_date"
+                    android:textSize="12sp" />
             </LinearLayout>
 
             <LinearLayout
@@ -100,17 +108,37 @@
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="@string/arrival_date"
+                    android:text="@string/prompt_travel_class"
                     android:textColor="@color/Black"
-                    android:textSize="16sp"
+                    android:textSize="12sp"
                     android:textStyle="bold" />
 
-                <tut.flightbookingsystem.views.DateDisplayPicker
-                    android:id="@+id/addival_date"
-                    style="@android:style/Widget.Holo.Spinner"
+                <Spinner
+                    android:id="@+id/travel_class"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="Arrival Date" />
+                    android:hint="@string/prompt_travel_class" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:padding="5dp">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/prompt_number_of_people"
+                    android:textColor="@color/Black"
+                    android:textSize="12sp"
+                    android:textStyle="bold" />
+
+                <Spinner
+                    android:id="@+id/num_people"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/return_date" />
             </LinearLayout>
 
         </LinearLayout>
@@ -120,30 +148,32 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:drawablePadding="6dp"
-            android:text="@string/check_availability"
+            android:text="@string/find_flights"
             android:textColor="@color/White"
             android:textStyle="bold" />
 
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:descendantFocusability="blocksDescendants"
-            android:padding="5dp">
-            <!-- DEV NOTE: Outer wrapper relative layout is added intentionally to address issue
-            that only happens on Marshmallow & Nougat devices (API 23 & 24).
-            On marshmallow API 23, the "RecyclerView" `layout_height="wrap_content"` does NOT
-            occupy the height of all the elements added to it via adapter. The result is cut out
-            items that is outside of device viewport when it loads initially.
-            Wrapping "RecyclerView" with "RelativeLayout" fixes the issue on Marshmallow devices.
-            -->
-            <android.support.v7.widget.RecyclerView
-                android:id="@+id/my_recycler_view"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-                <!--tools:listitem="@layout/row_list_item">-->
-            </android.support.v7.widget.RecyclerView>
 
-        </RelativeLayout>
+        <include layout="@layout/recycler_view" />
+        <!--<RelativeLayout-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:descendantFocusability="blocksDescendants"-->
+        <!--android:padding="5dp">-->
+        <!--&lt;!&ndash; DEV NOTE: Outer wrapper relative layout is added intentionally to address issue-->
+        <!--that only happens on Marshmallow & Nougat devices (API 23 & 24).-->
+        <!--On marshmallow API 23, the "RecyclerView" `layout_height="wrap_content"` does NOT-->
+        <!--occupy the height of all the elements added to it via adapter. The result is cut out-->
+        <!--items that is outside of device viewport when it loads initially.-->
+        <!--Wrapping "RecyclerView" with "RelativeLayout" fixes the issue on Marshmallow devices.-->
+        <!--&ndash;&gt;-->
+        <!--<android.support.v7.widget.RecyclerView-->
+        <!--android:id="@+id/my_recycler_view"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content">-->
+        <!--&lt;!&ndash;tools:listitem="@layout/row_list_item">&ndash;&gt;-->
+        <!--</android.support.v7.widget.RecyclerView>-->
+
+        <!--</RelativeLayout>-->
 
     </LinearLayout>
 </ScrollView>

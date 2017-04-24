@@ -2,6 +2,8 @@ package tut.flightbookingsystem;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.AutoCompleteTextView;
@@ -9,21 +11,29 @@ import android.widget.Button;
 
 public class LoginActivity extends AppCompatActivity {
 
+    final Handler requestHandler = new Handler(new Handler.Callback() {
+        @Override
+        public boolean handleMessage(Message message) {
+            final Bundle data = message.getData();
+            final boolean isLoggedIn = data.getBoolean(Constant.LOGGEDIN);
+            viewMain(isLoggedIn);
+            return false;
+        }
+    });
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         final SessionManager session = new SessionManager(this);
         final Button btnLogin = (Button) findViewById(R.id.email_sign_in_button);
-
         //viewMain(session);
         btnLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 final String email = ((AutoCompleteTextView) findViewById(R.id.email)).getText().toString();
                 final String password = ((AutoCompleteTextView) findViewById(R.id.password)).getText().toString();
-                // RequestManager.login(session, LoginActivity.this, email, password);
-                viewMain(session);
+                RequestManager.login(session, LoginActivity.this, email, password, requestHandler);
             }
         });
 
@@ -37,12 +47,12 @@ public class LoginActivity extends AppCompatActivity {
         });
     }
 
-    private void viewMain(final SessionManager session) {
-        // if (session.isLoggedIn()) {
-        final Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-        finish();
-        startActivity(intent);
-        //  }
+    private void viewMain(final  boolean isLoggedIn) {
+        if (isLoggedIn) {
+            final Intent intent = new Intent(LoginActivity.this, NavigationDrawerActivity.class);
+            finish();
+            startActivity(intent);
+        }
     }
 }
 

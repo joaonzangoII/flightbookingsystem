@@ -68,4 +68,10 @@ class RegisterController extends Controller
             'password' => bcrypt($data['password']),
         ]);
     }
+
+    public function showRegistrationForm(){
+      abort(404);
+      $bodyClass = "hold-transition register-page";
+      return view("auth.register", compact('bodyClass'));
+    }
 }

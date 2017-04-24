@@ -1,6 +1,10 @@
 <?php
 
 namespace App\Http\Controllers;
+use App\Booking;
+use App\Schedule;
+use App\User;
+use App\Flight;
 
 use Illuminate\Http\Request;
 
@@ -23,6 +27,10 @@ class HomeController extends Controller
      */
     public function index()
     {
-        return view('home');
+        $users = User::all();
+        $bookings = Booking::all();
+        $schedules = Schedule::all();
+        $flights = Flight::all();
+        return view('home', compact('bookings', 'schedules', 'users', 'flights'));
     }
 }

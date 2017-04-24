@@ -81,43 +81,41 @@ public class FloatingLabel extends LinearLayout {
                          int defStyle) {
         super(context, attrs, defStyle);
         isInEditMode();
-        if (!isInEditMode()) {
-            setOrientation(VERTICAL);
-            final TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.FloatingLabel);
+//        if (!isInEditMode()) {
+        setOrientation(VERTICAL);
+        final TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.FloatingLabel);
 
-            int leftPadding = a.getDimensionPixelSize(
-                    R.styleable.FloatingLabel_floatLabelPaddingLeft,
-                    dipsToPix(DEFAULT_LABEL_PADDING_LEFT));
-            int topPadding = a.getDimensionPixelSize(
-                    R.styleable.FloatingLabel_floatLabelPaddingTop,
-                    dipsToPix(DEFAULT_LABEL_PADDING_TOP));
-            int rightPadding = a.getDimensionPixelSize(
-                    R.styleable.FloatingLabel_floatLabelPaddingRight,
-                    dipsToPix(DEFAULT_LABEL_PADDING_RIGHT));
-            int bottomPadding = a.getDimensionPixelSize(
-                    R.styleable.FloatingLabel_floatLabelPaddingBottom,
-                    dipsToPix(DEFAULT_LABEL_PADDING_BOTTOM));
-            mHint = a.getText(R.styleable.FloatingLabel_floatLabelHint);
+        int leftPadding = a.getDimensionPixelSize(
+                R.styleable.FloatingLabel_floatLabelPaddingLeft,
+                dipsToPix(DEFAULT_LABEL_PADDING_LEFT));
+        int topPadding = a.getDimensionPixelSize(
+                R.styleable.FloatingLabel_floatLabelPaddingTop,
+                dipsToPix(DEFAULT_LABEL_PADDING_TOP));
+        int rightPadding = a.getDimensionPixelSize(
+                R.styleable.FloatingLabel_floatLabelPaddingRight,
+                dipsToPix(DEFAULT_LABEL_PADDING_RIGHT));
+        int bottomPadding = a.getDimensionPixelSize(
+                R.styleable.FloatingLabel_floatLabelPaddingBottom,
+                dipsToPix(DEFAULT_LABEL_PADDING_BOTTOM));
+        mHint = a.getText(R.styleable.FloatingLabel_floatLabelHint);
 
-            mLabel = new TextView(context);
-            mLabel.setPadding(leftPadding, topPadding, rightPadding, bottomPadding);
-            mLabel.setVisibility(INVISIBLE);
-            mLabel.setText(mHint);
-            ViewCompat.setPivotX(mLabel, 0f);
-            ViewCompat.setPivotY(mLabel, 0f);
+        mLabel = new TextView(context);
+        mLabel.setPadding(leftPadding, topPadding, rightPadding, bottomPadding);
+        mLabel.setVisibility(INVISIBLE);
+        mLabel.setText(mHint);
+        ViewCompat.setPivotX(mLabel, 0f);
+        ViewCompat.setPivotY(mLabel, 0f);
 
-            mLabel.setTextAppearance(context,
-                    a.getResourceId(R.styleable.FloatingLabel_floatLabelTextAppearance,
-                            android.R.style.TextAppearance_Small));
-            a.recycle();
-
-            addView(mLabel, LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
-
-            mInterpolator = AnimationUtils.loadInterpolator(context,
-                    Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP
-                            ? android.R.interpolator.fast_out_slow_in
-                            : android.R.anim.decelerate_interpolator);
-        }
+        mLabel.setTextAppearance(context,
+                a.getResourceId(R.styleable.FloatingLabel_floatLabelTextAppearance,
+                        android.R.style.TextAppearance_Small));
+        a.recycle();
+        addView(mLabel, LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
+        mInterpolator = AnimationUtils.loadInterpolator(context,
+                Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP
+                        ? android.R.interpolator.fast_out_slow_in
+                        : android.R.anim.decelerate_interpolator);
+//        }
     }
 
     @Override

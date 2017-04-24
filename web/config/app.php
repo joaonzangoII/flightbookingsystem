@@ -167,6 +167,7 @@ return [
          * Package Service Providers...
          */
         Laravel\Tinker\TinkerServiceProvider::class,
+        Stolz\SchemaSpy\ServiceProvider::class,
 
         /*
          * Application Service Providers...

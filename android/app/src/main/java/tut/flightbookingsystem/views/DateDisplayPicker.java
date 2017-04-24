@@ -48,6 +48,6 @@ public class DateDisplayPicker extends AppCompatTextView implements DatePickerDi
     @Override
     public void onDateSet(DatePicker view, int year, int monthOfYear,
                           int dayOfMonth) {
-        setText(String.format("%s/%s/%s", monthOfYear, dayOfMonth, year));
+        setText(String.format("%s-%02d-%02d", year , (monthOfYear + 1), dayOfMonth));
     }
 }

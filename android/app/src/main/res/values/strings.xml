@@ -11,10 +11,18 @@
     <string name="prompt_last_name">Last Name</string>
     <string name="prompt_phone">Mobile Number</string>
     <string name="prompt_id_number">ID Number</string>
-    <string name="prompt_number_of_people">Number Of People</string>
-    <string name="prompt_destination">Destination</string>
-    <string name="prompt_departure">Departure</string>
+    <string name="prompt_number_of_people">Passengers #</string>
+    <string name="prompt_departure">Origin*</string>
+    <string name="prompt_destination">Destination*</string>
     <string name="departure_date">Departure Date</string>
+    <string name="prompt_travel_class">Travel Class*</string>
     <string name="arrival_date">Arrival Date</string>
-    <string name="check_availability">Check Availability</string>
+    <string name="return_date">Return Date</string>
+    <string name="find_flights">Find flights</string>
+    <string name="title_activity_navigation_drawer">NavigationDrawerActivity</string>
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+
+    <string name="action_settings">Settings</string>
 </resources>
