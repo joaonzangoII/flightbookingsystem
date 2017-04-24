@@ -91,7 +91,7 @@
 
             <div class="content">
                 <div class="title m-b-md">
-                    SmallGate Flhight Booking System
+                    SmallGate Flight Booking System
                 </div>
 
                 <div id="middle-links" class="links">
