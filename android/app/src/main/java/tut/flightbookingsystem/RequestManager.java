@@ -200,6 +200,59 @@ public class RequestManager {
         MyApplication.getInstance().addToRequestQueue(stringRequest, tag_string_req);
     }
 
+
+    public static void makeBooking(final SessionManager session,
+                                   final Context context,
+                                   final long user_id,
+                                   final long departure_flight_id,
+                                   final long aircraft_id,
+                                   final String passengers,
+                                   final Handler requestHandler) {
+        final Message msg = requestHandler.obtainMessage();
+        final Bundle bundle = new Bundle();
+        final String url = session.getServerUrl() + RouteManager.MAKE_BOOKINGS;
+        final String tag_string_req = "req_make_bookings";
+        setLoading(context, "Making booking..", true);
+        final StringRequest stringRequest = new StringRequest(
+                Request.Method.POST,
+                url,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        Log.e(tag_string_req, response);
+                        bundle.putString(Constant.BOOKING, response);
+                        bundle.putBoolean(Constant.ERROR, false);
+                        msg.setData(bundle);
+                        requestHandler.sendMessage(msg);
+                        setLoading(context, false);
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Toast.makeText(getApplicationContext(), error.toString(), Toast.LENGTH_LONG).show();
+                //session.setServicosByCategoria("[]");
+                setLoading(context, false);
+                bundle.putBoolean(Constant.ERROR, true);
+                requestHandler.sendMessage(msg);
+            }
+        }) {
+            @Override
+            protected Map<String, String> getParams() {
+                // Posting parameters to login url
+                Map<String, String> params = new HashMap<>();
+                params.put("user_id", String.valueOf(user_id));
+                params.put("departure_flight_id", String.valueOf(departure_flight_id));
+                // params.put("return_flight_id", String.valueOf(return_flight_id));
+                params.put("aircraft_id", String.valueOf(aircraft_id));
+                params.put("passengers", passengers);
+                return params;
+            }
+
+        };
+        // Adding request to request queue
+        MyApplication.getInstance().addToRequestQueue(stringRequest, tag_string_req);
+    }
+
     public static void getFoods(final SessionManager session, final Handler requestHandler) {
         final Message msg = requestHandler.obtainMessage();
         final Bundle bundle = new Bundle();

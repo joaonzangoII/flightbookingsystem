@@ -23,6 +23,7 @@ class DatabaseSeeder extends Seeder
         $this->call(AircraftManufacturersTableSeeder::class);
         $this->call(AircraftsTableSeeder::class);
         $this->call(DrinksTableSeeder::class);
+        $this->call(FoodTypesTableSeeder::class);
         $this->call(FoodsTableSeeder::class);
         $this->call(FlightsTableSeeder::class);
         $this->call(SchedulesTableSeeder::class);

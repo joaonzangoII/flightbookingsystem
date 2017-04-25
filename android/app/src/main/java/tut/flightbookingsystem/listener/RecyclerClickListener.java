@@ -1,4 +1,5 @@
 package tut.flightbookingsystem.listener;
+
 import android.view.View;
 
 public class RecyclerClickListener implements View.OnClickListener {

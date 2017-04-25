@@ -18,6 +18,11 @@ class CreateFoodsTable extends Migration
             $table->string('name');
             $table->string('image');
             $table->text('description');
+            $table->integer('food_type_id')->unsigned();
+            $table->foreign('food_type_id')
+                  ->references('id')
+                  ->on('food_types')
+                  ->onDelete('cascade');
             $table->timestamps();
         });
     }

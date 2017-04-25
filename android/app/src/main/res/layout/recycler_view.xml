@@ -1,9 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:descendantFocusability="blocksDescendants"
-    android:padding="5dp">
+    android:layout_height="wrap_content">
     <!-- DEV NOTE: Outer wrapper relative layout is added intentionally to address issue
     that only happens on Marshmallow & Nougat devices (API 23 & 24).
     On marshmallow API 23, the "RecyclerView" `layout_height="wrap_content"` does NOT
@@ -14,7 +12,9 @@
     <android.support.v7.widget.RecyclerView
         android:id="@+id/my_recycler_view"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:descendantFocusability="beforeDescendants"
+        android:focusableInTouchMode="true">
         <!--tools:listitem="@layout/row_list_item">-->
     </android.support.v7.widget.RecyclerView>
 

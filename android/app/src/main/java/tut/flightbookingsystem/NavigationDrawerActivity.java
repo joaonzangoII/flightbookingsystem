@@ -13,6 +13,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.TextView;
 
 public class NavigationDrawerActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -41,6 +42,12 @@ public class NavigationDrawerActivity extends AppCompatActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+
+        final SessionManager session = new SessionManager(this);
+        //        ((TextView) findViewById(R.id.user_logged_name))
+        //                .setText(session.getLoggedInUser().name);
+        //        ((TextView) findViewById(R.id.user_logged_email))
+        //                .setText(session.getLoggedInUser().email);
     }
 
     @Override
@@ -82,7 +89,7 @@ public class NavigationDrawerActivity extends AppCompatActivity
         final int id = item.getItemId();
         final Intent intent;
         if (id == R.id.book) {
-           intent = new Intent(NavigationDrawerActivity.this, MainActivity.class);
+            intent = new Intent(NavigationDrawerActivity.this, MainActivity.class);
             startActivity(intent);
         } else if (id == R.id.timetable) {
             intent = new Intent(NavigationDrawerActivity.this, FlightTimetableActivity.class);

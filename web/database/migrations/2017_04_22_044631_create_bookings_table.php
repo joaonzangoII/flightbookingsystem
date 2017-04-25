@@ -16,8 +16,6 @@ class CreateBookingsTable extends Migration
     {
         Schema::create('bookings', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('vegetarian_meals_count');
-            $table->string('normal_meals_count');
             $table->boolean('return')->default(true);
             $table->integer('user_id')->unsigned();
             $table->foreign('user_id')

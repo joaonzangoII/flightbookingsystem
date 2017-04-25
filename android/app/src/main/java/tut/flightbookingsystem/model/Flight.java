@@ -7,4 +7,5 @@ public class Flight implements Serializable {
     public long aircraft_id;
     public long flight_status_id;
     public Aircraft aircraft;
+    public Schedule schedule;
 }

@@ -22,11 +22,13 @@
     <application
         android:name=".MyApplication"
         android:allowBackup="true"
+        android:exported="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme">
+        android:theme="@style/AppTheme"
+        android:windowSoftInputMode="stateHidden|adjustPan">
         <meta-data
             android:name="io.fabric.ApiKey"
             android:value="d7e460a5f79dccf9540861c923a7cf853143171c" />
@@ -58,7 +60,8 @@
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".MyBookingsActivity"
-            android:parentActivityName=".NavigationDrawerActivity"></activity>
+            android:parentActivityName=".NavigationDrawerActivity" />
+        <activity android:name=".BookingConfirmationActivity"></activity>
     </application>
 
 </manifest>

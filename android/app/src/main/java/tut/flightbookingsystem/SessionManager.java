@@ -142,7 +142,8 @@ public class SessionManager {
     }
 
     public String getServerUrl() {
-        return "http://10.0.0.111:8000";
+        // return "http://192.168.43.102:8000";
+        return "http://10.0.0.118:8000";
         //return "https://www.flightbookingsystem.tchinossanda.com";
         //return pref.getString(KEY_SERVER_URL, "http://www.contextaware.lubelnaportal.com/");
     }

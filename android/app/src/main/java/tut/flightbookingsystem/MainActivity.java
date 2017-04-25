@@ -7,6 +7,7 @@ import android.os.Handler;
 import android.os.Message;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.AppCompatButton;
+import android.support.v7.widget.AppCompatEditText;
 import android.support.v7.widget.AppCompatTextView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -62,6 +63,7 @@ public class MainActivity extends AppCompatActivity {
 
     private OnItemClickCallback onItemClickCallback =
             new OnItemClickCallback() {
+
                 @Override
                 public void onItemClicked(final View view,
                                           final int parentPosition,
@@ -124,8 +126,8 @@ public class MainActivity extends AppCompatActivity {
         final Spinner spnNumPeople = (Spinner) findViewById(R.id.num_people);
         spnNumPeople.setAdapter(adapterPeople);
 
-        final AppCompatTextView departureDate = (AppCompatTextView) findViewById(R.id.departure_date);
-        final AppCompatTextView returnDate = (AppCompatTextView) findViewById(R.id.return_date);
+        final AppCompatEditText departureDate = (AppCompatEditText) findViewById(R.id.departure_date);
+        final AppCompatEditText returnDate = (AppCompatEditText) findViewById(R.id.return_date);
 
         final AppCompatButton btnCheckAvailability = (AppCompatButton) findViewById(R.id.check_availability);
         btnCheckAvailability.setOnClickListener(new View.OnClickListener() {

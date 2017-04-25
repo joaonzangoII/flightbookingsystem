@@ -2,6 +2,7 @@ package tut.flightbookingsystem.views;
 
 import android.app.DatePickerDialog;
 import android.content.Context;
+import android.support.v7.widget.AppCompatEditText;
 import android.support.v7.widget.AppCompatTextView;
 import android.util.AttributeSet;
 import android.view.View;
@@ -9,7 +10,7 @@ import android.widget.DatePicker;
 
 import java.util.Calendar;
 
-public class DateDisplayPicker extends AppCompatTextView implements DatePickerDialog.OnDateSetListener {
+public class DateDisplayPicker extends AppCompatEditText implements DatePickerDialog.OnDateSetListener {
 
     private Context _context;
 

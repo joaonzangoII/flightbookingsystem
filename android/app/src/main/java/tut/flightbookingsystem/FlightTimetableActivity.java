@@ -6,6 +6,7 @@ import android.os.Handler;
 import android.os.Message;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.AppCompatButton;
+import android.support.v7.widget.AppCompatEditText;
 import android.support.v7.widget.AppCompatTextView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -98,7 +99,7 @@ public class FlightTimetableActivity extends AppCompatActivity {
         destinationAirport.setAdapter(adapterDestinationAirports);//setting the adapter data into the AutoCompleteTextView
         destinationAirport.setTextColor(Color.RED);
 
-        final AppCompatTextView departureDate = (AppCompatTextView) findViewById(R.id.departure_date);
+        final AppCompatEditText departureDate = (AppCompatEditText) findViewById(R.id.departure_date);
 
         final AppCompatButton btnCheckAvailability = (AppCompatButton) findViewById(R.id.check_availability);
         btnCheckAvailability.setOnClickListener(new View.OnClickListener() {

@@ -15,11 +15,6 @@ class CreateMealsTable extends Migration
     {
         Schema::create('meals', function (Blueprint $table) {
             $table->increments('id');
-            $table->integer('meal_type_id')->unsigned();
-            $table->foreign('meal_type_id')
-                  ->references('id')
-                  ->on('meal_types')
-                  ->onDelete('cascade');
             $table->integer('passenger_id')->unsigned();
             $table->foreign('passenger_id')
                   ->references('id')

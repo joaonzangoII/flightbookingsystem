@@ -13,4 +13,8 @@ class Flight extends Model
   public function aircraft(){
     return $this->hasOne('App\Aircraft', 'id', 'aircraft_id');
   }
+
+  public function schedule(){
+    return $this->hasOne('App\Schedule');
+  }
 }
