@@ -17,11 +17,13 @@ import android.widget.TextView;
 
 public class NavigationDrawerActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
+    private SessionManager session;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_navigation_drawer);
+        session = new SessionManager(this);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
@@ -34,20 +36,21 @@ public class NavigationDrawerActivity extends AppCompatActivity
             }
         });
 
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        final DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.setDrawerListener(toggle);
         toggle.syncState();
 
-        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+        final NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
-        final SessionManager session = new SessionManager(this);
-        //        ((TextView) findViewById(R.id.user_logged_name))
-        //                .setText(session.getLoggedInUser().name);
-        //        ((TextView) findViewById(R.id.user_logged_email))
-        //                .setText(session.getLoggedInUser().email);
+        final View header = navigationView.getHeaderView(0);
+        /*View view=navigationView.inflateHeaderView(R.layout.nav_header_main);*/
+        ((TextView) header.findViewById(R.id.user_logged_name))
+                .setText(session.getLoggedInUser().name);
+        ((TextView) header.findViewById(R.id.user_logged_email))
+                .setText(session.getLoggedInUser().email);
     }
 
     @Override
@@ -89,7 +92,7 @@ public class NavigationDrawerActivity extends AppCompatActivity
         final int id = item.getItemId();
         final Intent intent;
         if (id == R.id.book) {
-            intent = new Intent(NavigationDrawerActivity.this, MainActivity.class);
+            intent = new Intent(NavigationDrawerActivity.this, FindFlightActivity.class);
             startActivity(intent);
         } else if (id == R.id.timetable) {
             intent = new Intent(NavigationDrawerActivity.this, FlightTimetableActivity.class);
@@ -97,10 +100,29 @@ public class NavigationDrawerActivity extends AppCompatActivity
         } else if (id == R.id.my_bookings) {
             intent = new Intent(NavigationDrawerActivity.this, MyBookingsActivity.class);
             startActivity(intent);
+        } else if (id == R.id.foods) {
+            intent = new Intent(NavigationDrawerActivity.this, FoodsActivity.class);
+            startActivity(intent);
+        } else if (id == R.id.drinks) {
+            intent = new Intent(NavigationDrawerActivity.this, DrinksActivity.class);
+            startActivity(intent);
+        } else {
+            logout();
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    public void logout() {
+        session.logout();
+        viewSplashScreen();
+    }
+
+    private void viewSplashScreen() {
+        final Intent intent = new Intent(NavigationDrawerActivity.this, SplashScreenActivity.class);
+        finish();
+        startActivity(intent);
     }
 }

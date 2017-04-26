@@ -4,16 +4,25 @@
     <group android:checkableBehavior="single">
         <item
             android:id="@+id/book"
-            android:icon="@drawable/ic_menu_camera"
             android:title="Book" />
         <item
             android:id="@+id/timetable"
-            android:icon="@drawable/ic_menu_gallery"
             android:title="Flight Timetable" />
         <item
             android:id="@+id/my_bookings"
-            android:icon="@drawable/ic_menu_slideshow"
             android:title="My Bookings" />
+
+        <item
+            android:id="@+id/foods"
+            android:title="Foods" />
+
+        <item
+            android:id="@+id/drinks"
+            android:title="Drinks" />
+
+        <item
+            android:id="@+id/logout"
+            android:title="Logout" />
     </group>
 
     <!--<item android:title="Communicate">-->

@@ -111,6 +111,12 @@ src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
  <td class='detail'>
   <table border='0' width='100%' cellspacing='0' cellpadding='0'>
    <tr class='relative even' valign='top'>
+    <td class='relatedTable detail' title="aircraft_seats.aircraft_id refs aircrafts.id via aircraft_seats_aircraft_id_foreign"><a href='aircraft_seats.html'>aircraft_seats</a><span class='relatedKey'>.aircraft_id</span>
+    </td>
+    <td class='constraint detail'>aircraft_seats_aircraft_id_foreign<span title='Cascade on delete:
+ Deletion of parent deletes child'>&nbsp;C</span></td>
+   </tr>
+   <tr class='relative even' valign='top'>
     <td class='relatedTable detail' title="bookings.aircraft_id refs aircrafts.id via bookings_aircraft_id_foreign"><a href='bookings.html'>bookings</a><span class='relatedKey'>.aircraft_id</span>
     </td>
     <td class='constraint detail'>bookings_aircraft_id_foreign<span title='Cascade on delete:
@@ -198,7 +204,7 @@ src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
  <td class='comment detail'></td>
 </tr>
 </table>
-<p title='6 columns'>Table contained 7 rows at Sun Apr 23 18:47 SAST 2017<p/>
+<p title='6 columns'>Table contained 3 rows at Wed Apr 26 14:07 SAST 2017<p/>
 </td></tr></table>
 <div class='indent'>
 <b>Indexes:</b>
@@ -230,24 +236,26 @@ src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
 <br><form action='get'><b>Close relationships</b><span class='degrees' id='degrees' title='Detail diminishes with increased separation from aircrafts'>
 &nbsp;within <label for='oneDegree'><input type='radio' name='degrees' id='oneDegree' checked>one</label>  <label for='twoDegrees'><input type='radio' name='degrees' id='twoDegrees'>two degrees</label> of separation</span><b>:</b></form>
 <map id="oneDegreeRelationshipsDiagram" name="oneDegreeRelationshipsDiagram">
-<area shape="rect" id="node1" href="aircrafts.html" title="aircrafts" alt="" coords="224,311,517,519">
-<area shape="rect" id="node2" href="aircraft_manufacturers.html" title="aircraft_manufacturers" alt="" coords="5,385,180,540">
-<area shape="rect" id="node3" href="bookings.html" title="bookings" alt="" coords="731,5,917,304">
-<area shape="rect" id="node4" href="flights.html" title="flights" alt="" coords="561,149,687,328">
-<area shape="rect" id="node5" href="seat_prices.html" title="seat_prices" alt="" coords="760,321,888,548">
+<area shape="rect" id="node1" href="aircraft_seats.html" title="aircraft_seats" alt="" coords="561,369,709,572">
+<area shape="rect" id="node2" href="aircrafts.html" title="aircrafts" alt="" coords="224,281,517,489">
+<area shape="rect" id="node3" href="aircraft_manufacturers.html" title="aircraft_manufacturers" alt="" coords="5,356,180,511">
+<area shape="rect" id="node4" href="bookings.html" title="bookings" alt="" coords="753,5,903,256">
+<area shape="rect" id="node5" href="flights.html" title="flights" alt="" coords="569,101,701,280">
+<area shape="rect" id="node6" href="seat_prices.html" title="seat_prices" alt="" coords="764,273,892,500">
 </map>
   <a name='diagram'><img id='oneDegreeImg' src='../diagrams/aircrafts.1degree.png' usemap='#oneDegreeRelationshipsDiagram' class='diagram' border='0' alt='' align='left'></a>
 <map id="twoDegreesRelationshipsDiagram" name="twoDegreesRelationshipsDiagram">
-<area shape="rect" id="node1" href="aircrafts.html" title="aircrafts" alt="" coords="224,257,517,465">
-<area shape="rect" id="node2" href="aircraft_manufacturers.html" title="aircraft_manufacturers" alt="" coords="5,332,180,487">
-<area shape="rect" id="node3" href="bookings.html" title="bookings" alt="" coords="737,5,924,304">
-<area shape="rect" id="node4" href="flights.html" title="flights" alt="" coords="565,301,690,480">
-<area shape="rect" id="node5" href="users.html" title="users" alt="" coords="561,101,693,184">
-<area shape="rect" id="node6" href="flight_statuses.html" title="flight_statuses" alt="" coords="310,483,431,565">
-<area shape="rect" id="node7" href="passengers.html" title="passengers" alt="" coords="968,320,1100,403">
-<area shape="rect" id="node8" href="aircraft_seats.html" title="aircraft_seats" alt="" coords="561,584,693,667">
-<area shape="rect" id="node9" href="schedules.html" title="schedules" alt="" coords="771,321,891,404">
-<area shape="rect" id="node10" href="seat_prices.html" title="seat_prices" alt="" coords="767,421,895,648">
+<area shape="rect" id="node1" href="aircraft_seats.html" title="aircraft_seats" alt="" coords="561,5,709,208">
+<area shape="rect" id="node2" href="aircrafts.html" title="aircrafts" alt="" coords="224,191,517,399">
+<area shape="rect" id="node3" href="travel_classes.html" title="travel_classes" alt="" coords="311,77,431,160">
+<area shape="rect" id="node4" href="aircraft_manufacturers.html" title="aircraft_manufacturers" alt="" coords="5,265,180,420">
+<area shape="rect" id="node5" href="bookings.html" title="bookings" alt="" coords="753,411,903,661">
+<area shape="rect" id="node6" href="flights.html" title="flights" alt="" coords="569,267,701,445">
+<area shape="rect" id="node7" href="users.html" title="users" alt="" coords="569,463,701,545">
+<area shape="rect" id="node8" href="flight_statuses.html" title="flight_statuses" alt="" coords="310,416,431,499">
+<area shape="rect" id="node9" href="passengers.html" title="passengers" alt="" coords="947,205,1079,288">
+<area shape="rect" id="node10" href="schedules.html" title="schedules" alt="" coords="768,311,888,393">
+<area shape="rect" id="node11" href="seat_prices.html" title="seat_prices" alt="" coords="764,67,892,293">
 </map>
 
   <a name='diagram'><img id='twoDegreesImg' src='../diagrams/aircrafts.2degrees.png' usemap='#twoDegreesRelationshipsDiagram' class='diagram' border='0' alt='' align='left'></a>

@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.AppCompatButton;
+import android.support.v7.widget.CardView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.LinearLayout;
@@ -26,6 +27,7 @@ public class BookingConfirmationActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_booking_confirmation);
+        setTitle("Booking Confirmation");
 
         final Gson gson = new GsonBuilder().create();
         final Type type = new TypeToken<Booking>() {
@@ -57,17 +59,18 @@ public class BookingConfirmationActivity extends AppCompatActivity {
         passengerLayout.removeAllViewsInLayout();
         passengerLayout.removeAllViews();
         for (Passenger passenger : mBooking.passengers) {
-            final LinearLayout ll = (LinearLayout) getInflater()
+            final CardView cardview = (CardView) getInflater()
                     .inflate(R.layout.passenger_confirmation_layout, null)
                     .findViewById(R.id.layout);
-            final TextView name = (TextView) ll.findViewById(R.id.name);
-            final TextView travelClass = (TextView) ll.findViewById(R.id.travel_class);
-            final TextView foodType = (TextView) ll.findViewById(R.id.foodType);
+            final TextView name = (TextView) cardview.findViewById(R.id.name);
+            final TextView travelClass = (TextView) cardview.findViewById(R.id.travel_class);
+            final TextView foodType = (TextView) cardview.findViewById(R.id.foodType);
 
             name.setText(String.format("Name: %1$s", passenger.name));
             travelClass.setText(String.format("Travel Class: %1$s", passenger.aircraft_seat.travel_class.name));
             foodType.setText(String.format("Food Type: %1$s", passenger.meal.food.food_type.name));
-            passengerLayout.addView(ll);
+            foodType.setText(String.format("Seat Number: %1$s", passenger.aircraft_seat.number));
+            passengerLayout.addView(cardview);
         }
 
         final AppCompatButton btnDone = (AppCompatButton) findViewById(R.id.done);

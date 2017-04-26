@@ -18,4 +18,8 @@ class Aircraft extends Model
   public function aircraft_manufacturer(){
     return $this->hasOne('App\AircraftManufacturer', 'id', 'aircraft_manufaturer_id');
   }
+
+  public function aircraft_seats(){
+    return $this->hasMany('App\AircraftSeat');
+  }
 }

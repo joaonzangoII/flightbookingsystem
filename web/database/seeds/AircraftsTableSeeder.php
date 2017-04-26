@@ -31,21 +31,24 @@ class AircraftsTableSeeder extends Seeder
       $first_class_number = 10;
       for ($x=1; $x <= $first_class_number; $x++){
         AircraftSeat::create([
+          'aircraft_id' => $aircraft->id,
           'number' =>  $x,
           'travel_class_id' => $first_travel_class->id,
         ]);
       }
 
       $business_class_number = $first_class_number + 10;
-      for ($x=21; $x <= $business_class_number; $x++){
+      for ($x=11; $x <= $business_class_number; $x++){
         AircraftSeat::create([
+          'aircraft_id' => $aircraft->id,
           'number' =>  $x,
           'travel_class_id' => $business_travel_class->id,
         ]);
       }
 
-      for ($x= 31; $x <= $aircraft->number_of_seats ; $x++){
+      for ($x= 21; $x <= $aircraft->number_of_seats ; $x++){
         AircraftSeat::create([
+          'aircraft_id' => $aircraft->id,
           'number' =>  $x,
           'travel_class_id' => $economy_travel_class->id,
         ]);
@@ -60,21 +63,24 @@ class AircraftsTableSeeder extends Seeder
       $first_class_number = 10;
       for ($x=1; $x <= $first_class_number; $x++){
         AircraftSeat::create([
+          'aircraft_id' => $aircraft->id,
           'number' =>  $x,
           'travel_class_id' => $first_travel_class->id,
         ]);
       }
 
       $business_class_number = $first_class_number + 10;
-      for ($x=21; $x <= $business_class_number; $x++){
+      for ($x=11; $x <= $business_class_number; $x++){
         AircraftSeat::create([
+          'aircraft_id' => $aircraft->id,
           'number' =>  $x,
           'travel_class_id' => $business_travel_class->id,
         ]);
       }
 
-      for ($x= 31; $x <= $aircraft->number_of_seats ; $x++){
+      for ($x= 21; $x <= $aircraft->number_of_seats ; $x++){
         AircraftSeat::create([
+          'aircraft_id' => $aircraft->id,
           'number' =>  $x,
           'travel_class_id' => $economy_travel_class->id,
         ]);
@@ -89,21 +95,24 @@ class AircraftsTableSeeder extends Seeder
       $first_class_number = 10;
       for ($x=1; $x <= $first_class_number; $x++){
         AircraftSeat::create([
+          'aircraft_id' => $aircraft->id,
           'number' =>  $x,
           'travel_class_id' => $first_travel_class->id,
         ]);
       }
 
       $business_class_number = $first_class_number + 10;
-      for ($x=21; $x <= $business_class_number; $x++){
+      for ($x=11; $x <= $business_class_number; $x++){
         AircraftSeat::create([
+          'aircraft_id' => $aircraft->id,
           'number' =>  $x,
           'travel_class_id' => $business_travel_class->id,
         ]);
       }
 
-      for ($x= 31; $x <= $aircraft->number_of_seats ; $x++){
+      for ($x= 21; $x <= $aircraft->number_of_seats ; $x++){
         AircraftSeat::create([
+          'aircraft_id' => $aircraft->id,
           'number' =>  $x,
           'travel_class_id' => $economy_travel_class->id,
         ]);
@@ -118,21 +127,24 @@ class AircraftsTableSeeder extends Seeder
       $first_class_number = 10;
       for ($x=1; $x <= $first_class_number; $x++){
         AircraftSeat::create([
+          'aircraft_id' => $aircraft->id,
           'number' =>  $x,
           'travel_class_id' => $first_travel_class->id,
         ]);
       }
 
       $business_class_number = $first_class_number + 10;
-      for ($x=21; $x <= $business_class_number; $x++){
+      for ($x=11; $x <= $business_class_number; $x++){
         AircraftSeat::create([
+          'aircraft_id' => $aircraft->id,
           'number' =>  $x,
           'travel_class_id' => $business_travel_class->id,
         ]);
       }
 
-      for ($x= 31; $x <= $aircraft->number_of_seats ; $x++){
+      for ($x= 21; $x <= $aircraft->number_of_seats ; $x++){
         AircraftSeat::create([
+          'aircraft_id' => $aircraft->id,
           'number' =>  $x,
           'travel_class_id' => $economy_travel_class->id,
         ]);
@@ -147,21 +159,24 @@ class AircraftsTableSeeder extends Seeder
       $first_class_number = 10;
       for ($x=1; $x <= $first_class_number; $x++){
         AircraftSeat::create([
+          'aircraft_id' => $aircraft->id,
           'number' =>  $x,
           'travel_class_id' => $first_travel_class->id,
         ]);
       }
 
       $business_class_number = $first_class_number + 10;
-      for ($x=21; $x <= $business_class_number; $x++){
+      for ($x=11; $x <= $business_class_number; $x++){
         AircraftSeat::create([
+          'aircraft_id' => $aircraft->id,
           'number' =>  $x,
           'travel_class_id' => $business_travel_class->id,
         ]);
       }
 
-      for ($x= 31; $x <= $aircraft->number_of_seats ; $x++){
+      for ($x= 11; $x <= $aircraft->number_of_seats ; $x++){
         AircraftSeat::create([
+          'aircraft_id' => $aircraft->id,
           'number' =>  $x,
           'travel_class_id' => $economy_travel_class->id,
         ]);
@@ -176,21 +191,24 @@ class AircraftsTableSeeder extends Seeder
       $first_class_number = 10;
       for ($x=1; $x <= $first_class_number; $x++){
         AircraftSeat::create([
+          'aircraft_id' => $aircraft->id,
           'number' =>  $x,
           'travel_class_id' => $first_travel_class->id,
         ]);
       }
 
       $business_class_number = $first_class_number + 10;
-      for ($x=21; $x <= $business_class_number; $x++){
+      for ($x=11; $x <= $business_class_number; $x++){
         AircraftSeat::create([
+          'aircraft_id' => $aircraft->id,
           'number' =>  $x,
           'travel_class_id' => $business_travel_class->id,
         ]);
       }
 
-      for ($x= 31; $x <= $aircraft->number_of_seats ; $x++){
+      for ($x= 21; $x <= $aircraft->number_of_seats ; $x++){
         AircraftSeat::create([
+          'aircraft_id' => $aircraft->id,
           'number' =>  $x,
           'travel_class_id' => $economy_travel_class->id,
         ]);
@@ -205,21 +223,24 @@ class AircraftsTableSeeder extends Seeder
       $first_class_number = 10;
       for ($x=1; $x <= $first_class_number; $x++){
         AircraftSeat::create([
+          'aircraft_id' => $aircraft->id,
           'number' =>  $x,
           'travel_class_id' => $first_travel_class->id,
         ]);
       }
 
       $business_class_number = $first_class_number + 10;
-      for ($x=21; $x <= $business_class_number; $x++){
+      for ($x=11; $x <= $business_class_number; $x++){
         AircraftSeat::create([
+          'aircraft_id' => $aircraft->id,
           'number' =>  $x,
           'travel_class_id' => $business_travel_class->id,
         ]);
       }
 
-      for ($x= 31; $x <= $aircraft->number_of_seats ; $x++){
+      for ($x= 21; $x <= $aircraft->number_of_seats ; $x++){
         AircraftSeat::create([
+          'aircraft_id' => $aircraft->id,
           'number' =>  $x,
           'travel_class_id' => $economy_travel_class->id,
         ]);

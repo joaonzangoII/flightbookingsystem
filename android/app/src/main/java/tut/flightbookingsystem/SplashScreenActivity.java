@@ -7,13 +7,24 @@ import android.os.Message;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ProgressBar;
 
 public class SplashScreenActivity extends AppCompatActivity {
+    private Button btnLogin;
+    private Button btnRegister;
+    private ProgressBar progressBar;
 
     final Handler requestHandler = new Handler(new Handler.Callback() {
         @Override
         public boolean handleMessage(Message message) {
             final Bundle data = message.getData();
+            final SessionManager session = new SessionManager(SplashScreenActivity.this);
+            if (data.getBoolean(Constant.DONE_LOADING)) {
+                progressBar.setVisibility(View.GONE);
+                btnLogin.setVisibility(View.VISIBLE);
+                btnRegister.setVisibility(View.VISIBLE);
+            }
+
             return false;
         }
     });
@@ -24,22 +35,30 @@ public class SplashScreenActivity extends AppCompatActivity {
         final SessionManager session = new SessionManager(this);
         viewMain(session.isLoggedIn());
         setContentView(R.layout.activity_splash_screen);
+        btnLogin = (Button) findViewById(R.id.email_sign_in_button);
+        btnRegister = (Button) findViewById(R.id.email_register_button);
+        progressBar = (ProgressBar) findViewById(R.id.progress_bar);
+
+        progressBar.setVisibility(View.VISIBLE);
+        btnLogin.setVisibility(View.GONE);
+        btnRegister.setVisibility(View.GONE);
+
+        // REQUEST INITIAL DATA
+        RequestManager.getCountries(session, requestHandler);
         RequestManager.getTravelclasses(session, requestHandler);
         RequestManager.getAirports(session, requestHandler);
         RequestManager.getFoods(session, requestHandler);
         RequestManager.getDrinks(session, requestHandler);
 
-        final Button btnLogin = (Button) findViewById(R.id.email_sign_in_button);
+
         viewMain(session);
         btnLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                final Intent intent = new Intent(SplashScreenActivity.this, LoginActivity.class);
-                startActivity(intent);
+                viewLogin();
             }
         });
 
-        final Button btnRegister = (Button) findViewById(R.id.email_register_button);
         btnRegister.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -59,5 +78,10 @@ public class SplashScreenActivity extends AppCompatActivity {
             finish();
             startActivity(intent);
         }
+    }
+
+    private void viewLogin() {
+        final Intent intent = new Intent(SplashScreenActivity.this, LoginActivity.class);
+        startActivity(intent);
     }
 }

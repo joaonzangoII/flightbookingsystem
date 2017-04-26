@@ -7,6 +7,7 @@ import java.io.Serializable;
  */
 
 public class AircraftSeat implements Serializable {
+    public long id;
     public String number;
     public long travel_class_id;
     public TravelClass travel_class;

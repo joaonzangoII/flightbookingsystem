@@ -19,12 +19,14 @@ digraph "twoDegreesRelationshipsDiagram" {
   edge [
     arrowsize="0.8"
   ];
+  "aircraft_seats":"elipses":w -> "aircrafts":"id":e [arrowhead=none dir=back arrowtail=crowodot];
   "aircrafts":"aircraft_manufaturer_id":w -> "aircraft_manufacturers":"id.type":e [arrowhead=none dir=back arrowtail=crowodot];
   "bookings":"elipses":w -> "aircrafts":"id":e [arrowhead=none dir=back arrowtail=crowodot];
   "bookings":"elipses":w -> "flights":"elipses":e [arrowhead=none dir=back arrowtail=crowodot];
   "bookings":"elipses":w -> "flights":"elipses":e [arrowhead=none dir=back arrowtail=crowodot];
   "flights":"elipses":w -> "aircrafts":"id":e [arrowhead=none dir=back arrowtail=crowodot];
   "seat_prices":"elipses":w -> "aircrafts":"id":e [arrowhead=none dir=back arrowtail=crowodot];
+  "seat_prices":"elipses":w -> "aircraft_seats":"elipses":e [arrowhead=none dir=back arrowtail=crowodot];
   "seat_prices":"elipses":w -> "flights":"elipses":e [arrowhead=none dir=back arrowtail=crowodot];
   "aircraft_manufacturers" [
     label=<
@@ -39,6 +41,16 @@ digraph "twoDegreesRelationshipsDiagram" {
     URL="aircraft_manufacturers.html"
     tooltip="aircraft_manufacturers"
   ];
+  "aircraft_seats" [
+    label=<
+    <TABLE BORDER="0" CELLBORDER="1" CELLSPACING="0" BGCOLOR="#ffffff">
+      <TR><TD COLSPAN="3" BGCOLOR="#9bab96" ALIGN="CENTER">aircraft_seats</TD></TR>
+      <TR><TD PORT="elipses" COLSPAN="3" ALIGN="LEFT">...</TD></TR>
+      <TR><TD ALIGN="LEFT" BGCOLOR="#f7f7f7">&lt; 2</TD><TD ALIGN="RIGHT" BGCOLOR="#f7f7f7">716 rows</TD><TD ALIGN="RIGHT" BGCOLOR="#f7f7f7">2 &gt;</TD></TR>
+    </TABLE>>
+    URL="aircraft_seats.html"
+    tooltip="aircraft_seats"
+  ];
   "aircrafts" [
     label=<
     <TABLE BORDER="0" CELLBORDER="1" CELLSPACING="0" BGCOLOR="#ffffff">
@@ -49,7 +61,7 @@ digraph "twoDegreesRelationshipsDiagram" {
       <TR><TD PORT="aircraft_manufaturer_id" COLSPAN="3" BGCOLOR="#f4f7da" ALIGN="LEFT">aircraft_manufaturer_id</TD></TR>
       <TR><TD PORT="created_at" COLSPAN="3" ALIGN="LEFT">created_at</TD></TR>
       <TR><TD PORT="updated_at" COLSPAN="3" ALIGN="LEFT">updated_at</TD></TR>
-      <TR><TD ALIGN="LEFT" BGCOLOR="#f7f7f7">&lt; 1</TD><TD ALIGN="RIGHT" BGCOLOR="#f7f7f7">7 rows</TD><TD ALIGN="RIGHT" BGCOLOR="#f7f7f7">3 &gt;</TD></TR>
+      <TR><TD ALIGN="LEFT" BGCOLOR="#f7f7f7">&lt; 1</TD><TD ALIGN="RIGHT" BGCOLOR="#f7f7f7">3 rows</TD><TD ALIGN="RIGHT" BGCOLOR="#f7f7f7">4 &gt;</TD></TR>
     </TABLE>>
     URL="aircrafts.html"
     tooltip="aircrafts"
@@ -69,7 +81,7 @@ digraph "twoDegreesRelationshipsDiagram" {
     <TABLE BORDER="0" CELLBORDER="1" CELLSPACING="0" BGCOLOR="#ffffff">
       <TR><TD COLSPAN="3" BGCOLOR="#9bab96" ALIGN="CENTER">flights</TD></TR>
       <TR><TD PORT="elipses" COLSPAN="3" ALIGN="LEFT">...</TD></TR>
-      <TR><TD ALIGN="LEFT" BGCOLOR="#f7f7f7">&lt; 2</TD><TD ALIGN="RIGHT" BGCOLOR="#f7f7f7">1 row</TD><TD ALIGN="RIGHT" BGCOLOR="#f7f7f7">4 &gt;</TD></TR>
+      <TR><TD ALIGN="LEFT" BGCOLOR="#f7f7f7">&lt; 2</TD><TD ALIGN="RIGHT" BGCOLOR="#f7f7f7">0 rows</TD><TD ALIGN="RIGHT" BGCOLOR="#f7f7f7">4 &gt;</TD></TR>
     </TABLE>>
     URL="flights.html"
     tooltip="flights"

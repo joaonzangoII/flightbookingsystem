@@ -80,6 +80,8 @@ public class FlightTimetableActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_timetable);
+        setTitle("Flight Timetable");
+
         session = new SessionManager(this);
         mSchedules = new ArrayList<>();
         airportsList = session.getAirports();

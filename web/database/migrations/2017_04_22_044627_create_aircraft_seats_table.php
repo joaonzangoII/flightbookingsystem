@@ -16,6 +16,11 @@ class CreateAircraftSeatsTable extends Migration
         Schema::create('aircraft_seats', function (Blueprint $table) {
             $table->increments('id');
             $table->string('number');
+            $table->integer('aircraft_id')->unsigned();
+            $table->foreign('aircraft_id')
+                  ->references('id')
+                  ->on('aircrafts')
+                  ->onDelete('cascade');
             $table->integer('travel_class_id')->unsigned();
             $table->foreign('travel_class_id')
                   ->references('id')

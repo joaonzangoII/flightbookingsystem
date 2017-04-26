@@ -101,7 +101,7 @@ src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
 </tr>
 </thead>
 <tbody valign='top'>
-<tr class='odd'>
+<tr class='even'>
  <td class='primaryKey' title='Primary Key'>id</td>
  <td class='detail'>int unsigned</td>
  <td class='detail' align='right'>10</td>
@@ -112,7 +112,7 @@ src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
  <td class='detail'> </td>
  <td class='comment detail'></td>
 </tr>
-<tr class='even'>
+<tr class='odd'>
  <td class='detail'>departure_time</td>
  <td class='detail'>timestamp</td>
  <td class='detail' align='right'>19</td>
@@ -123,7 +123,7 @@ src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
  <td class='detail'> </td>
  <td class='comment detail'></td>
 </tr>
-<tr class='odd'>
+<tr class='even'>
  <td class='detail'>arrival_time</td>
  <td class='detail'>timestamp</td>
  <td class='detail' align='right'>19</td>
@@ -134,18 +134,18 @@ src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
  <td class='detail'> </td>
  <td class='comment detail'></td>
 </tr>
-<tr class='even'>
+<tr class='odd'>
  <td class='detail'>date</td>
  <td class='detail'>date</td>
  <td class='detail' align='right'>10</td>
  <td class='detail' align='center'></td>
  <td class='detail' align='center'></td>
- <td class='detail' align='right'>2017-04-23</td>
+ <td class='detail' align='right'>2017-04-26</td>
  <td class='detail'></td>
  <td class='detail'> </td>
  <td class='comment detail'></td>
 </tr>
-<tr class='odd'>
+<tr class='even'>
  <td class='indexedColumn' title='Indexed'>origin_airport_id</td>
  <td class='detail'>int unsigned</td>
  <td class='detail' align='right'>10</td>
@@ -155,7 +155,7 @@ src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
  <td class='detail'></td>
  <td class='detail'>
   <table border='0' width='100%' cellspacing='0' cellpadding='0'>
-   <tr class='relative odd' valign='top'>
+   <tr class='relative even' valign='top'>
     <td class='relatedTable detail' title="schedules.origin_airport_id refs airports.id via schedules_origin_airport_id_foreign"><a href='airports.html'>airports</a><span class='relatedKey'>.id</span>
     </td>
     <td class='constraint detail'>schedules_origin_airport_id_foreign<span title='Cascade on delete:
@@ -165,7 +165,7 @@ src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
  </td>
  <td class='comment detail'></td>
 </tr>
-<tr class='even'>
+<tr class='odd'>
  <td class='indexedColumn' title='Indexed'>destination_airport_id</td>
  <td class='detail'>int unsigned</td>
  <td class='detail' align='right'>10</td>
@@ -175,7 +175,7 @@ src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
  <td class='detail'></td>
  <td class='detail'>
   <table border='0' width='100%' cellspacing='0' cellpadding='0'>
-   <tr class='relative even' valign='top'>
+   <tr class='relative odd' valign='top'>
     <td class='relatedTable detail' title="schedules.destination_airport_id refs airports.id via schedules_destination_airport_id_foreign"><a href='airports.html'>airports</a><span class='relatedKey'>.id</span>
     </td>
     <td class='constraint detail'>schedules_destination_airport_id_foreign<span title='Cascade on delete:
@@ -185,7 +185,7 @@ src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
  </td>
  <td class='comment detail'></td>
 </tr>
-<tr class='odd'>
+<tr class='even'>
  <td class='indexedColumn' title='Indexed'>flight_id</td>
  <td class='detail'>int unsigned</td>
  <td class='detail' align='right'>10</td>
@@ -195,7 +195,7 @@ src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
  <td class='detail'></td>
  <td class='detail'>
   <table border='0' width='100%' cellspacing='0' cellpadding='0'>
-   <tr class='relative odd' valign='top'>
+   <tr class='relative even' valign='top'>
     <td class='relatedTable detail' title="schedules.flight_id refs flights.id via schedules_flight_id_foreign"><a href='flights.html'>flights</a><span class='relatedKey'>.id</span>
     </td>
     <td class='constraint detail'>schedules_flight_id_foreign<span title='Cascade on delete:
@@ -205,7 +205,7 @@ src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
  </td>
  <td class='comment detail'></td>
 </tr>
-<tr class='even'>
+<tr class='odd'>
  <td class='detail'>created_at</td>
  <td class='detail'>timestamp</td>
  <td class='detail' align='right'>19</td>
@@ -216,7 +216,7 @@ src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
  <td class='detail'> </td>
  <td class='comment detail'></td>
 </tr>
-<tr class='odd'>
+<tr class='even'>
  <td class='detail'>updated_at</td>
  <td class='detail'>timestamp</td>
  <td class='detail' align='right'>19</td>
@@ -228,7 +228,7 @@ src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
  <td class='comment detail'></td>
 </tr>
 </table>
-<p title='9 columns'>Table contained 0 rows at Sun Apr 23 18:47 SAST 2017<p/>
+<p title='9 columns'>Table contained 0 rows at Wed Apr 26 14:07 SAST 2017<p/>
 </td></tr></table>
 <div class='indent'>
 <b>Indexes:</b>
@@ -274,7 +274,7 @@ src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
 <map id="oneDegreeRelationshipsDiagram" name="oneDegreeRelationshipsDiagram">
 <area shape="rect" id="node1" href="schedules.html" title="schedules" alt="" coords="191,5,472,285">
 <area shape="rect" id="node2" href="airports.html" title="airports" alt="" coords="5,104,147,331">
-<area shape="rect" id="node3" href="flights.html" title="flights" alt="" coords="13,348,139,527">
+<area shape="rect" id="node3" href="flights.html" title="flights" alt="" coords="10,348,142,527">
 </map>
   <a name='diagram'><img id='oneDegreeImg' src='../diagrams/schedules.1degree.png' usemap='#oneDegreeRelationshipsDiagram' class='diagram' border='0' alt='' align='left'></a>
 <map id="twoDegreesRelationshipsDiagram" name="twoDegreesRelationshipsDiagram">
@@ -282,7 +282,7 @@ src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
 <area shape="rect" id="node2" href="countries.html" title="countries" alt="" coords="15,200,128,283">
 <area shape="rect" id="node3" href="bookings.html" title="bookings" alt="" coords="441,416,573,499">
 <area shape="rect" id="node4" href="aircrafts.html" title="aircrafts" alt="" coords="5,369,137,452">
-<area shape="rect" id="node5" href="flights.html" title="flights" alt="" coords="189,384,315,563">
+<area shape="rect" id="node5" href="flights.html" title="flights" alt="" coords="186,384,318,563">
 <area shape="rect" id="node6" href="flight_statuses.html" title="flight_statuses" alt="" coords="11,469,132,552">
 <area shape="rect" id="node7" href="schedules.html" title="schedules" alt="" coords="367,5,648,285">
 <area shape="rect" id="node8" href="seat_prices.html" title="seat_prices" alt="" coords="447,316,567,399">

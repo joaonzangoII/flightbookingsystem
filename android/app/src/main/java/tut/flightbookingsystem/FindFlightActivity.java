@@ -8,7 +8,6 @@ import android.os.Message;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.AppCompatButton;
 import android.support.v7.widget.AppCompatEditText;
-import android.support.v7.widget.AppCompatTextView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -36,8 +35,8 @@ import tut.flightbookingsystem.model.Airport;
 import tut.flightbookingsystem.model.Schedule;
 import tut.flightbookingsystem.model.TravelClass;
 
-public class MainActivity extends AppCompatActivity {
-    private static String TAG = MainActivity.class.getName();
+public class FindFlightActivity extends AppCompatActivity {
+    private static String TAG = FindFlightActivity.class.getName();
     private List<Airport> airportsList = new ArrayList<>();
     private List<TravelClass> travelClassesList = new ArrayList<>();
     private String[] people = new String[9];
@@ -73,7 +72,7 @@ public class MainActivity extends AppCompatActivity {
                 @Override
                 public void onItemClicked(final View view,
                                           int position) {
-                    final Intent i = new Intent(MainActivity.this, BookingActivity.class);
+                    final Intent i = new Intent(FindFlightActivity.this, BookingActivity.class);
                     if (position >= 0) {
                         Schedule schedule = mSchedules.get(position);
                         final Gson gson = new GsonBuilder().create();
@@ -90,7 +89,8 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_find_flight);
+        setTitle("Find Flight");
         session = new SessionManager(this);
         mSchedules = new ArrayList<>();
         travelClassesList = session.getTravelClasses();
@@ -134,7 +134,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 RequestManager.findFlights(session,
-                        MainActivity.this,
+                        FindFlightActivity.this,
                         adapterOriginAirports.getItemByName(
                                 originAirport.getText().toString()).id,
                         adapterDestinationAirports.getItemByName(
@@ -183,7 +183,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void viewSplashScreen() {
-        final Intent intent = new Intent(MainActivity.this, SplashScreenActivity.class);
+        final Intent intent = new Intent(FindFlightActivity.this, SplashScreenActivity.class);
         finish();
         startActivity(intent);
     }

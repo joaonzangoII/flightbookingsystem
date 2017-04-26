@@ -2,6 +2,7 @@
 
 use Illuminate\Database\Seeder;
 use App\User;
+use App\UserType;
 use App\Country;
 class UsersTableSeeder extends Seeder
 {
@@ -16,6 +17,7 @@ class UsersTableSeeder extends Seeder
       // factory(User::class, 3)->create();
       static $password;
       $country_id = Country::pluck('id')->random();
+      $user_type = UserType::where('name', 'Administrator')->first();
       $faker = Faker\Factory::create();
       $user = User::create([
         'first_name' => 'Lulu',
@@ -25,7 +27,7 @@ class UsersTableSeeder extends Seeder
         'id_number' => '',
         'email' => 'blah@gmail.com',
         'country_id' => $country_id,
-        'user_type_id' => 1,
+        'user_type_id' => $user_type->id,
         'password' => $password ?: $password = bcrypt('secret'),
         'remember_token' => str_random(10)
       ]);

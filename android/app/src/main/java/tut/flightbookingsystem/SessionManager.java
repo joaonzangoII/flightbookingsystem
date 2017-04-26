@@ -11,7 +11,10 @@ import com.google.gson.reflect.TypeToken;
 import java.lang.reflect.Type;
 import java.util.List;
 
+import tut.flightbookingsystem.model.AircraftSeat;
 import tut.flightbookingsystem.model.Airport;
+import tut.flightbookingsystem.model.Booking;
+import tut.flightbookingsystem.model.Country;
 import tut.flightbookingsystem.model.Drink;
 import tut.flightbookingsystem.model.Food;
 import tut.flightbookingsystem.model.Schedule;
@@ -32,11 +35,14 @@ public class SessionManager {
     private static final String KEY_IS_LOGGEDIN = "isLoggedIn";
     private static final String KEY_LOGGEDIN_USER = "loggedUser";
     private static final String KEY_SERVER_URL = "server_url";
+    private static final String KEY_COUNTRIES = "countries";
     private static final String KEY_TRAVEL_CLASSES = "travel_classes";
     private static final String KEY_AIRPORTS = "airports";
     private static final String KEY_FOODS = "foods";
     private static final String KEY_DRINKS = "drinks";
     private static final String KEY_SCHEDULE = "schedule";
+    private static final String KEY_MY_BOOKINGS = "my_bookings";
+    private static final String FLIGHT_SEATS = "flight_seats";
 
     @SuppressLint("CommitPrefEdits")
     public SessionManager(Context context) {
@@ -117,7 +123,6 @@ public class SessionManager {
         return gson.fromJson(pref.getString(KEY_DRINKS, "[]"), type);
     }
 
-
     public void setTravelClasses(final String travelClasses) {
         editor.putString(KEY_TRAVEL_CLASSES, travelClasses);
         editor.apply();  // commit changes
@@ -130,6 +135,41 @@ public class SessionManager {
         return gson.fromJson(pref.getString(KEY_TRAVEL_CLASSES, "[]"), type);
     }
 
+    public void setCountries(final String countries) {
+        editor.putString(KEY_COUNTRIES, countries);
+        editor.apply();  // commit changes
+    }
+
+    public List<Country> getCountries() {
+        final Gson gson = new GsonBuilder().create();
+        final Type type = new TypeToken<List<Country>>() {
+        }.getType();
+        return gson.fromJson(pref.getString(KEY_COUNTRIES, "[]"), type);
+    }
+
+    public void setMyBookings(final String myBookings) {
+        editor.putString(KEY_MY_BOOKINGS, myBookings);
+        editor.apply();  // commit changes
+    }
+
+    public List<Booking> getMyBookings() {
+        final Gson gson = new GsonBuilder().create();
+        final Type type = new TypeToken<List<Booking>>() {
+        }.getType();
+        return gson.fromJson(pref.getString(KEY_MY_BOOKINGS, "[]"), type);
+    }
+
+    public void setFlightSeats(final String flight_seats) {
+        editor.putString(FLIGHT_SEATS, flight_seats);
+        editor.apply();  // commit changes
+    }
+
+    public List<AircraftSeat> getAircraftSeats() {
+        final Gson gson = new GsonBuilder().create();
+        final Type type = new TypeToken<List<AircraftSeat>>() {
+        }.getType();
+        return gson.fromJson(pref.getString(FLIGHT_SEATS, "[]"), type);
+    }
 
     public boolean isLoggedIn() {
         return pref.getBoolean(KEY_IS_LOGGEDIN, false);
@@ -142,10 +182,9 @@ public class SessionManager {
     }
 
     public String getServerUrl() {
-        // return "http://192.168.43.102:8000";
+        //return "http://192.168.43.102:8000";
         return "http://10.0.0.118:8000";
-        //return "https://www.flightbookingsystem.tchinossanda.com";
-        //return pref.getString(KEY_SERVER_URL, "http://www.contextaware.lubelnaportal.com/");
+        //return pref.getString(KEY_SERVER_URL, "https://www.flightbookingsystem.tchinossanda.com");
     }
 
 }

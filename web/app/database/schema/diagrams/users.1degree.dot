@@ -27,8 +27,6 @@ digraph "oneDegreeRelationshipsDiagram" {
     <TABLE BORDER="0" CELLBORDER="1" CELLSPACING="0" BGCOLOR="#ffffff">
       <TR><TD COLSPAN="3" BGCOLOR="#9bab96" ALIGN="CENTER">bookings</TD></TR>
       <TR><TD PORT="id" COLSPAN="3" BGCOLOR="#bed1b8" ALIGN="LEFT">id</TD></TR>
-      <TR><TD PORT="vegetarian_meals_count" COLSPAN="3" ALIGN="LEFT">vegetarian_meals_count</TD></TR>
-      <TR><TD PORT="normal_meals_count" COLSPAN="3" ALIGN="LEFT">normal_meals_count</TD></TR>
       <TR><TD PORT="return" COLSPAN="3" ALIGN="LEFT">return</TD></TR>
       <TR><TD PORT="user_id" COLSPAN="3" BGCOLOR="#f4f7da" ALIGN="LEFT">user_id</TD></TR>
       <TR><TD PORT="departure_flight_id" COLSPAN="3" BGCOLOR="#f4f7da" ALIGN="LEFT">departure_flight_id</TD></TR>

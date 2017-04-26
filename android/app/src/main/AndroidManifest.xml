@@ -43,7 +43,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".MainActivity"
+            android:name=".FindFlightActivity"
             android:parentActivityName=".NavigationDrawerActivity" />
         <activity
             android:name=".FlightTimetableActivity"
@@ -54,14 +54,20 @@
         <activity android:name=".RegisterActivity" />
         <activity
             android:name=".BookingActivity"
-            android:parentActivityName=".MainActivity" />
+            android:parentActivityName=".FindFlightActivity" />
         <activity
             android:name=".NavigationDrawerActivity"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".MyBookingsActivity"
             android:parentActivityName=".NavigationDrawerActivity" />
-        <activity android:name=".BookingConfirmationActivity"></activity>
+        <activity android:name=".BookingConfirmationActivity" />
+        <activity
+            android:name=".FoodsActivity"
+            android:parentActivityName=".NavigationDrawerActivity" />
+        <activity
+            android:name=".DrinksActivity"
+            android:parentActivityName=".NavigationDrawerActivity" />
     </application>
 
 </manifest>

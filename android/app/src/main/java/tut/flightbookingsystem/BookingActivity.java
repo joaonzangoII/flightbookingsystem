@@ -21,9 +21,7 @@ import android.widget.TextView;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.google.gson.reflect.TypeToken;
 
-import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -31,7 +29,7 @@ import tut.flightbookingsystem.adapter.DrinkSpinnerAdapter;
 import tut.flightbookingsystem.adapter.FoodSpinnerAdapter;
 import tut.flightbookingsystem.adapter.PassengersAdapter;
 import tut.flightbookingsystem.listener.RecyclerClickListener;
-import tut.flightbookingsystem.model.Booking;
+import tut.flightbookingsystem.model.AircraftSeat;
 import tut.flightbookingsystem.model.Drink;
 import tut.flightbookingsystem.model.Food;
 import tut.flightbookingsystem.model.Meal;
@@ -45,16 +43,21 @@ public class BookingActivity extends AppCompatActivity {
     private List<Passenger> passengersList = new ArrayList<>();
     private int selected_drink_id;
     private int selected_food_id;
+    private Schedule schedule;
 
     final Handler requestHandler = new Handler(new Handler.Callback() {
         @Override
         public boolean handleMessage(Message message) {
             final Bundle data = message.getData();
             if (!data.getBoolean(Constant.ERROR)) {
-                final Intent intent = new Intent(BookingActivity.this, BookingConfirmationActivity.class);
-                intent.putExtra(Constant.BOOKING , data.getString(Constant.BOOKING));
-                finish();
-                startActivity(intent);
+                if(data.getBoolean(Constant.IS_BOOKING)) {
+                    final Intent intent = new Intent(BookingActivity.this, BookingConfirmationActivity.class);
+                    intent.putExtra(Constant.BOOKING, data.getString(Constant.BOOKING));
+                    finish();
+                    startActivity(intent);
+                }else{
+                    passengersAdapter.setAircrafSeats(session.getAircraftSeats());
+                }
             }
             return false;
         }
@@ -72,12 +75,17 @@ public class BookingActivity extends AppCompatActivity {
                                           int position) {
 
                     if (view instanceof Button) {
+                        Button button = ((Button) view);
                         if (position >= 0) {
-                            Passenger passenger = passengersList.get(position);
-                            addMeal(passenger);
+                            final Passenger passenger = passengersList.get(position);
+                            if (button.getId() == R.id.add_meal) {
+                                addMeal(passenger);
+                            } else {
+                                //selectSeat(passenger);
+                            }
                         }
-                    }
 
+                    }
                 }
             };
 
@@ -85,8 +93,10 @@ public class BookingActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_booking);
+        setTitle("Book a Flight");
         session = new SessionManager(this);
-        final Schedule schedule = session.getSchedule();
+        schedule = session.getSchedule();
+        RequestManager.getFlightSeats(session, schedule.flight_id, requestHandler);
         ((TextView) findViewById(R.id.flight))
                 .setText(String.format("Flight: %1$s", schedule.flight.aircraft.name));
         ((TextView) findViewById(R.id.flight_date))
@@ -113,6 +123,7 @@ public class BookingActivity extends AppCompatActivity {
             passenger.id_number = "";
             passenger.date_of_birth = "";
             passenger.gender = "";
+            passenger.meal = null;
             passengersList.add(passenger);
         }
 
@@ -210,6 +221,50 @@ public class BookingActivity extends AppCompatActivity {
         });
         alertDialogBuilder.create().show();
     }
+
+    //
+    //    public void selectSeat(final Passenger passenger) {
+    //        final AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this, R.style.cust_dialog);
+    //        final View dialogView = getInflater().inflate(R.layout.seats_layout, null);
+    //        final List<AircraftSeat> aircraftSear = session.getAircraftSeats();
+    //        RequestManager.getFlightSeats(session, schedule.flight_id, requestHandler);
+    //        //        final FoodSpinnerAdapter adapterFoods = new FoodSpinnerAdapter
+    //        //                (this, foods);
+    //        //        final Spinner foodsSpinner = (Spinner) dialogView.findViewById(R.id.foodSpinner);
+    //        //        foodsSpinner.setAdapter(adapterFoods);
+    //        //        foodsSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+    //        //            @Override
+    //        //            public void onItemSelected(AdapterView<?> adapterView,
+    //        //                                       View view,
+    //        //                                       int i,
+    //        //                                       long l) {
+    //        //                selected_food_id = i;
+    //        //            }
+    //        //
+    //        //            @Override
+    //        //            public void onNothingSelected(AdapterView<?> adapterView) {
+    //        //
+    //        //            }
+    //        //        });
+    //
+    //        alertDialogBuilder.setTitle("Select Seat Choice");
+    //        alertDialogBuilder.setView(dialogView);
+    //        alertDialogBuilder.setPositiveButton("YES", new DialogInterface.OnClickListener() {
+    //            @Override
+    //            public void onClick(DialogInterface dialogInterface, int i) {
+    //                //passenger.meal = aircraft_seat_id;
+    //            }
+    //        });
+    //
+    //        alertDialogBuilder.setNegativeButton("NO", new DialogInterface.OnClickListener() {
+    //            @Override
+    //            public void onClick(DialogInterface dialogInterface, int i) {
+    //
+    //            }
+    //        });
+    //        alertDialogBuilder.create().show();
+    //    }
+
 
     public LayoutInflater getInflater() {
         return (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);

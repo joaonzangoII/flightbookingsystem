@@ -9,6 +9,14 @@
     items that is outside of device viewport when it loads initially.
     Wrapping "RecyclerView" with "RelativeLayout" fixes the issue on Marshmallow devices.
     -->
+    <ProgressBar
+        android:id="@+id/progress_bar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:visibility="gone"
+        android:layout_gravity="center" />
+
     <android.support.v7.widget.RecyclerView
         android:id="@+id/my_recycler_view"
         android:layout_width="match_parent"

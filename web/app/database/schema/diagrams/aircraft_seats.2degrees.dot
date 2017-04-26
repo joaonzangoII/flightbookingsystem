@@ -19,27 +19,40 @@ digraph "twoDegreesRelationshipsDiagram" {
   edge [
     arrowsize="0.8"
   ];
+  "aircraft_seats":"aircraft_id":w -> "aircrafts":"id":e [arrowhead=none dir=back arrowtail=crowodot];
   "aircraft_seats":"travel_class_id":w -> "travel_classes":"id":e [arrowhead=none dir=back arrowtail=crowodot];
-  "bookings":"elipses":w -> "aircrafts":"elipses":e [arrowhead=none dir=back arrowtail=crowodot];
+  "aircrafts":"aircraft_manufaturer_id":w -> "aircraft_manufacturers":"elipses":e [arrowhead=none dir=back arrowtail=crowodot];
+  "bookings":"elipses":w -> "aircrafts":"id":e [arrowhead=none dir=back arrowtail=crowodot];
   "bookings":"elipses":w -> "flights":"elipses":e [arrowhead=none dir=back arrowtail=crowodot];
   "bookings":"elipses":w -> "flights":"elipses":e [arrowhead=none dir=back arrowtail=crowodot];
-  "flights":"elipses":w -> "aircrafts":"elipses":e [arrowhead=none dir=back arrowtail=crowodot];
+  "flights":"elipses":w -> "aircrafts":"id":e [arrowhead=none dir=back arrowtail=crowodot];
   "meals":"elipses":w -> "passengers":"id":e [arrowhead=none dir=back arrowtail=crowodot];
   "passengers":"aircraft_seat_id":w -> "aircraft_seats":"id.type":e [arrowhead=none dir=back arrowtail=crowodot];
   "passengers":"booking_id":w -> "bookings":"elipses":e [arrowhead=none dir=back arrowtail=crowodot];
-  "seat_prices":"aircraft_id":w -> "aircrafts":"elipses":e [arrowhead=none dir=back arrowtail=crowodot];
+  "seat_prices":"aircraft_id":w -> "aircrafts":"id":e [arrowhead=none dir=back arrowtail=crowodot];
   "seat_prices":"aircraft_seat_id":w -> "aircraft_seats":"id.type":e [arrowhead=none dir=back arrowtail=crowodot];
   "seat_prices":"flight_id":w -> "flights":"elipses":e [arrowhead=none dir=back arrowtail=crowodot];
+  "aircraft_manufacturers" [
+    label=<
+    <TABLE BORDER="0" CELLBORDER="1" CELLSPACING="0" BGCOLOR="#ffffff">
+      <TR><TD COLSPAN="3" BGCOLOR="#9bab96" ALIGN="CENTER">aircraft_manufacturers</TD></TR>
+      <TR><TD PORT="elipses" COLSPAN="3" ALIGN="LEFT">...</TD></TR>
+      <TR><TD ALIGN="LEFT" BGCOLOR="#f7f7f7">  </TD><TD ALIGN="RIGHT" BGCOLOR="#f7f7f7">1 row</TD><TD ALIGN="RIGHT" BGCOLOR="#f7f7f7">1 &gt;</TD></TR>
+    </TABLE>>
+    URL="aircraft_manufacturers.html"
+    tooltip="aircraft_manufacturers"
+  ];
   "aircraft_seats" [
     label=<
     <TABLE BORDER="2" CELLBORDER="1" CELLSPACING="0" BGCOLOR="#ffffff">
       <TR><TD COLSPAN="3" BGCOLOR="#9bab96" ALIGN="CENTER">aircraft_seats</TD></TR>
       <TR><TD PORT="id" COLSPAN="2" BGCOLOR="#bed1b8" ALIGN="LEFT">id</TD><TD PORT="id.type" ALIGN="LEFT">int unsigned[10]</TD></TR>
       <TR><TD PORT="number" COLSPAN="2" ALIGN="LEFT">number</TD><TD PORT="number.type" ALIGN="LEFT">varchar[255]</TD></TR>
+      <TR><TD PORT="aircraft_id" COLSPAN="2" BGCOLOR="#f4f7da" ALIGN="LEFT">aircraft_id</TD><TD PORT="aircraft_id.type" ALIGN="LEFT">int unsigned[10]</TD></TR>
       <TR><TD PORT="travel_class_id" COLSPAN="2" BGCOLOR="#f4f7da" ALIGN="LEFT">travel_class_id</TD><TD PORT="travel_class_id.type" ALIGN="LEFT">int unsigned[10]</TD></TR>
       <TR><TD PORT="created_at" COLSPAN="2" ALIGN="LEFT">created_at</TD><TD PORT="created_at.type" ALIGN="LEFT">timestamp[19]</TD></TR>
       <TR><TD PORT="updated_at" COLSPAN="2" ALIGN="LEFT">updated_at</TD><TD PORT="updated_at.type" ALIGN="LEFT">timestamp[19]</TD></TR>
-      <TR><TD ALIGN="LEFT" BGCOLOR="#f7f7f7">&lt; 1</TD><TD ALIGN="RIGHT" BGCOLOR="#f7f7f7">0 rows</TD><TD ALIGN="RIGHT" BGCOLOR="#f7f7f7">2 &gt;</TD></TR>
+      <TR><TD ALIGN="LEFT" BGCOLOR="#f7f7f7">&lt; 2</TD><TD ALIGN="RIGHT" BGCOLOR="#f7f7f7">716 rows</TD><TD ALIGN="RIGHT" BGCOLOR="#f7f7f7">2 &gt;</TD></TR>
     </TABLE>>
     URL="aircraft_seats.html"
     tooltip="aircraft_seats"
@@ -48,8 +61,13 @@ digraph "twoDegreesRelationshipsDiagram" {
     label=<
     <TABLE BORDER="0" CELLBORDER="1" CELLSPACING="0" BGCOLOR="#ffffff">
       <TR><TD COLSPAN="3" BGCOLOR="#9bab96" ALIGN="CENTER">aircrafts</TD></TR>
-      <TR><TD PORT="elipses" COLSPAN="3" ALIGN="LEFT">...</TD></TR>
-      <TR><TD ALIGN="LEFT" BGCOLOR="#f7f7f7">&lt; 1</TD><TD ALIGN="RIGHT" BGCOLOR="#f7f7f7">7 rows</TD><TD ALIGN="RIGHT" BGCOLOR="#f7f7f7">3 &gt;</TD></TR>
+      <TR><TD PORT="id" COLSPAN="3" BGCOLOR="#bed1b8" ALIGN="LEFT">id</TD></TR>
+      <TR><TD PORT="model" COLSPAN="3" ALIGN="LEFT">model</TD></TR>
+      <TR><TD PORT="number_of_seats" COLSPAN="3" ALIGN="LEFT">number_of_seats</TD></TR>
+      <TR><TD PORT="aircraft_manufaturer_id" COLSPAN="3" BGCOLOR="#f4f7da" ALIGN="LEFT">aircraft_manufaturer_id</TD></TR>
+      <TR><TD PORT="created_at" COLSPAN="3" ALIGN="LEFT">created_at</TD></TR>
+      <TR><TD PORT="updated_at" COLSPAN="3" ALIGN="LEFT">updated_at</TD></TR>
+      <TR><TD ALIGN="LEFT" BGCOLOR="#f7f7f7">&lt; 1</TD><TD ALIGN="RIGHT" BGCOLOR="#f7f7f7">3 rows</TD><TD ALIGN="RIGHT" BGCOLOR="#f7f7f7">4 &gt;</TD></TR>
     </TABLE>>
     URL="aircrafts.html"
     tooltip="aircrafts"
@@ -69,7 +87,7 @@ digraph "twoDegreesRelationshipsDiagram" {
     <TABLE BORDER="0" CELLBORDER="1" CELLSPACING="0" BGCOLOR="#ffffff">
       <TR><TD COLSPAN="3" BGCOLOR="#9bab96" ALIGN="CENTER">flights</TD></TR>
       <TR><TD PORT="elipses" COLSPAN="3" ALIGN="LEFT">...</TD></TR>
-      <TR><TD ALIGN="LEFT" BGCOLOR="#f7f7f7">&lt; 2</TD><TD ALIGN="RIGHT" BGCOLOR="#f7f7f7">1 row</TD><TD ALIGN="RIGHT" BGCOLOR="#f7f7f7">4 &gt;</TD></TR>
+      <TR><TD ALIGN="LEFT" BGCOLOR="#f7f7f7">&lt; 2</TD><TD ALIGN="RIGHT" BGCOLOR="#f7f7f7">0 rows</TD><TD ALIGN="RIGHT" BGCOLOR="#f7f7f7">4 &gt;</TD></TR>
     </TABLE>>
     URL="flights.html"
     tooltip="flights"
@@ -79,7 +97,7 @@ digraph "twoDegreesRelationshipsDiagram" {
     <TABLE BORDER="0" CELLBORDER="1" CELLSPACING="0" BGCOLOR="#ffffff">
       <TR><TD COLSPAN="3" BGCOLOR="#9bab96" ALIGN="CENTER">meals</TD></TR>
       <TR><TD PORT="elipses" COLSPAN="3" ALIGN="LEFT">...</TD></TR>
-      <TR><TD ALIGN="LEFT" BGCOLOR="#f7f7f7">&lt; 4</TD><TD ALIGN="RIGHT" BGCOLOR="#f7f7f7">0 rows</TD><TD ALIGN="RIGHT" BGCOLOR="#f7f7f7">  </TD></TR>
+      <TR><TD ALIGN="LEFT" BGCOLOR="#f7f7f7">&lt; 3</TD><TD ALIGN="RIGHT" BGCOLOR="#f7f7f7">0 rows</TD><TD ALIGN="RIGHT" BGCOLOR="#f7f7f7">  </TD></TR>
     </TABLE>>
     URL="meals.html"
     tooltip="meals"

@@ -28,10 +28,11 @@ digraph "oneDegreeRelationshipsDiagram" {
       <TR><TD COLSPAN="3" BGCOLOR="#9bab96" ALIGN="CENTER">aircraft_seats</TD></TR>
       <TR><TD PORT="id" COLSPAN="3" BGCOLOR="#bed1b8" ALIGN="LEFT">id</TD></TR>
       <TR><TD PORT="number" COLSPAN="3" ALIGN="LEFT">number</TD></TR>
+      <TR><TD PORT="aircraft_id" COLSPAN="3" BGCOLOR="#f4f7da" ALIGN="LEFT">aircraft_id</TD></TR>
       <TR><TD PORT="travel_class_id" COLSPAN="3" BGCOLOR="#f4f7da" ALIGN="LEFT">travel_class_id</TD></TR>
       <TR><TD PORT="created_at" COLSPAN="3" ALIGN="LEFT">created_at</TD></TR>
       <TR><TD PORT="updated_at" COLSPAN="3" ALIGN="LEFT">updated_at</TD></TR>
-      <TR><TD ALIGN="LEFT" BGCOLOR="#f7f7f7">&lt; 1</TD><TD ALIGN="RIGHT" BGCOLOR="#f7f7f7">0 rows</TD><TD ALIGN="RIGHT" BGCOLOR="#f7f7f7">2 &gt;</TD></TR>
+      <TR><TD ALIGN="LEFT" BGCOLOR="#f7f7f7">&lt; 2</TD><TD ALIGN="RIGHT" BGCOLOR="#f7f7f7">716 rows</TD><TD ALIGN="RIGHT" BGCOLOR="#f7f7f7">2 &gt;</TD></TR>
     </TABLE>>
     URL="aircraft_seats.html"
     tooltip="aircraft_seats"
@@ -41,8 +42,6 @@ digraph "oneDegreeRelationshipsDiagram" {
     <TABLE BORDER="0" CELLBORDER="1" CELLSPACING="0" BGCOLOR="#ffffff">
       <TR><TD COLSPAN="3" BGCOLOR="#9bab96" ALIGN="CENTER">bookings</TD></TR>
       <TR><TD PORT="id" COLSPAN="3" BGCOLOR="#bed1b8" ALIGN="LEFT">id</TD></TR>
-      <TR><TD PORT="vegetarian_meals_count" COLSPAN="3" ALIGN="LEFT">vegetarian_meals_count</TD></TR>
-      <TR><TD PORT="normal_meals_count" COLSPAN="3" ALIGN="LEFT">normal_meals_count</TD></TR>
       <TR><TD PORT="return" COLSPAN="3" ALIGN="LEFT">return</TD></TR>
       <TR><TD PORT="user_id" COLSPAN="3" BGCOLOR="#f4f7da" ALIGN="LEFT">user_id</TD></TR>
       <TR><TD PORT="departure_flight_id" COLSPAN="3" BGCOLOR="#f4f7da" ALIGN="LEFT">departure_flight_id</TD></TR>
@@ -60,13 +59,12 @@ digraph "oneDegreeRelationshipsDiagram" {
     <TABLE BORDER="0" CELLBORDER="1" CELLSPACING="0" BGCOLOR="#ffffff">
       <TR><TD COLSPAN="3" BGCOLOR="#9bab96" ALIGN="CENTER">meals</TD></TR>
       <TR><TD PORT="id" COLSPAN="3" BGCOLOR="#bed1b8" ALIGN="LEFT">id</TD></TR>
-      <TR><TD PORT="meal_type_id" COLSPAN="3" BGCOLOR="#f4f7da" ALIGN="LEFT">meal_type_id</TD></TR>
       <TR><TD PORT="passenger_id" COLSPAN="3" BGCOLOR="#f4f7da" ALIGN="LEFT">passenger_id</TD></TR>
       <TR><TD PORT="drink_id" COLSPAN="3" BGCOLOR="#f4f7da" ALIGN="LEFT">drink_id</TD></TR>
       <TR><TD PORT="food_id" COLSPAN="3" BGCOLOR="#f4f7da" ALIGN="LEFT">food_id</TD></TR>
       <TR><TD PORT="created_at" COLSPAN="3" ALIGN="LEFT">created_at</TD></TR>
       <TR><TD PORT="updated_at" COLSPAN="3" ALIGN="LEFT">updated_at</TD></TR>
-      <TR><TD ALIGN="LEFT" BGCOLOR="#f7f7f7">&lt; 4</TD><TD ALIGN="RIGHT" BGCOLOR="#f7f7f7">0 rows</TD><TD ALIGN="RIGHT" BGCOLOR="#f7f7f7">  </TD></TR>
+      <TR><TD ALIGN="LEFT" BGCOLOR="#f7f7f7">&lt; 3</TD><TD ALIGN="RIGHT" BGCOLOR="#f7f7f7">0 rows</TD><TD ALIGN="RIGHT" BGCOLOR="#f7f7f7">  </TD></TR>
     </TABLE>>
     URL="meals.html"
     tooltip="meals"

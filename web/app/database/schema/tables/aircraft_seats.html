@@ -101,7 +101,7 @@ src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
 </tr>
 </thead>
 <tbody valign='top'>
-<tr class='odd'>
+<tr class='even'>
  <td class='primaryKey' title='Primary Key'>id</td>
  <td class='detail'>int unsigned</td>
  <td class='detail' align='right'>10</td>
@@ -110,13 +110,13 @@ src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
  <td class='detail'></td>
  <td class='detail'>
   <table border='0' width='100%' cellspacing='0' cellpadding='0'>
-   <tr class='relative odd' valign='top'>
+   <tr class='relative even' valign='top'>
     <td class='relatedTable detail' title="passengers.aircraft_seat_id refs aircraft_seats.id via passengers_aircraft_seat_id_foreign"><a href='passengers.html'>passengers</a><span class='relatedKey'>.aircraft_seat_id</span>
     </td>
     <td class='constraint detail'>passengers_aircraft_seat_id_foreign<span title='Cascade on delete:
  Deletion of parent deletes child'>&nbsp;C</span></td>
    </tr>
-   <tr class='relative odd' valign='top'>
+   <tr class='relative even' valign='top'>
     <td class='relatedTable detail' title="seat_prices.aircraft_seat_id refs aircraft_seats.id via seat_prices_aircraft_seat_id_foreign"><a href='seat_prices.html'>seat_prices</a><span class='relatedKey'>.aircraft_seat_id</span>
     </td>
     <td class='constraint detail'>seat_prices_aircraft_seat_id_foreign<span title='Cascade on delete:
@@ -127,7 +127,7 @@ src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
  <td class='detail'> </td>
  <td class='comment detail'></td>
 </tr>
-<tr class='even'>
+<tr class='odd'>
  <td class='detail'>number</td>
  <td class='detail'>varchar</td>
  <td class='detail' align='right'>255</td>
@@ -136,6 +136,26 @@ src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
  <td class='detail'></td>
  <td class='detail'></td>
  <td class='detail'> </td>
+ <td class='comment detail'></td>
+</tr>
+<tr class='even'>
+ <td class='indexedColumn' title='Indexed'>aircraft_id</td>
+ <td class='detail'>int unsigned</td>
+ <td class='detail' align='right'>10</td>
+ <td class='detail' align='center'></td>
+ <td class='detail' align='center'></td>
+ <td class='detail'></td>
+ <td class='detail'></td>
+ <td class='detail'>
+  <table border='0' width='100%' cellspacing='0' cellpadding='0'>
+   <tr class='relative even' valign='top'>
+    <td class='relatedTable detail' title="aircraft_seats.aircraft_id refs aircrafts.id via aircraft_seats_aircraft_id_foreign"><a href='aircrafts.html'>aircrafts</a><span class='relatedKey'>.id</span>
+    </td>
+    <td class='constraint detail'>aircraft_seats_aircraft_id_foreign<span title='Cascade on delete:
+ Deletion of parent deletes child'>&nbsp;C</span></td>
+   </tr>
+  </table>
+ </td>
  <td class='comment detail'></td>
 </tr>
 <tr class='odd'>
@@ -181,7 +201,7 @@ src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
  <td class='comment detail'></td>
 </tr>
 </table>
-<p title='5 columns'>Table contained 0 rows at Sun Apr 23 18:47 SAST 2017<p/>
+<p title='6 columns'>Table contained 716 rows at Wed Apr 26 14:07 SAST 2017<p/>
 </td></tr></table>
 <div class='indent'>
 <b>Indexes:</b>
@@ -202,6 +222,12 @@ src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
   <td class='constraint' style='text-align:left;'>PRIMARY</td>
  </tr>
  <tr>
+  <td class='indexedColumn'>aircraft_id</td>
+  <td class='detail'>Performance</td>
+  <td class='detail' style='text-align:left;'><span title='Ascending'>Asc</span></td>
+  <td class='constraint' style='text-align:left;'>aircraft_seats_aircraft_id_foreign</td>
+ </tr>
+ <tr>
   <td class='indexedColumn'>travel_class_id</td>
   <td class='detail'>Performance</td>
   <td class='detail' style='text-align:left;'><span title='Ascending'>Asc</span></td>
@@ -213,21 +239,23 @@ src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
 <br><form action='get'><b>Close relationships</b><span class='degrees' id='degrees' title='Detail diminishes with increased separation from aircraft_seats'>
 &nbsp;within <label for='oneDegree'><input type='radio' name='degrees' id='oneDegree' checked>one</label>  <label for='twoDegrees'><input type='radio' name='degrees' id='twoDegrees'>two degrees</label> of separation</span><b>:</b></form>
 <map id="oneDegreeRelationshipsDiagram" name="oneDegreeRelationshipsDiagram">
-<area shape="rect" id="node1" href="aircraft_seats.html" title="aircraft_seats" alt="" coords="169,317,408,501">
-<area shape="rect" id="node2" href="travel_classes.html" title="travel_classes" alt="" coords="5,368,125,547">
-<area shape="rect" id="node3" href="passengers.html" title="passengers" alt="" coords="452,5,584,328">
-<area shape="rect" id="node4" href="seat_prices.html" title="seat_prices" alt="" coords="454,345,582,572">
+<area shape="rect" id="node1" href="aircraft_seats.html" title="aircraft_seats" alt="" coords="228,184,467,392">
+<area shape="rect" id="node2" href="aircrafts.html" title="aircrafts" alt="" coords="5,77,184,280">
+<area shape="rect" id="node3" href="travel_classes.html" title="travel_classes" alt="" coords="35,297,155,476">
+<area shape="rect" id="node4" href="passengers.html" title="passengers" alt="" coords="511,249,643,572">
+<area shape="rect" id="node5" href="seat_prices.html" title="seat_prices" alt="" coords="513,5,641,232">
 </map>
   <a name='diagram'><img id='oneDegreeImg' src='../diagrams/aircraft_seats.1degree.png' usemap='#oneDegreeRelationshipsDiagram' class='diagram' border='0' alt='' align='left'></a>
 <map id="twoDegreesRelationshipsDiagram" name="twoDegreesRelationshipsDiagram">
-<area shape="rect" id="node1" href="aircraft_seats.html" title="aircraft_seats" alt="" coords="181,295,420,479">
-<area shape="rect" id="node2" href="travel_classes.html" title="travel_classes" alt="" coords="11,345,131,524">
-<area shape="rect" id="node3" href="bookings.html" title="bookings" alt="" coords="464,29,596,112">
-<area shape="rect" id="node4" href="aircrafts.html" title="aircrafts" alt="" coords="5,97,137,180">
-<area shape="rect" id="node5" href="flights.html" title="flights" alt="" coords="238,97,363,180">
-<area shape="rect" id="node6" href="meals.html" title="meals" alt="" coords="816,5,936,88">
-<area shape="rect" id="node7" href="passengers.html" title="passengers" alt="" coords="640,5,772,328">
-<area shape="rect" id="node8" href="seat_prices.html" title="seat_prices" alt="" coords="466,129,594,356">
+<area shape="rect" id="node1" href="aircraft_seats.html" title="aircraft_seats" alt="" coords="447,240,685,448">
+<area shape="rect" id="node2" href="aircrafts.html" title="aircrafts" alt="" coords="224,97,403,300">
+<area shape="rect" id="node3" href="travel_classes.html" title="travel_classes" alt="" coords="253,317,373,496">
+<area shape="rect" id="node4" href="aircraft_manufacturers.html" title="aircraft_manufacturers" alt="" coords="5,169,180,252">
+<area shape="rect" id="node5" href="bookings.html" title="bookings" alt="" coords="729,29,861,112">
+<area shape="rect" id="node6" href="flights.html" title="flights" alt="" coords="500,97,632,180">
+<area shape="rect" id="node7" href="meals.html" title="meals" alt="" coords="1081,5,1201,88">
+<area shape="rect" id="node8" href="passengers.html" title="passengers" alt="" coords="905,5,1037,328">
+<area shape="rect" id="node9" href="seat_prices.html" title="seat_prices" alt="" coords="731,129,859,356">
 </map>
 
   <a name='diagram'><img id='twoDegreesImg' src='../diagrams/aircraft_seats.2degrees.png' usemap='#twoDegreesRelationshipsDiagram' class='diagram' border='0' alt='' align='left'></a>

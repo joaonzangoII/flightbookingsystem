@@ -7,8 +7,10 @@ import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Spinner;
 import android.widget.TextView;
 
 import java.util.Collections;
@@ -16,17 +18,24 @@ import java.util.List;
 
 import tut.flightbookingsystem.R;
 import tut.flightbookingsystem.listener.RecyclerClickListener;
+import tut.flightbookingsystem.model.AircraftSeat;
 import tut.flightbookingsystem.model.Passenger;
 
 public class PassengersAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     private RecyclerClickListener.OnItemClickCallback onItemClickCallback;
     private List<Passenger> items = Collections.emptyList();
+    private List<AircraftSeat> itemsAircraftSeats = Collections.emptyList();
 
     public PassengersAdapter() {
     }
 
     public void setItems(final List<Passenger> items) {
         this.items = items;
+        notifyDataSetChanged();
+    }
+
+    public void setAircrafSeats(final List<AircraftSeat> itemsAircraftSeats) {
+        this.itemsAircraftSeats = itemsAircraftSeats;
         notifyDataSetChanged();
     }
 
@@ -56,6 +65,25 @@ public class PassengersAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
             setListenerAndData(vH.edt_last_name, "last_name", passenger);
             setListenerAndData(vH.edt_id_number, "id_number", passenger);
             setListenerAndData(vH.txt_date_of_birth, "date_of_birth", passenger);
+
+            final AircraftSeatSpinnerAdapter aircraftSeatAdapter = new AircraftSeatSpinnerAdapter
+                    (vH.itemView.getContext(), itemsAircraftSeats);
+
+            vH.spn_select_seat_id.setAdapter(aircraftSeatAdapter);
+            vH.spn_select_seat_id.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                @Override
+                public void onItemSelected(AdapterView<?> adapterView,
+                                           View view,
+                                           int i,
+                                           long id) {
+                    passenger.aircraft_seat_id = id;
+                }
+
+                @Override
+                public void onNothingSelected(AdapterView<?> adapterView) {
+
+                }
+            });
         }
     }
 
@@ -84,6 +112,7 @@ public class PassengersAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
         public EditText edt_id_number;
         public EditText txt_date_of_birth;
         public Button btn_add_meal;
+        public Spinner spn_select_seat_id;
 
         public MyScheduleHolder(View itemView) {
             super(itemView);
@@ -93,6 +122,7 @@ public class PassengersAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
             edt_last_name = (EditText) itemView.findViewById(R.id.last_name);
             edt_id_number = (EditText) itemView.findViewById(R.id.id_number);
             txt_date_of_birth = (EditText) itemView.findViewById(R.id.date_of_birth);
+            spn_select_seat_id = (Spinner) itemView.findViewById(R.id.select_seat_id);
             btn_add_meal = (Button) itemView.findViewById(R.id.add_meal);
         }
     }
