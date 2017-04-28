@@ -13,13 +13,16 @@ import java.util.List;
 import tut.flightbookingsystem.model.TravelClass;
 
 public class TravelClassSpinnerAdapter extends BaseAdapter {
+    private final int mLayoutResourceId;
     public List<TravelClass> travelClassesList = Collections.emptyList();
     public Context context;
     public LayoutInflater layoutInflater;
 
     public TravelClassSpinnerAdapter(Context context,
+                                     int resource,
                                      List<TravelClass> travelClassesList) {
         this.context = context;
+        this.mLayoutResourceId = resource;
         this.travelClassesList = travelClassesList;
         this.layoutInflater = LayoutInflater.from(context);
     }
@@ -36,14 +39,14 @@ public class TravelClassSpinnerAdapter extends BaseAdapter {
 
     @Override
     public long getItemId(int i) {
-        return 0;
+        return travelClassesList.get(i).id;
     }
 
     @Override
     public View getView(final int i,
                         View view,
                         final ViewGroup viewGroup) {
-        view = getLayoutInflater().inflate(android.R.layout.select_dialog_item, null);
+        view = getLayoutInflater().inflate(mLayoutResourceId, null);
 
         final TravelClass travelClass = getItem(i);
 

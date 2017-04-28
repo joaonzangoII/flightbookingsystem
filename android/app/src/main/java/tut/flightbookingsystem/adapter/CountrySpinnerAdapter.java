@@ -14,13 +14,16 @@ import tut.flightbookingsystem.model.Country;
 import tut.flightbookingsystem.model.Drink;
 
 public class CountrySpinnerAdapter extends BaseAdapter {
+    private final int mLayoutResourceId;
     public List<Country> countries = Collections.emptyList();
     public Context context;
     public LayoutInflater layoutInflater;
 
     public CountrySpinnerAdapter(Context context,
+                                 int resource,
                                  List<Country> countries) {
         this.context = context;
+        this.mLayoutResourceId = resource;
         this.countries = countries;
         this.layoutInflater = LayoutInflater.from(context);
     }
@@ -44,7 +47,7 @@ public class CountrySpinnerAdapter extends BaseAdapter {
     public View getView(final int i,
                         View view,
                         final ViewGroup viewGroup) {
-        view = getLayoutInflater().inflate(android.R.layout.select_dialog_item, null);
+        view = getLayoutInflater().inflate(mLayoutResourceId, null);
         final Country country = getItem(i);
         final TextView title = (TextView) view.findViewById(android.R.id.text1);
         title.setText(country.name);

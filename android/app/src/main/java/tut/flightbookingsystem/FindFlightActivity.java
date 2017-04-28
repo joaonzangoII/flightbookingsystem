@@ -1,22 +1,16 @@
 package tut.flightbookingsystem;
 
 import android.content.Intent;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.AppCompatButton;
 import android.support.v7.widget.AppCompatEditText;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.ArrayAdapter;
-import android.widget.AutoCompleteTextView;
 import android.widget.Spinner;
 
 import com.google.gson.Gson;
@@ -28,9 +22,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import tut.flightbookingsystem.adapter.AirportsAdapter;
-import tut.flightbookingsystem.adapter.ScheduleAdapter;
+import tut.flightbookingsystem.adapter.PeopleAdapter;
 import tut.flightbookingsystem.adapter.TravelClassSpinnerAdapter;
-import tut.flightbookingsystem.listener.RecyclerClickListener.OnItemClickCallback;
 import tut.flightbookingsystem.model.Airport;
 import tut.flightbookingsystem.model.Schedule;
 import tut.flightbookingsystem.model.TravelClass;
@@ -39,12 +32,11 @@ public class FindFlightActivity extends AppCompatActivity {
     private static String TAG = FindFlightActivity.class.getName();
     private List<Airport> airportsList = new ArrayList<>();
     private List<TravelClass> travelClassesList = new ArrayList<>();
-    private String[] people = new String[9];
+    private List<String> people = new ArrayList<>();
     private SessionManager session;
-    private RecyclerView recyclerView;
-    private ScheduleAdapter scheduleadapter;
     private List<Schedule> mSchedules;
     private String num_people;
+    private long travel_class_id;
     final Handler requestHandler = new Handler(new Handler.Callback() {
         @Override
         public boolean handleMessage(Message message) {
@@ -54,37 +46,20 @@ public class FindFlightActivity extends AppCompatActivity {
                 final Type type = new TypeToken<List<Schedule>>() {
                 }.getType();
                 mSchedules = gson.fromJson(data.getString(Constant.STR_SCHEDULE), type);
-                scheduleadapter.setItems(mSchedules);
+
+                if (mSchedules.size() == 0) {
+                    Utils.showDialog(FindFlightActivity.this);
+                } else {
+                    final Intent intent = new Intent(FindFlightActivity.this, QueryResultsActivity.class);
+                    intent.putExtra(Constant.DATA_BUNDLE, data);
+                    intent.putExtra(Constant.TRAVEL_CLASS_ID, (int) travel_class_id);
+                    intent.putExtra(Constant.NUM_PEOPLE, Integer.valueOf(num_people));
+                    startActivity(intent);
+                }
             }
             return false;
         }
     });
-
-    private OnItemClickCallback onItemClickCallback =
-            new OnItemClickCallback() {
-
-                @Override
-                public void onItemClicked(final View view,
-                                          final int parentPosition,
-                                          final int childPosition) {
-                }
-
-                @Override
-                public void onItemClicked(final View view,
-                                          int position) {
-                    final Intent i = new Intent(FindFlightActivity.this, BookingActivity.class);
-                    if (position >= 0) {
-                        Schedule schedule = mSchedules.get(position);
-                        final Gson gson = new GsonBuilder().create();
-                        final Type type = new TypeToken<Schedule>() {
-                        }.getType();
-                        session.setSchedule(gson.toJson(schedule, type));
-                        Log.e(TAG, schedule.toString());
-                        i.putExtra(Constant.NUM_PEOPLE, Integer.valueOf(num_people));
-                        startActivity(i);
-                    }
-                }
-            };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -95,34 +70,32 @@ public class FindFlightActivity extends AppCompatActivity {
         mSchedules = new ArrayList<>();
         travelClassesList = session.getTravelClasses();
         airportsList = session.getAirports();
+
         for (int x = 0; x < 9; x++) {
-            people[x] = String.format("%1$d people", (x + 1));
+            people.add(String.format("%1$d people", (x + 1)));
         }
 
         //Creating the instance of ArrayAdapter containing list of language names
-        final AirportsAdapter adapterOriginAirports = new AirportsAdapter
-                (this, android.R.layout.select_dialog_item, airportsList);
-        final AirportsAdapter adapterDestinationAirports = new AirportsAdapter
-                (this, android.R.layout.select_dialog_item, airportsList);
+        final AirportsAdapter originAirportsAdapter = new AirportsAdapter
+                (this, R.layout.spinners_item_layout, airportsList);
+        final AirportsAdapter destinationAirportsAdapter = new AirportsAdapter
+                (this, R.layout.spinners_item_layout, airportsList);
 
-        TravelClassSpinnerAdapter adapterTravelClass = new TravelClassSpinnerAdapter
-                (this, travelClassesList);
-        ArrayAdapter<String> adapterPeople = new ArrayAdapter<String>
-                (this, android.R.layout.select_dialog_item, people);
+        final TravelClassSpinnerAdapter adapterTravelClass = new TravelClassSpinnerAdapter
+                (this, R.layout.spinners_item_layout, travelClassesList);
 
-        //Getting the instance of AutoCompleteTextView
-        final AutoCompleteTextView originAirport = (AutoCompleteTextView) findViewById(R.id.departure);
-        originAirport.setThreshold(1);//will start working from first character
-        originAirport.setAdapter(adapterOriginAirports);//setting the adapter data into the AutoCompleteTextView
-        originAirport.setTextColor(Color.RED);
+        final PeopleAdapter adapterPeople = new PeopleAdapter
+                (this, R.layout.spinners_item_layout, people);
 
-        final AutoCompleteTextView destinationAirport = (AutoCompleteTextView) findViewById(R.id.destination);
-        destinationAirport.setThreshold(1);//will start working from first character
-        destinationAirport.setAdapter(adapterDestinationAirports);//setting the adapter data into the AutoCompleteTextView
-        destinationAirport.setTextColor(Color.RED);
+        final Spinner originAirport = (Spinner) findViewById(R.id.departure);
+        originAirport.setAdapter(originAirportsAdapter);
+
+        final Spinner destinationAirport = (Spinner) findViewById(R.id.destination);
+        destinationAirport.setAdapter(destinationAirportsAdapter);
 
         final Spinner spnTravelClass = (Spinner) findViewById(R.id.travel_class);
         spnTravelClass.setAdapter(adapterTravelClass);
+
         final Spinner spnNumPeople = (Spinner) findViewById(R.id.num_people);
         spnNumPeople.setAdapter(adapterPeople);
 
@@ -133,24 +106,17 @@ public class FindFlightActivity extends AppCompatActivity {
         btnCheckAvailability.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                num_people = adapterPeople.getNumPeople(spnNumPeople.getSelectedItemId());
+                travel_class_id = spnTravelClass.getSelectedItemId();
                 RequestManager.findFlights(session,
                         FindFlightActivity.this,
-                        adapterOriginAirports.getItemByName(
-                                originAirport.getText().toString()).id,
-                        adapterDestinationAirports.getItemByName(
-                                destinationAirport.getText().toString()).id,
+                        originAirport.getSelectedItemId(),
+                        destinationAirport.getSelectedItemId(),
                         departureDate.getText().toString(),
                         returnDate.getText().toString(),
                         requestHandler);
-                num_people = spnNumPeople.getSelectedItem().toString().substring(0, 1);
             }
         });
-
-        recyclerView = (RecyclerView) findViewById(R.id.my_recycler_view);
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        scheduleadapter = new ScheduleAdapter();
-        scheduleadapter.setOnItemClickCallback(onItemClickCallback);
-        recyclerView.setAdapter(scheduleadapter);
     }
 
 

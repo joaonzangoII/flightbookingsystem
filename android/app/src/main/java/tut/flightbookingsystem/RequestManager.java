@@ -536,11 +536,17 @@ public class RequestManager {
     }
 
     public static void getFlightSeats(final SessionManager session,
-                                     final long aircraft_id,
-                                     final Handler requestHandler) {
+                                      final long aircraft_id,
+                                      final long travel_class_id,
+                                      final Handler requestHandler) {
         final Message msg = requestHandler.obtainMessage();
         final Bundle bundle = new Bundle();
-        final String url = session.getServerUrl() + RouteManager.GET_FLIGHT_SEAT + "/" + aircraft_id;
+        final String url = session.getServerUrl() +
+                RouteManager.GET_FLIGHT_SEAT +
+                "/" +
+                aircraft_id +
+                "/" +
+                travel_class_id;
         final String tag_string_req = "req_flight_seat";
         final StringRequest stringRequest = new StringRequest(
                 Request.Method.GET,

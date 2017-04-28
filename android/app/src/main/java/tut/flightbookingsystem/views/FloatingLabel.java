@@ -55,7 +55,8 @@ public class FloatingLabel extends LinearLayout {
 
     private static final long ANIMATION_DURATION = 150;
 
-    private static final float DEFAULT_LABEL_PADDING_LEFT = 3f;
+    // private static final float DEFAULT_LABEL_PADDING_LEFT = 3f;
+    private static final float DEFAULT_LABEL_PADDING_LEFT = 0f;
     private static final float DEFAULT_LABEL_PADDING_TOP = 4f;
     private static final float DEFAULT_LABEL_PADDING_RIGHT = 3f;
     private static final float DEFAULT_LABEL_PADDING_BOTTOM = 4f;
@@ -81,7 +82,6 @@ public class FloatingLabel extends LinearLayout {
                          int defStyle) {
         super(context, attrs, defStyle);
         isInEditMode();
-//        if (!isInEditMode()) {
         setOrientation(VERTICAL);
         final TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.FloatingLabel);
 
@@ -115,7 +115,6 @@ public class FloatingLabel extends LinearLayout {
                 Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP
                         ? android.R.interpolator.fast_out_slow_in
                         : android.R.anim.decelerate_interpolator);
-//        }
     }
 
     @Override

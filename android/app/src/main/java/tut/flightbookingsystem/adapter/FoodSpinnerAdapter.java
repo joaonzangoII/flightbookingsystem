@@ -13,13 +13,16 @@ import java.util.List;
 import tut.flightbookingsystem.model.Food;
 
 public class FoodSpinnerAdapter extends BaseAdapter {
+    private final int mLayoutResourceId;
     public List<Food> foods = Collections.emptyList();
     public Context context;
     public LayoutInflater layoutInflater;
 
     public FoodSpinnerAdapter(Context context,
+                              int resource,
                               List<Food> foods) {
         this.context = context;
+        this.mLayoutResourceId = resource;
         this.foods = foods;
         this.layoutInflater = LayoutInflater.from(context);
     }
@@ -43,7 +46,7 @@ public class FoodSpinnerAdapter extends BaseAdapter {
     public View getView(final int i,
                         View view,
                         final ViewGroup viewGroup) {
-        view = getLayoutInflater().inflate(android.R.layout.select_dialog_item, null);
+        view = getLayoutInflater().inflate(mLayoutResourceId, null);
         final Food food = getItem(i);
         final TextView title = (TextView) view.findViewById(android.R.id.text1);
         title.setText(food.name);

@@ -4,52 +4,56 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.BaseAdapter;
+import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
 import java.util.Collections;
 import java.util.List;
 
-import tut.flightbookingsystem.model.Drink;
-
-public class DrinkSpinnerAdapter extends BaseAdapter {
-    private final int mLayoutResourceId;
-    public List<Drink> drinks = Collections.emptyList();
+public class PeopleAdapter extends ArrayAdapter<String> {
+    public List<String> peopleList = Collections.emptyList();
     public Context context;
+    public int mLayoutResourceId;
     public LayoutInflater layoutInflater;
+    public int INVALID_ID = -1;
 
-    public DrinkSpinnerAdapter(Context context,
-                               int resource,
-                               List<Drink> drinks) {
+    public PeopleAdapter(Context context,
+                         int resource,
+                         List<String> peopleList) {
+        super(context, resource, peopleList);
         this.context = context;
         this.mLayoutResourceId = resource;
-        this.drinks = drinks;
+        this.peopleList = peopleList;
         this.layoutInflater = LayoutInflater.from(context);
     }
 
     @Override
     public int getCount() {
-        return drinks == null ? 0 : drinks.size();
+        return peopleList == null ? 0 : peopleList.size();
     }
 
     @Override
-    public Drink getItem(int i) {
-        return drinks.get(i);
+    public String getItem(final int i) {
+        return peopleList.get(i);
     }
 
-    @Override
-    public long getItemId(int i) {
-        return drinks.get(i).id;
+    public String getNumPeople(final long i) {
+        return peopleList.get((int)i).substring(0, 1);
     }
+
+    //    @Override
+    //    public long getItemId(int i) {
+    //        return peopleList.get(i).id;
+    //    }
 
     @Override
     public View getView(final int i,
                         View view,
                         final ViewGroup viewGroup) {
         view = getLayoutInflater().inflate(mLayoutResourceId, null);
-        final Drink drink = getItem(i);
+        final String person = getItem(i);
         final TextView title = (TextView) view.findViewById(android.R.id.text1);
-        title.setText(drink.name);
+        title.setText(person);
         return view;
     }
 

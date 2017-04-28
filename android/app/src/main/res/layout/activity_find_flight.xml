@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:whatever="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:fillViewport="true">
@@ -8,49 +7,93 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:focusable="true"
+        android:descendantFocusability="blocksDescendants"
         android:orientation="vertical">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:focusable="true"
-            android:focusableInTouchMode="true"
             android:orientation="vertical">
 
-            <tut.flightbookingsystem.views.FloatingLabel
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:padding="5dp"
-                whatever:floatLabelTextAppearance="@style/TextAppearance.FloatLabel">
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:padding="5dp">
 
-                <AutoCompleteTextView
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/prompt_departure"
+                    android:textColor="@color/Black"
+                    android:textSize="12sp"
+                    android:textStyle="bold" />
+
+                <Spinner
                     android:id="@+id/departure"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="@dimen/spinner_height"
                     android:background="@drawable/border"
-                    android:hint="@string/prompt_departure"
-                    android:imeOptions="actionUnspecified"
-                    android:inputType="text"
-                    android:maxLines="1" />
-            </tut.flightbookingsystem.views.FloatingLabel>
+                    android:hint="@string/prompt_departure" />
+            </LinearLayout>
 
-            <tut.flightbookingsystem.views.FloatingLabel
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:padding="5dp"
-                whatever:floatLabelTextAppearance="@style/TextAppearance.FloatLabel">
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:padding="5dp">
 
-                <AutoCompleteTextView
-                    android:id="@+id/destination"
+                <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:text="@string/prompt_destination"
+                    android:textColor="@color/Black"
+                    android:textSize="12sp"
+                    android:textStyle="bold" />
+
+                <Spinner
+                    android:id="@+id/destination"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/spinner_height"
                     android:background="@drawable/border"
-                    android:hint="@string/prompt_destination"
-                    android:imeOptions="actionUnspecified"
-                    android:inputType="text"
-                    android:maxLines="1" />
-            </tut.flightbookingsystem.views.FloatingLabel>
+                    android:hint="@string/prompt_destination" />
+            </LinearLayout>
+
+            <!--<tut.flightbookingsystem.views.FloatingLabel-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:padding="5dp"-->
+            <!--whatever:floatLabelTextAppearance="@style/TextAppearance.FloatLabel">-->
+            <!---->
+            <!--<AutoCompleteTextView-->
+            <!--android:id="@+id/departure"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:background="@drawable/border"-->
+            <!--android:hint="@string/prompt_departure"-->
+            <!--android:imeOptions="actionUnspecified"-->
+            <!--android:inputType="text"-->
+            <!--android:maxLines="1"-->
+            <!--android:textSize="@dimen/edit_text_font_size" />-->
+            <!--</tut.flightbookingsystem.views.FloatingLabel>-->
+
+            <!--<tut.flightbookingsystem.views.FloatingLabel-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:padding="5dp"-->
+            <!--whatever:floatLabelTextAppearance="@style/TextAppearance.FloatLabel">-->
+
+            <!--<AutoCompleteTextView-->
+            <!--android:id="@+id/destination"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:background="@drawable/border"-->
+            <!--android:hint="@string/prompt_destination"-->
+            <!--android:imeOptions="actionUnspecified"-->
+            <!--android:inputType="text"-->
+            <!--android:maxLines="1"-->
+            <!--android:textSize="@dimen/edit_text_font_size" />-->
+            <!--</tut.flightbookingsystem.views.FloatingLabel>-->
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -71,8 +114,9 @@
                     style="@android:style/Widget.DeviceDefault.Spinner"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:background="@drawable/border"
                     android:hint="@string/departure_date"
-                    android:textSize="12sp" />
+                    android:textSize="@dimen/edit_text_font_size" />
             </LinearLayout>
 
             <LinearLayout
@@ -95,8 +139,9 @@
                     style="@android:style/Widget.DeviceDefault.Spinner"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:background="@drawable/border"
                     android:hint="@string/return_date"
-                    android:textSize="12sp" />
+                    android:textSize="@dimen/edit_text_font_size" />
             </LinearLayout>
 
             <LinearLayout
@@ -116,7 +161,8 @@
                 <Spinner
                     android:id="@+id/travel_class"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="@dimen/spinner_height"
+                    android:background="@drawable/border"
                     android:hint="@string/prompt_travel_class" />
             </LinearLayout>
 
@@ -137,7 +183,8 @@
                 <Spinner
                     android:id="@+id/num_people"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="@dimen/spinner_height"
+                    android:background="@drawable/border"
                     android:hint="@string/return_date" />
             </LinearLayout>
 
@@ -151,9 +198,5 @@
             android:text="@string/find_flights"
             android:textColor="@color/White"
             android:textStyle="bold" />
-
-
-        <include layout="@layout/recycler_view" />
-
     </LinearLayout>
 </ScrollView>

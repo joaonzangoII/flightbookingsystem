@@ -42,7 +42,7 @@ public class RegisterActivity extends AppCompatActivity {
         final SessionManager session = new SessionManager(this);
         final List<Country> countries = session.getCountries();
 
-        final CountrySpinnerAdapter adapter = new CountrySpinnerAdapter(this, countries);
+        final CountrySpinnerAdapter adapter = new CountrySpinnerAdapter(this, R.layout.spinners_item_layout, countries);
         final Spinner countriesSpinner = (Spinner) findViewById(R.id.country_id);
         countriesSpinner.setAdapter(adapter);
 

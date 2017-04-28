@@ -182,9 +182,8 @@ public class SessionManager {
     }
 
     public String getServerUrl() {
-        //return "http://192.168.43.102:8000";
-        return "http://10.0.0.118:8000";
+        //return "http://192.168.1.109:8000";
+        return "http://10.0.0.102:8000";
         //return pref.getString(KEY_SERVER_URL, "https://www.flightbookingsystem.tchinossanda.com");
     }
-
 }

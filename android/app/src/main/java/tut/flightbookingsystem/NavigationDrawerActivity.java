@@ -2,6 +2,8 @@ package tut.flightbookingsystem;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.Snackbar;
@@ -15,26 +17,46 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.reflect.TypeToken;
+
+import java.lang.reflect.Type;
+import java.util.ArrayList;
+import java.util.List;
+
+import tut.flightbookingsystem.model.Booking;
+
 public class NavigationDrawerActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
     private SessionManager session;
+    private List<Booking> myBookingsList = new ArrayList<>();
+    final Handler requestHandler = new Handler(new Handler.Callback() {
+        @Override
+        public boolean handleMessage(Message message) {
+            final Bundle data = message.getData();
+            final boolean error = data.getBoolean(Constant.ERROR);
+            if (!data.getBoolean(Constant.ERROR)) {
+                final Gson gson = new GsonBuilder().create();
+                final Type type = new TypeToken<List<Booking>>() {
+                }.getType();
+                myBookingsList = gson.fromJson(data.getString(Constant.MY_BOOKINGS), type);
+
+                ((TextView) findViewById(R.id.num_bookings))
+                        .setText(String.format("%1$d", myBookingsList.size()));
+            }
+            return false;
+        }
+    });
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_navigation_drawer);
         session = new SessionManager(this);
+        RequestManager.getMyBookings(session, requestHandler);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
 
         final DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -51,6 +73,15 @@ public class NavigationDrawerActivity extends AppCompatActivity
                 .setText(session.getLoggedInUser().name);
         ((TextView) header.findViewById(R.id.user_logged_email))
                 .setText(session.getLoggedInUser().email);
+
+        final FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
+                        .setAction("Action", null).show();
+            }
+        });
     }
 
     @Override

@@ -67,7 +67,7 @@ public class PassengersAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
             setListenerAndData(vH.txt_date_of_birth, "date_of_birth", passenger);
 
             final AircraftSeatSpinnerAdapter aircraftSeatAdapter = new AircraftSeatSpinnerAdapter
-                    (vH.itemView.getContext(), itemsAircraftSeats);
+                    (vH.itemView.getContext(), R.layout.spinners_item_layout, itemsAircraftSeats);
 
             vH.spn_select_seat_id.setAdapter(aircraftSeatAdapter);
             vH.spn_select_seat_id.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {

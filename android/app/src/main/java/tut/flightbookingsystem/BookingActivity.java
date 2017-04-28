@@ -29,7 +29,6 @@ import tut.flightbookingsystem.adapter.DrinkSpinnerAdapter;
 import tut.flightbookingsystem.adapter.FoodSpinnerAdapter;
 import tut.flightbookingsystem.adapter.PassengersAdapter;
 import tut.flightbookingsystem.listener.RecyclerClickListener;
-import tut.flightbookingsystem.model.AircraftSeat;
 import tut.flightbookingsystem.model.Drink;
 import tut.flightbookingsystem.model.Food;
 import tut.flightbookingsystem.model.Meal;
@@ -50,12 +49,12 @@ public class BookingActivity extends AppCompatActivity {
         public boolean handleMessage(Message message) {
             final Bundle data = message.getData();
             if (!data.getBoolean(Constant.ERROR)) {
-                if(data.getBoolean(Constant.IS_BOOKING)) {
+                if (data.getBoolean(Constant.IS_BOOKING)) {
                     final Intent intent = new Intent(BookingActivity.this, BookingConfirmationActivity.class);
                     intent.putExtra(Constant.BOOKING, data.getString(Constant.BOOKING));
                     finish();
                     startActivity(intent);
-                }else{
+                } else {
                     passengersAdapter.setAircrafSeats(session.getAircraftSeats());
                 }
             }
@@ -96,7 +95,10 @@ public class BookingActivity extends AppCompatActivity {
         setTitle("Book a Flight");
         session = new SessionManager(this);
         schedule = session.getSchedule();
-        RequestManager.getFlightSeats(session, schedule.flight_id, requestHandler);
+
+        final int travel_class_id = getIntent().getIntExtra(Constant.TRAVEL_CLASS_ID, 0);
+
+        RequestManager.getFlightSeats(session, schedule.flight_id, travel_class_id, requestHandler);
         ((TextView) findViewById(R.id.flight))
                 .setText(String.format("Flight: %1$s", schedule.flight.aircraft.name));
         ((TextView) findViewById(R.id.flight_date))
@@ -161,9 +163,9 @@ public class BookingActivity extends AppCompatActivity {
         final List<Drink> drinks = session.getDrinks();
 
         final FoodSpinnerAdapter adapterFoods = new FoodSpinnerAdapter
-                (this, foods);
+                (this, R.layout.spinners_item_layout, foods);
         final DrinkSpinnerAdapter drinksAdapter = new DrinkSpinnerAdapter
-                (this, drinks);
+                (this, R.layout.spinners_item_layout, drinks);
 
 
         final Spinner foodsSpinner = (Spinner) dialogView.findViewById(R.id.foodSpinner);
@@ -264,7 +266,6 @@ public class BookingActivity extends AppCompatActivity {
     //        });
     //        alertDialogBuilder.create().show();
     //    }
-
 
     public LayoutInflater getInflater() {
         return (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);

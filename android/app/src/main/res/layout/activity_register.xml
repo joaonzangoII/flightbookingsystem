@@ -26,6 +26,7 @@
             android:layout_gravity="center_horizontal"
             android:src="@drawable/logo"
             android:visibility="gone" />
+
         <!-- Register progress -->
         <ProgressBar
             android:id="@+id/login_progress"
@@ -92,10 +93,11 @@
 
             </tut.flightbookingsystem.views.FloatingLabel>
 
-            <android.support.design.widget.TextInputLayout
+            <tut.flightbookingsystem.views.FloatingLabel
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:padding="5dp">
+                android:padding="5dp"
+                whatever:floatLabelTextAppearance="@style/TextAppearance.FloatLabel">
 
                 <AutoCompleteTextView
                     android:id="@+id/email"
@@ -107,7 +109,7 @@
                     android:maxLines="1"
                     android:singleLine="true" />
 
-            </android.support.design.widget.TextInputLayout>
+            </tut.flightbookingsystem.views.FloatingLabel>
 
             <tut.flightbookingsystem.views.FloatingLabel
                 android:layout_width="match_parent"

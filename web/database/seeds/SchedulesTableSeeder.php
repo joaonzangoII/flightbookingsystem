@@ -13,9 +13,6 @@ class SchedulesTableSeeder extends Seeder
     public function run()
     {
       Schedule::truncate();
-      // Oliver Reginald Tambo International Airport
-      // Cape Town International Airport
-      // Durban International Airport
       $departure_date = new DateTime("2017-04-22", new DateTimeZone('Africa/Johannesburg'));
       $departure_date = $departure_date->format('Y-m-d H:i:s');
       $arrival_date =  date("Y-m-d H:i:s", strtotime($departure_date) + 2*60*60);

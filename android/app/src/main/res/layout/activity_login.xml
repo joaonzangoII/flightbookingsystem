@@ -6,10 +6,12 @@
     android:layout_height="match_parent"
     android:background="@color/White"
     android:focusable="true">
+
     <FrameLayout
-        android:focusableInTouchMode="true"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:focusableInTouchMode="true">
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -57,7 +59,8 @@
                         android:hint="@string/prompt_email"
                         android:imeOptions="actionNext"
                         android:inputType="textEmailAddress"
-                        android:maxLines="1" />
+                        android:maxLines="1"
+                        android:textSize="@dimen/edit_text_font_size" />
                 </tut.flightbookingsystem.views.FloatingLabel>
 
                 <tut.flightbookingsystem.views.FloatingLabel
@@ -76,7 +79,8 @@
                         android:imeActionLabel="@string/action_sign_in_short"
                         android:imeOptions="actionUnspecified"
                         android:inputType="textPassword"
-                        android:maxLines="1" />
+                        android:maxLines="1"
+                        android:textSize="@dimen/edit_text_font_size" />
                 </tut.flightbookingsystem.views.FloatingLabel>
 
                 <android.support.v7.widget.AppCompatButton
@@ -98,6 +102,7 @@
                     android:textStyle="bold" />
             </LinearLayout>
         </LinearLayout>
+
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

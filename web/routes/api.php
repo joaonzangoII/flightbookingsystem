@@ -13,6 +13,7 @@ use App\FlightStatus;
 use App\Flight;
 use App\Schedule;
 use App\Aircraft;
+use App\AircraftSeat;
 use App\Booking;
 use App\Passenger;
 use Illuminate\Support\Facades\Auth;
@@ -60,15 +61,6 @@ Route::name('bookings')->get('/bookings', function(Request $request){
 });
 
 Route::name('bookings.mine')->get('/bookings/{user}', function(Request $request, String $user){
-    // $bookings = Booking::with('passengers', 'passengers.meal', 'passengers.meal.drink',
-    //                           'passengers.meal.food', 'aircraft', 'departure_flight',
-    //                           'passengers.meal.food.food_type', 'passengers.meal.drink',
-    //                           'passengers.aircraft_seat', 'passengers.aircraft_seat.travel_class',
-    //                           'departure_flight.schedule', 'return_flight', 'return_flight.schedule')
-    //                     ->where('user_id', $user)
-    //                     ->latest()
-    //                     ->get();
-
     $bookings = Booking::with('passengers', 'passengers.meal', 'passengers.meal.drink',
                           'passengers.meal.food', 'passengers.aircraft_seat',
                           'passengers.meal.food.food_type', 'passengers.meal.drink',
@@ -105,11 +97,16 @@ Route::name('find_flights')->post('/find-flights', function(Request $request){
       return $schedules;
 });
 
-Route::name('find/-seats')->get('/aircraft-seats/{aircraft_id}', function(Request $request,
-                                                                        String $aircraft_id){
-  $aircraft = Aircraft::with('aircraft_seats', 'aircraft_seats.travel_class')->where('id', $aircraft_id)->first();
+Route::name('find-seats')->get('/aircraft-seats/{aircraft_id}/{travel_class_id}',
+                                function(Request $request,
+                                         String $aircraft_id,
+                                         String $travel_class_id){
+  $aircraft_seats = AircraftSeat::with('travel_class')
+                       ->where('aircraft_id', $aircraft_id)
+                       ->where('travel_class_id', $travel_class_id)
+                       ->get();
 
-  return $aircraft->aircraft_seats;
+  return $aircraft_seats;
 });
 
 Route::name('timetable')->post('/flights-timetable', function(Request $request){
@@ -234,10 +231,10 @@ Route::name('register')->post('/register', function(Request $request){
       'first_name'=> 'required|string',
       // 'middle_name' => 'required|string',
       'last_name' => 'required|string',
-      'id_number' => 'required|string|size:13|correct',
+      'id_number' => 'required|string|size:13|unique:users|correct',
       'phone' => 'required|string',
-      'email' => 'required|string',
-      'password' => 'required|string',
+      'email' => 'required|string|unique:users',
+      'password' => 'required|string|strength',
       'country_id' => 'required|string',
   ]);
 
@@ -249,7 +246,7 @@ Route::name('register')->post('/register', function(Request $request){
     ]);
   }
 
-  $user_type = UserType::where('name', 'Administrator')->first();
+  $user_type = UserType::where('name', 'Customer')->first();
   $user = User::create([
       'first_name' => $request->input('first_name'),
       'middle_name' => $request->input('middle_name'),

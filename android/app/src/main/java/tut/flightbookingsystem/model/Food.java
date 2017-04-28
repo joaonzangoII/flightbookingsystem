@@ -6,6 +6,7 @@ public class Food implements Serializable {
     public long id;
     public String name;
     public String image;
+    public String description;
     public long food_type_id;
     public FoodType food_type;
     public String created_at;

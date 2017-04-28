@@ -51,7 +51,9 @@
         <activity
             android:name=".LoginActivity"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".RegisterActivity" />
+        <activity
+            android:name=".RegisterActivity"
+            android:parentActivityName=".LoginActivity" />
         <activity
             android:name=".BookingActivity"
             android:parentActivityName=".FindFlightActivity" />
@@ -68,6 +70,7 @@
         <activity
             android:name=".DrinksActivity"
             android:parentActivityName=".NavigationDrawerActivity" />
+        <activity android:name=".QueryResultsActivity"></activity>
     </application>
 
 </manifest>

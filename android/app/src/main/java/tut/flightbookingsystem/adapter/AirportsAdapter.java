@@ -5,6 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.Filterable;
 import android.widget.TextView;
 
 import java.util.Collections;
@@ -12,11 +13,12 @@ import java.util.List;
 
 import tut.flightbookingsystem.model.Airport;
 
-public class AirportsAdapter extends ArrayAdapter<Airport> {
+public class AirportsAdapter extends ArrayAdapter<Airport> /*implements Filterable*/ {
     public List<Airport> airportsList = Collections.emptyList();
     public Context context;
     public int mLayoutResourceId;
     public LayoutInflater layoutInflater;
+    public int INVALID_ID = -1;
 
     public AirportsAdapter(Context context,
                            int resource,
@@ -40,18 +42,16 @@ public class AirportsAdapter extends ArrayAdapter<Airport> {
 
     public Airport getItemByName(final String name) {
         for (final Airport airport : airportsList) {
-
             if (airport.name.equals(name)) {
                 return airport;
             }
         }
-
         return null;
     }
 
     @Override
     public long getItemId(int i) {
-        return 0;
+        return airportsList.get(i).id;
     }
 
     @Override
@@ -60,11 +60,17 @@ public class AirportsAdapter extends ArrayAdapter<Airport> {
                         final ViewGroup viewGroup) {
         view = getLayoutInflater().inflate(mLayoutResourceId, null);
         final Airport airport = getItem(i);
-
         final TextView title = (TextView) view.findViewById(android.R.id.text1);
-        title.setText(airport.name);
+        if (airport != null) {
+            title.setText(airport.name);
+        }
         return view;
     }
+
+    //    @Override
+    //    public boolean isEnabled(int position) {
+    //        return airportsList.get(position).id == INVALID_ID;
+    //    }
 
     public LayoutInflater getLayoutInflater() {
         return layoutInflater;

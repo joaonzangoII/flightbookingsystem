@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:whatever="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:fillViewport="true">
@@ -18,39 +17,49 @@
             android:focusableInTouchMode="true"
             android:orientation="vertical">
 
-            <tut.flightbookingsystem.views.FloatingLabel
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:padding="5dp"
-                whatever:floatLabelTextAppearance="@style/TextAppearance.FloatLabel">
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:padding="5dp">
 
-                <AutoCompleteTextView
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/prompt_departure"
+                    android:textColor="@color/Black"
+                    android:textSize="12sp"
+                    android:textStyle="bold" />
+
+                <Spinner
                     android:id="@+id/departure"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="@dimen/spinner_height"
                     android:background="@drawable/border"
-                    android:hint="@string/prompt_departure"
-                    android:imeOptions="actionUnspecified"
-                    android:inputType="text"
-                    android:maxLines="1" />
-            </tut.flightbookingsystem.views.FloatingLabel>
+                    android:hint="@string/prompt_departure" />
+            </LinearLayout>
 
-            <tut.flightbookingsystem.views.FloatingLabel
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:padding="5dp"
-                whatever:floatLabelTextAppearance="@style/TextAppearance.FloatLabel">
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:padding="5dp">
 
-                <AutoCompleteTextView
-                    android:id="@+id/destination"
+                <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:text="@string/prompt_destination"
+                    android:textColor="@color/Black"
+                    android:textSize="12sp"
+                    android:textStyle="bold" />
+
+                <Spinner
+                    android:id="@+id/destination"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/spinner_height"
                     android:background="@drawable/border"
-                    android:hint="@string/prompt_destination"
-                    android:imeOptions="actionUnspecified"
-                    android:inputType="text"
-                    android:maxLines="1" />
-            </tut.flightbookingsystem.views.FloatingLabel>
+                    android:hint="@string/prompt_destination" />
+            </LinearLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -71,6 +80,7 @@
                     style="@android:style/Widget.DeviceDefault.Spinner"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:background="@drawable/border"
                     android:hint="@string/departure_date"
                     android:textSize="16sp" />
             </LinearLayout>
@@ -84,8 +94,6 @@
             android:text="@string/find_flights"
             android:textColor="@color/White"
             android:textStyle="bold" />
-
-        <include layout="@layout/recycler_view" />
 
     </LinearLayout>
 </ScrollView>

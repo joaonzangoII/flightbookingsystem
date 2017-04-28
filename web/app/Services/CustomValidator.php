@@ -11,8 +11,14 @@ class CustomValidator extends Validator
   public function validateCorrect($attribute, $value, $parameters)
   {
     $match = preg_match("!^(\d{2})(\d{2})(\d{2})\d{7}$!", $value, $matches);
+
+    // return false;
+    // if($value.length() > 13 || $value.length() < 13 ){
+    //   return false;
+    // }
+
     if (!$match) {
-      // return false;
+      return false;
     }
 
     list ($id_number, $year, $month, $day) = $matches;

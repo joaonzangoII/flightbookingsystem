@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?><!--<TextView xmlns:android="http://schemas.android.com/apk/res/android"--><!--android:id="@android:id/text1"--><!--android:layout_width="match_parent"--><!--android:layout_height="wrap_content"--><!--android:padding="10dp"--><!--android:text="Test"--><!--android:textAppearance="?android:attr/textAppearanceLarge"--><!--android:textSize="@dimen/edit_text_font_size" />--><!--android:layout_gravity="center_horizontal"--><!--android:ellipsize="marquee"-->
+<TextView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@android:id/text1"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:ellipsize="marquee"
+    android:gravity="center_vertical"
+    android:minHeight="?android:attr/listPreferredItemHeight"
+    android:paddingLeft="10dp"
+    android:paddingRight="10dp"
+    android:paddingStart="10dp"
+    android:textColor="@color/Black"
+    android:textSize="@dimen/edit_text_font_size" />
+
