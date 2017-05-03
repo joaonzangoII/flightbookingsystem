@@ -42,8 +42,10 @@ public class NavigationDrawerActivity extends AppCompatActivity
                 }.getType();
                 myBookingsList = gson.fromJson(data.getString(Constant.MY_BOOKINGS), type);
 
-                ((TextView) findViewById(R.id.num_bookings))
-                        .setText(String.format("%1$d", myBookingsList.size()));
+                if (myBookingsList != null) {
+                    ((TextView) findViewById(R.id.num_bookings))
+                            .setText(String.format("%1$d", myBookingsList.size()));
+                }
             }
             return false;
         }

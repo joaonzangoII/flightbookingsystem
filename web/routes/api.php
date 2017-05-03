@@ -34,6 +34,12 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
 
+Route::name('routes')->get('/routes', function(Request $request){
+  // $routes = Artisan::routeList();
+  $routes =Route::getRoutes();;
+  return $routes;
+});
+
 Route::name('countries')->get('/countries', function(Request $request){
   $countries = Country::latest()->get();
   return $countries;

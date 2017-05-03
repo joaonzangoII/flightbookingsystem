@@ -36,15 +36,16 @@ public class FlightTimetableActivity extends AppCompatActivity {
                 final Type type = new TypeToken<List<Schedule>>() {
                 }.getType();
                 mSchedules = gson.fromJson(data.getString(Constant.STR_SCHEDULE), type);
-
-                if (mSchedules.size() == 0) {
-                    Utils.showDialog(FlightTimetableActivity.this);
-                } else {
-                    final Intent intent = new Intent(FlightTimetableActivity.this, QueryResultsActivity.class);
-                    intent.putExtra(Constant.DATA_BUNDLE, data);
-                    intent.putExtra(Constant.TRAVEL_CLASS_ID, 0);
-                    intent.putExtra(Constant.NUM_PEOPLE, 0);
-                    startActivity(intent);
+                if (mSchedules != null) {
+                    if (mSchedules.size() == 0) {
+                        Utils.showDialog(FlightTimetableActivity.this);
+                    } else {
+                        final Intent intent = new Intent(FlightTimetableActivity.this, QueryResultsActivity.class);
+                        intent.putExtra(Constant.DATA_BUNDLE, data);
+                        intent.putExtra(Constant.TRAVEL_CLASS_ID, 0);
+                        intent.putExtra(Constant.NUM_PEOPLE, 0);
+                        startActivity(intent);
+                    }
                 }
             }
             return false;

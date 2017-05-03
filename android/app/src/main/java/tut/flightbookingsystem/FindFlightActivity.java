@@ -47,14 +47,16 @@ public class FindFlightActivity extends AppCompatActivity {
                 }.getType();
                 mSchedules = gson.fromJson(data.getString(Constant.STR_SCHEDULE), type);
 
-                if (mSchedules.size() == 0) {
-                    Utils.showDialog(FindFlightActivity.this);
-                } else {
-                    final Intent intent = new Intent(FindFlightActivity.this, QueryResultsActivity.class);
-                    intent.putExtra(Constant.DATA_BUNDLE, data);
-                    intent.putExtra(Constant.TRAVEL_CLASS_ID, (int) travel_class_id);
-                    intent.putExtra(Constant.NUM_PEOPLE, Integer.valueOf(num_people));
-                    startActivity(intent);
+                if (mSchedules != null) {
+                    if (mSchedules.size() == 0) {
+                        Utils.showDialog(FindFlightActivity.this);
+                    } else {
+                        final Intent intent = new Intent(FindFlightActivity.this, QueryResultsActivity.class);
+                        intent.putExtra(Constant.DATA_BUNDLE, data);
+                        intent.putExtra(Constant.TRAVEL_CLASS_ID, (int) travel_class_id);
+                        intent.putExtra(Constant.NUM_PEOPLE, Integer.valueOf(num_people));
+                        startActivity(intent);
+                    }
                 }
             }
             return false;
