@@ -1,13 +1,10 @@
 package tut.flightbookingsystem;
 
 import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.AppCompatButton;
 import android.support.v7.widget.CardView;
 import android.view.LayoutInflater;
-import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -20,21 +17,19 @@ import java.lang.reflect.Type;
 import tut.flightbookingsystem.model.Booking;
 import tut.flightbookingsystem.model.Passenger;
 
-public class BookingConfirmationActivity extends AppCompatActivity {
-    private Booking mBooking;
+public class BookingDetailActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_booking_confirmation);
-        setTitle("Booking Confirmation");
+        setContentView(R.layout.activity_booking_detail);
 
+        final String strBooking = getIntent().getStringExtra(Constant.BOOKING);
         final Gson gson = new GsonBuilder().create();
         final Type type = new TypeToken<Booking>() {
         }.getType();
 
-        mBooking = (Booking) gson.fromJson(getIntent().getStringExtra(Constant.BOOKING), type);
-
+        final Booking mBooking = gson.fromJson(strBooking, type);
         ((TextView) findViewById(R.id.booking_date))
                 .setText(String.format("%1$s", mBooking.created_at));
         ((TextView) findViewById(R.id.total))
@@ -55,10 +50,6 @@ public class BookingConfirmationActivity extends AppCompatActivity {
                 .setText(String.format("Duration: %1$s", mBooking.departure_flight.schedule.duration));
 
         final LinearLayout passengerLayout = (LinearLayout) findViewById(R.id.passengerLayout);
-
-        final TextView textView = (TextView) findViewById(R.id.json);
-        textView.setText(getIntent().getStringExtra(Constant.BOOKING));
-
         passengerLayout.removeAllViewsInLayout();
         passengerLayout.removeAllViews();
         for (Passenger passenger : mBooking.passengers) {
@@ -71,21 +62,19 @@ public class BookingConfirmationActivity extends AppCompatActivity {
 
             name.setText(String.format("Name: %1$s", passenger.name));
             travelClass.setText(String.format("Travel Class: %1$s", passenger.aircraft_seat.travel_class.name));
-            foodType.setText(String.format("Food Type: %1$s", passenger.meal.food.food_type.name));
-            foodType.setText(String.format("Seat Number: %1$s", passenger.aircraft_seat.number));
+            if (passenger.meal != null) {
+                if (passenger.meal.food != null) {
+                    if (passenger.meal.food.food_type != null) {
+                        foodType.setText(String.format("Food Type: %1$s", passenger.meal.food.food_type.name));
+                    }
+                }
+            }
+
+            if (passenger.aircraft_seat != null) {
+                foodType.setText(String.format("Seat Number: %1$s", passenger.aircraft_seat.number));
+            }
             passengerLayout.addView(cardview);
         }
-
-        final AppCompatButton btnDone = (AppCompatButton) findViewById(R.id.done);
-        btnDone.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                final Intent intent = new Intent(BookingConfirmationActivity.this, NavigationDrawerActivity.class);
-                finish();
-                startActivity(intent);
-            }
-        });
-
     }
 
     public LayoutInflater getInflater() {

@@ -7,6 +7,9 @@ import android.support.v7.app.AlertDialog;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+
 public class Utils {
     public static void showKeyboard(final Context context,
                                     final View view) {
@@ -22,7 +25,7 @@ public class Utils {
     public static void showDialog(final Context context) {
         final AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(context, R.style.cust_dialog);
         alertDialogBuilder.setTitle("No data");
-        alertDialogBuilder.setMessage("Tere are no results for your query");
+        alertDialogBuilder.setMessage("There are no flights available for your query");
         alertDialogBuilder.setPositiveButton("YES", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
@@ -31,5 +34,27 @@ public class Utils {
         });
 
         alertDialogBuilder.create().show();
+    }
+
+    public static String getDate(final String strDate) {
+        final SimpleDateFormat fromUser = new SimpleDateFormat("yyyyy-mm-dd hh:mm:ss");
+        final SimpleDateFormat myFormat = new SimpleDateFormat("yyyy-MM-dd");
+        try {
+            return myFormat.format(fromUser.parse(strDate));
+        } catch (ParseException e) {
+            e.printStackTrace();
+            return "";
+        }
+    }
+
+    public static String getTime(final String strDate) {
+        final SimpleDateFormat fromUser = new SimpleDateFormat("yyyyy-mm-dd hh:mm:ss");
+        final SimpleDateFormat myFormat = new SimpleDateFormat("hh:mm:ss");
+        try {
+            return myFormat.format(fromUser.parse(strDate));
+        } catch (ParseException e) {
+            e.printStackTrace();
+            return "";
+        }
     }
 }

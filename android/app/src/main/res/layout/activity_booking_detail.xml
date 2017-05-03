@@ -4,17 +4,10 @@
     android:layout_height="wrap_content"
     android:fillViewport="true">
 
-    <LinearLayout xmlns:tools="http://schemas.android.com/tools"
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        tools:context="tut.flightbookingsystem.BookingConfirmationActivity">
-
-        <TextView
-            android:id="@+id/json"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:visibility="gone" />
+        android:orientation="vertical">
 
         <include layout="@layout/booking_info" />
 
@@ -27,8 +20,7 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Passengers"
-                android:textSize="18sp"
+                android:text="Passsengers"
                 android:textStyle="bold" />
 
             <LinearLayout
@@ -38,13 +30,5 @@
                 android:orientation="vertical" />
         </LinearLayout>
 
-        <android.support.v7.widget.AppCompatButton
-            android:id="@+id/done"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:drawablePadding="6dp"
-            android:text="Done"
-            android:textColor="@color/White"
-            android:textStyle="bold" />
     </LinearLayout>
 </ScrollView>

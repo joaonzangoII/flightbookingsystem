@@ -319,7 +319,11 @@ public class RequestManager {
                 }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                Toast.makeText(getApplicationContext(), error.toString(), Toast.LENGTH_LONG).show();
+                if (error.getMessage() != null) {
+                    Toast.makeText(getApplicationContext(), error.getMessage(), Toast.LENGTH_LONG).show();
+                } else {
+                    Toast.makeText(getApplicationContext(), error.toString(), Toast.LENGTH_LONG).show();
+                }
                 //session.setServicosByCategoria("[]");
                 setLoading(context, false);
                 bundle.putBoolean(Constant.ERROR, true);

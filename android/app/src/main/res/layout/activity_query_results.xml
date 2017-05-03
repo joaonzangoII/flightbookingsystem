@@ -9,35 +9,52 @@
         android:layout_height="wrap_content"
         android:focusable="true"
         android:focusableInTouchMode="true"
-        android:orientation="vertical"
-        android:padding="5dp">
+        android:orientation="vertical">
 
-        <TextView
-            android:id="@+id/number_flights"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:gravity="center_horizontal"
-            android:text="0 Flights"
-            android:textSize="60sp" />
+            android:background="@color/colorPrimary"
+            android:focusable="true"
+            android:focusableInTouchMode="true"
+            android:orientation="vertical">
 
-        <TextView
-            android:id="@+id/from_to"
+            <TextView
+                android:id="@+id/number_flights"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:gravity="center_horizontal"
+                android:text="0 Flights"
+                android:textColor="@color/White"
+                android:textSize="60sp" />
+
+            <TextView
+                android:id="@+id/from_to"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:gravity="center_horizontal"
+                android:text="From - To"
+                android:textColor="@color/White" />
+
+            <TextView
+                android:id="@+id/date"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:gravity="center_horizontal"
+                android:text="Data"
+                android:textColor="@color/White" />
+        </LinearLayout>
+
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:gravity="center_horizontal"
-            android:text="From - To" />
+            android:padding="5dp">
 
-        <TextView
-            android:id="@+id/date"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:gravity="center_horizontal"
-            android:text="Data" />
-
-        <include layout="@layout/recycler_view" />
+            <include layout="@layout/recycler_view" />
+        </LinearLayout>
     </LinearLayout>
 
 </ScrollView>

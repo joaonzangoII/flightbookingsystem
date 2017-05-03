@@ -1,17 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
+
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:orientation="vertical">
+    android:layout_height="wrap_content">
 
-    <TextView
-        android:id="@+id/booking_date"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:padding="5dp"
-        android:text="Booking Date"
-        android:textSize="16sp"
-        android:textStyle="bold" />
-
-    <include layout="@layout/flight_information" />
+    <include layout="@layout/booking_info" />
 </LinearLayout>

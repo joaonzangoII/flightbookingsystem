@@ -70,7 +70,10 @@
         <activity
             android:name=".DrinksActivity"
             android:parentActivityName=".NavigationDrawerActivity" />
-        <activity android:name=".QueryResultsActivity"></activity>
+        <activity android:name=".QueryResultsActivity" />
+        <activity
+            android:name=".BookingDetailActivity"
+            android:parentActivityName=".MyBookingsActivity" />
     </application>
 
 </manifest>

@@ -43,13 +43,26 @@ public class NavigationDrawerActivity extends AppCompatActivity
                 myBookingsList = gson.fromJson(data.getString(Constant.MY_BOOKINGS), type);
 
                 if (myBookingsList != null) {
-                    ((TextView) findViewById(R.id.num_bookings))
+                    ((TextView) findViewById(R.id.num_of_bookings))
                             .setText(String.format("%1$d", myBookingsList.size()));
+
+                    ((TextView) findViewById(R.id.money_spent))
+                            .setText(String.format("R%.2f", moneySpent(myBookingsList)));
                 }
             }
             return false;
         }
     });
+
+    public double moneySpent(final List<Booking> myBookingsList) {
+        double total = 0.0;
+
+        for (final Booking booking : myBookingsList) {
+            total = total + booking.total;
+        }
+
+        return total;
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
