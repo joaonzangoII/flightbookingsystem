@@ -27,6 +27,7 @@ class DatabaseSeeder extends Seeder
         $this->call(FoodsTableSeeder::class);
         $this->call(FlightsTableSeeder::class);
         $this->call(SchedulesTableSeeder::class);
+        $this->call(SeatPricesTableSeeder::class);
         $this->call(UserTypesTableSeeder::class);
         $this->call(UsersTableSeeder::class);
         DB::statement("SET FOREIGN_KEY_CHECKS = 1;");

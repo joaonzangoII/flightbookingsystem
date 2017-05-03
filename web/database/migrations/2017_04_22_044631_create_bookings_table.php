@@ -16,6 +16,8 @@ class CreateBookingsTable extends Migration
     {
         Schema::create('bookings', function (Blueprint $table) {
             $table->increments('id');
+            $table->decimal('subtotal')->default(0.0);
+            $table->decimal('total')->default(0.0);
             $table->boolean('return')->default(true);
             $table->integer('user_id')->unsigned();
             $table->foreign('user_id')

@@ -17,7 +17,7 @@ class AirportsTableSeeder extends Seeder
       Airport::truncate();
       Airport::create([
         'id' => 1,
-        'name' => 'Oliver Reginald Tambo International Airport',
+        'name' => 'O.R. Tambo International Airport',
         'iata_airport_code' => 'JNB',
         'city' => 'Johannesburg',
         'country_id' => $country_id

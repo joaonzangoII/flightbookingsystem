@@ -14,6 +14,7 @@ use App\Flight;
 use App\Schedule;
 use App\Aircraft;
 use App\AircraftSeat;
+use App\SeatPrice;
 use App\Booking;
 use App\Passenger;
 use Illuminate\Support\Facades\Auth;
@@ -84,9 +85,55 @@ Route::name('travelclasses')->get('/travel-classes', function(Request $request){
   return $travel_classes;
 });
 
+Route::name('seatprices')->get('/seat-prices', function(Request $request){
+  $seat_prices = SeatPrice::all();
+  return $seat_prices;
+});
+
 Route::name('schedules')->get('/schedules', function(Request $request){
   $schedules = Schedule::with('flight', 'flight.aircraft', 'flight.aircraft.aircraft_manufacturer')->get();
   return $schedules;
+});
+
+Route::name('find-seats')->get('/aircraft-seats/{aircraft_id}',
+                                function(Request $request,
+                                         String $aircraft_id){
+  $aircraft_seats = AircraftSeat::with('travel_class', 'seat_price')
+                       ->where('aircraft_id', $aircraft_id)
+                       ->get();
+
+  return $aircraft_seats;
+});
+
+Route::name('find-seats')->get('/aircraft-seats/{aircraft_id}/{travel_class_id}',
+                                function(Request $request,
+                                         String $aircraft_id,
+                                         String $travel_class_id){
+  $aircraft_seats = AircraftSeat::with('travel_class', 'seat_price')
+                       ->where('aircraft_id', $aircraft_id)
+                       ->where('travel_class_id', $travel_class_id)
+                       ->get();
+
+  return $aircraft_seats;
+});
+
+Route::name('flights')->get('/flights', function(Request $request){
+    $flights = Flight::with('flight_status', 'aircraft')->get();
+    return $flights;
+});
+
+Route::name('food')->get('/foods', function(Request $request){
+    $foods = Food::with('food_type')->get();
+    return $foods;
+});
+
+Route::name('drink')->get('/drinks', function(Request $request){
+    $drinks = Drink::all();
+    return $drinks;
+});
+Route::name('flight_status')->get('/flight-statuses', function(Request $request){
+    $flight_statuses = FlightStatus::all();
+    return $flight_statuses;
 });
 
 Route::name('find_flights')->post('/find-flights', function(Request $request){
@@ -103,17 +150,6 @@ Route::name('find_flights')->post('/find-flights', function(Request $request){
       return $schedules;
 });
 
-Route::name('find-seats')->get('/aircraft-seats/{aircraft_id}/{travel_class_id}',
-                                function(Request $request,
-                                         String $aircraft_id,
-                                         String $travel_class_id){
-  $aircraft_seats = AircraftSeat::with('travel_class')
-                       ->where('aircraft_id', $aircraft_id)
-                       ->where('travel_class_id', $travel_class_id)
-                       ->get();
-
-  return $aircraft_seats;
-});
 
 Route::name('timetable')->post('/flights-timetable', function(Request $request){
     $flight_departure_date = $request->input('departure_date');
@@ -124,73 +160,6 @@ Route::name('timetable')->post('/flights-timetable', function(Request $request){
                          ->where('destination_airport_id', $flight_destination_airport_id)
                          ->where('date', $flight_departure_date)->get();
       return $schedules;
-});
-
-Route::name('book')->post('/make-booking', function(Request $request){
-    $user_id = $request->input('user_id');
-    $departure_flight_id = $request->input('departure_flight_id');
-    $aircraft_id = $request->input('aircraft_id');
-    $passengers_str = $request->input('passengers');
-    $passengersObjs = json_decode($passengers_str);
-
-    $data = [
-        'user_id' => $user_id,
-        'departure_flight_id' => $departure_flight_id,
-        'return_flight_id' => $departure_flight_id,
-        'aircraft_id' => $aircraft_id,
-    ];
-
-    $booking = Booking::create($data);
-
-    foreach ($passengersObjs as $key => $p) {
-        $passenger = Passenger::create([
-          'first_name' => $p->first_name,
-          'middle_name' => $p->middle_name,
-          'last_name' => $p->last_name,
-          'id_number' => $p->id_number,
-          'date_of_birth' => $p->date_of_birth,
-          'gender' => 'm',
-          'booking_id' => $booking->id,
-          'aircraft_seat_id' => $p->aircraft_seat_id,
-        ]);
-
-        if(!is_null($p->meal)){
-          $meal = Meal::create([
-            'passenger_id' => $passenger->id,
-            'drink_id' => $p->meal->drink_id,
-            'food_id' => $p->meal->food_id
-          ]);
-        }
-    }
-
-    return Booking::with('passengers', 'passengers.meal', 'passengers.meal.drink',
-                          'passengers.meal.food', 'passengers.aircraft_seat',
-                          'passengers.meal.food.food_type', 'passengers.meal.drink',
-                          'passengers.aircraft_seat.travel_class', 'aircraft',
-                          'departure_flight', 'departure_flight.aircraft', 'departure_flight.schedule',
-                          'return_flight', 'return_flight.aircraft', 'return_flight.schedule')
-                    ->where('id', $booking->id)
-                    ->first();
-});
-
-Route::name('flight_status')->get('/flight-statuses', function(Request $request){
-    $flight_statuses = FlightStatus::all();
-    return $flight_statuses;
-});
-
-Route::name('flights')->get('/flights', function(Request $request){
-    $flights = Flight::with('flight_status', 'aircraft')->get();
-    return $flights;
-});
-
-Route::name('food')->get('/foods', function(Request $request){
-    $foods = Food::with('food_type')->get();
-    return $foods;
-});
-
-Route::name('drink')->get('/drinks', function(Request $request){
-    $drinks = Drink::all();
-    return $drinks;
 });
 
 Route::name('login')->post('/login', function(Request $request){
@@ -274,4 +243,58 @@ Route::name('register')->post('/register', function(Request $request){
     'erro' => false,
     'user' => $user
   ]);
+});
+
+
+Route::name('book')->post('/make-booking', function(Request $request){
+    $user_id = $request->input('user_id');
+    $departure_flight_id = $request->input('departure_flight_id');
+    $aircraft_id = $request->input('aircraft_id');
+    $passengers_str = $request->input('passengers');
+    $passengersObjs = json_decode($passengers_str);
+
+    $data = [
+        'user_id' => $user_id,
+        'departure_flight_id' => $departure_flight_id,
+        'return_flight_id' => $departure_flight_id,
+        'aircraft_id' => $aircraft_id,
+    ];
+
+    $booking = Booking::create($data);
+    $total = 0;
+    foreach ($passengersObjs as $key => $p) {
+      $passenger = Passenger::create([
+        'first_name' => $p->first_name,
+        'middle_name' => $p->middle_name,
+        'last_name' => $p->last_name,
+        'id_number' => $p->id_number,
+        'date_of_birth' => $p->date_of_birth,
+        'gender' => 'm',
+        'booking_id' => $booking->id,
+        'aircraft_seat_id' => $p->aircraft_seat_id,
+      ]);
+
+      $seat_price = SeatPrice::where('aircraft_seat_id', $passenger->aircraft_seat_id)
+                             ->first();
+      $price = $seat_price->price;
+      $total = $total + $price;
+      if(!is_null($p->meal)){
+        $meal = Meal::create([
+          'passenger_id' => $passenger->id,
+          'drink_id' => $p->meal->drink_id,
+          'food_id' => $p->meal->food_id
+        ]);
+      }
+    }
+
+    $booking = Booking::with('passengers', 'passengers.meal', 'passengers.meal.drink',
+                          'passengers.meal.food', 'passengers.aircraft_seat',
+                          'passengers.meal.food.food_type', 'passengers.meal.drink',
+                          'passengers.aircraft_seat.travel_class', 'aircraft',
+                          'departure_flight', 'departure_flight.aircraft', 'departure_flight.schedule',
+                          'return_flight', 'return_flight.aircraft', 'return_flight.schedule')
+                    ->where('id', $booking->id)
+                    ->first();
+    $booking->update(["subtotal"=> $total, "total"=> $total]);
+    return $booking;
 });
