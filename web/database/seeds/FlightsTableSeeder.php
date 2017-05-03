@@ -44,5 +44,11 @@ class FlightsTableSeeder extends Seeder
         'aircraft_id' => $aircrafts,
         'flight_status_id' => $flight_status->id
       ]);
+
+      $aircrafts = Aircraft::pluck('id')->random();
+      Flight::create([
+        'aircraft_id' => $aircrafts,
+        'flight_status_id' => $flight_status->id
+      ]);
     }
 }

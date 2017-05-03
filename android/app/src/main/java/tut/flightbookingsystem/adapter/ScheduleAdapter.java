@@ -48,7 +48,11 @@ public class ScheduleAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             //            vH.txt_arrival_time.setText(String.format("Arrival Time: %1$s", schedule.arrival_time));
             //            vH.txt_duration.setText(String.format("Duration: %1$s", schedule.duration));
 
-            vH.txt_flight.setText(String.format("%1$s", schedule.flight.aircraft.name));
+            if (schedule.flight != null) {
+                if (schedule.flight.aircraft != null) {
+                    vH.txt_flight.setText(String.format("%1$s", schedule.flight.aircraft.name));
+                }
+            }
             vH.txt_origin_iata_airport_code.setText(schedule.origin_airport.iata_airport_code);
             vH.txt_departure_date.setText(Utils.getDate(schedule.departure_time));
             vH.txt_departure_hour.setText(Utils.getTime(schedule.departure_time));
