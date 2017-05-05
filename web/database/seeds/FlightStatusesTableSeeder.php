@@ -12,32 +12,19 @@ class FlightStatusesTableSeeder extends Seeder
     public function run()
     {
       FlightStatus::truncate();
-      FlightStatus::create([
-        'name' => 'On-Time',
-      ]);
-
-      FlightStatus::create([
-        'name' => 'On-Course',
-      ]);
-
-      FlightStatus::create([
-        'name' => 'Delayed',
-      ]);
-
-      FlightStatus::create([
-        'name' => 'Pending',
-      ]);
-
-      FlightStatus::create([
-        'name' => 'Arrived',
-      ]);
-
-      FlightStatus::create([
-        'name' => 'Desembarking',
-      ]);
-
-      FlightStatus::create([
-        'name' => 'Embarking',
-      ]);
+      $statuses = [
+        'On-Time',
+        'On-Course',
+        'Delayed',
+        'Pending',
+        'Arrived',
+        'Desembarking',
+        'Embarking'
+      ];
+      for($x=0; $x< count($statuses); $x++){
+        FlightStatus::create([
+          'name' => $statuses[$x]
+        ]);
+      }
     }
 }

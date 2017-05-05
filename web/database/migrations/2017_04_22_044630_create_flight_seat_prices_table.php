@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreatePassengersTable extends Migration
+class CreateFlightSeatPricesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,23 +13,23 @@ class CreatePassengersTable extends Migration
      */
     public function up()
     {
-        Schema::create('passengers', function (Blueprint $table) {
+        Schema::create('flight_seat_prices', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('first_name');
-            $table->string('middle_name')->nullable();
-            $table->string('last_name');
-            $table->string('id_number');
-            $table->string('date_of_birth');
-            $table->string('gender');
-            $table->integer('booking_id')->unsigned();
-            $table->foreign('booking_id')
+            $table->decimal('price')->default(500.00);
+            $table->integer('flight_id')->unsigned();
+            $table->foreign('flight_id')
                   ->references('id')
-                  ->on('bookings')
+                  ->on('flights')
+                  ->onDelete('cascade');
+            $table->integer('aircraft_id')->unsigned();
+            $table->foreign('aircraft_id')
+                  ->references('id')
+                  ->on('aircrafts')
                   ->onDelete('cascade');
             $table->integer('flight_seat_id')->unsigned();
             $table->foreign('flight_seat_id')
                   ->references('id')
-                  ->on('flight_seats')
+                  ->on('aircraft_seats')
                   ->onDelete('cascade');
             $table->timestamps();
         });
@@ -42,6 +42,6 @@ class CreatePassengersTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('passengers');
+        Schema::dropIfExists('flight_seat_prices');
     }
 }

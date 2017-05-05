@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateSeatPricesTable extends Migration
+class CreateFlightSeatsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,14 +13,10 @@ class CreateSeatPricesTable extends Migration
      */
     public function up()
     {
-        Schema::create('seat_prices', function (Blueprint $table) {
+        Schema::create('flight_seats', function (Blueprint $table) {
             $table->increments('id');
-            $table->decimal('price')->default(500.00);
-            $table->integer('flight_id')->unsigned();
-            $table->foreign('flight_id')
-                  ->references('id')
-                  ->on('flights')
-                  ->onDelete('cascade');
+            $table->string('number');
+            $table->boolean('available')->default(true);
             $table->integer('aircraft_id')->unsigned();
             $table->foreign('aircraft_id')
                   ->references('id')
@@ -30,6 +26,16 @@ class CreateSeatPricesTable extends Migration
             $table->foreign('aircraft_seat_id')
                   ->references('id')
                   ->on('aircraft_seats')
+                  ->onDelete('cascade');
+            $table->integer('travel_class_id')->unsigned();
+            $table->foreign('travel_class_id')
+                  ->references('id')
+                  ->on('travel_classes')
+                  ->onDelete('cascade');
+            $table->integer('flight_id')->unsigned();
+            $table->foreign('flight_id')
+                  ->references('id')
+                  ->on('flights')
                   ->onDelete('cascade');
             $table->timestamps();
         });
@@ -42,6 +48,6 @@ class CreateSeatPricesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('seat_prices');
+        Schema::dropIfExists('flight_seats');
     }
 }

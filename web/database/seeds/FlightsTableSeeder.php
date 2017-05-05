@@ -13,42 +13,14 @@ class FlightsTableSeeder extends Seeder
      */
     public function run()
     {
-      $aircrafts = Aircraft::pluck('id')->random();
+      $aircrafts = Aircraft::all();
       $flight_status = FlightStatus::where('name', 'Pending')->first();
       Flight::truncate();
-      Flight::create([
-        'aircraft_id' => $aircrafts,
-        'flight_status_id' => $flight_status->id
-      ]);
-
-      $aircrafts = Aircraft::pluck('id')->random();
-      Flight::create([
-        'aircraft_id' => $aircrafts,
-        'flight_status_id' => $flight_status->id
-      ]);
-
-      $aircrafts = Aircraft::pluck('id')->random();
-      Flight::create([
-        'aircraft_id' => $aircrafts,
-        'flight_status_id' => $flight_status->id
-      ]);
-
-      $aircrafts = Aircraft::pluck('id')->random();
-      Flight::create([
-        'aircraft_id' => $aircrafts,
-        'flight_status_id' => $flight_status->id
-      ]);
-
-      $aircrafts = Aircraft::pluck('id')->random();
-      Flight::create([
-        'aircraft_id' => $aircrafts,
-        'flight_status_id' => $flight_status->id
-      ]);
-
-      $aircrafts = Aircraft::pluck('id')->random();
-      Flight::create([
-        'aircraft_id' => $aircrafts,
-        'flight_status_id' => $flight_status->id
-      ]);
+      foreach($aircrafts as $key=>$aircraft){
+        Flight::create([
+          'aircraft_id' => $aircraft->id,
+          'flight_status_id' => $flight_status->id
+        ]);
+      }
     }
 }

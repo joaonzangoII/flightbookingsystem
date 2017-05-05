@@ -14,83 +14,36 @@ class SchedulesTableSeeder extends Seeder
     public function run()
     {
       Schedule::truncate();
-      $date = '2017-04-22';
-      $departure_date = new DateTime($date, new DateTimeZone('Africa/Johannesburg'));
-      $departure_date = $departure_date->format('Y-m-d H:i:s');
-      $arrival_date =  date("Y-m-d H:i:s", strtotime($departure_date) + 2*60*60);
-      // $arrival_date = date("Y-m-d H:i:s", strtotime('+2 hours +10 minutes', ($departure_date)));
-      Schedule::create([
-        'departure_time' => $departure_date,
-        'arrival_time' =>   $arrival_date,
-        'origin_airport_id' => 1,
-        'destination_airport_id' => 2,
-        'date' => $date,
-        'flight_id' => 1
-      ]);
+      $dates = [
+         '2017-05-05',
+         '2017-05-06',
+         '2017-05-07',
+         '2017-05-08',
+         '2017-05-09',
+         '2017-05-10',
+         '2017-05-11',
+         '2017-05-12',
+         '2017-05-13',
+         '2017-05-14',
+         '2017-05-15',
+         '2017-05-16'
+      ];
 
-      $date = '2017-04-25';
-      $departure_date = new DateTime($date, new DateTimeZone('Africa/Johannesburg'));
-      $departure_date = $departure_date->format('Y-m-d H:i:s');
-      $arrival_date =  date("Y-m-d H:i:s", strtotime($departure_date) + 1*60*60);
-      Schedule::create([
-        'departure_time' => $departure_date,
-        'arrival_time' =>  $arrival_date,
-        'origin_airport_id' => 1,
-        'destination_airport_id' => 3,
-        'date' => $date,
-        'flight_id' => 2,
-      ]);
-
-      $date = '2017-04-26';
-      $departure_date = new DateTime($date, new DateTimeZone('Africa/Johannesburg'));
-      $departure_date = $departure_date->format('Y-m-d H:i:s');
-      $arrival_date =  date("Y-m-d H:i:s", strtotime($departure_date) + 2*60*60);
-      Schedule::create([
-        'departure_time' =>  $departure_date,
-        'arrival_time' =>  $arrival_date,
-        'origin_airport_id' => 2,
-        'destination_airport_id' => 3,
-        'date' => $date,
-        'flight_id' => 3,
-      ]);
-
-      $date = '2017-05-04';
-      $departure_date = new DateTime($date, new DateTimeZone('Africa/Johannesburg'));
-      $departure_date = $departure_date->format('Y-m-d H:i:s');
-      $arrival_date =  date("Y-m-d H:i:s", strtotime($departure_date) + 2*60*60);
-      Schedule::create([
-        'departure_time' =>  $departure_date,
-        'arrival_time' =>  $arrival_date,
-        'origin_airport_id' => 1,
-        'destination_airport_id' => 2,
-        'date' => $date,
-        'flight_id' => 4,
-      ]);
-
-      $date = '2017-05-05';
-      $departure_date = new DateTime("2017-05-05", new DateTimeZone('Africa/Johannesburg'));
-      $departure_date = $departure_date->format('Y-m-d H:i:s');
-      $arrival_date =  date("Y-m-d H:i:s", strtotime($departure_date) + 2*60*60);
-      Schedule::create([
-        'departure_time' =>  $departure_date,
-        'arrival_time' =>  $arrival_date,
-        'origin_airport_id' => 1,
-        'destination_airport_id' => 2,
-        'date' => $date,
-        'flight_id' => 5,
-      ]);
-
-      $date = '2017-05-04';
-      $departure_date = new DateTime($date, new DateTimeZone('Africa/Johannesburg'));
-      $departure_date = $departure_date->format('Y-m-d H:i:s');
-      $arrival_date =  date("Y-m-d H:i:s", strtotime($departure_date) + 2*60*60);
-      Schedule::create([
-        'departure_time' =>  $departure_date,
-        'arrival_time' =>  $arrival_date,
-        'origin_airport_id' => 1,
-        'destination_airport_id' => 2,
-        'date' => $date,
-        'flight_id' => 6,
-      ]);
+      $flights = Flight::with('flight_status', 'aircraft', 'aircraft.aircraft_seats')->get();
+      foreach ($flights as $key=> $flight) {
+        $date =  $dates[random_int(0, count($dates)-1)];
+        $departure_date = new DateTime($date, new DateTimeZone('Africa/Johannesburg'));
+        $departure_date = $departure_date->format('Y-m-d H:i:s');
+        $hours = random_int(1,4);
+        $arrival_date =  date("Y-m-d H:i:s", strtotime($departure_date) + $hours * 3600);
+        Schedule::create([
+          'departure_time' => $departure_date,
+          'arrival_time' =>   $arrival_date,
+          'origin_airport_id' => 1,
+          'destination_airport_id' => 2,
+          'date' => $date,
+          'flight_id' => $flight->id
+        ]);
+      }
     }
 }

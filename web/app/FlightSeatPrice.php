@@ -4,7 +4,7 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
-class SeatPrice extends Model
+class FlightSeatPrice extends Model
 {
     protected $fillable = [
       'price',

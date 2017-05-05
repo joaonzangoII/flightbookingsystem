@@ -101,29 +101,31 @@ src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
 </tr>
 </thead>
 <tbody valign='top'>
-<tr class='even'>
+<tr class='odd'>
  <td class='primaryKey' title='Primary Key'>id</td>
- <td class='detail'>int</td>
+ <td class='detail'>int unsigned</td>
  <td class='detail' align='right'>10</td>
  <td class='detail' align='center'></td>
  <td class='detail' align='center' title='Automatically updated by the database'>&nbsp;&radic;&nbsp;</td>
  <td class='detail'></td>
- <td class='detail'>
-  <table border='0' width='100%' cellspacing='0' cellpadding='0'>
-   <tr class='relative even' valign='top'>
-    <td class='relatedTable detail' title="flights.flight_seat_price_id refs flight_seat_prices.id via flights_ibfk_3"><a href='flights.html'>flights</a><span class='relatedKey'>.flight_seat_price_id</span>
-    </td>
-    <td class='constraint detail'>flights_ibfk_3<span title='Cascade on delete:
- Deletion of parent deletes child'>&nbsp;C</span></td>
-   </tr>
-  </table>
-</td>
+ <td class='detail'></td>
+ <td class='detail'> </td>
+ <td class='comment detail'></td>
+</tr>
+<tr class='even'>
+ <td class='detail'>price</td>
+ <td class='detail'>decimal</td>
+ <td class='detail' align='right'>8,2</td>
+ <td class='detail' align='center'></td>
+ <td class='detail' align='center'></td>
+ <td class='detail' align='right'>500.00</td>
+ <td class='detail'></td>
  <td class='detail'> </td>
  <td class='comment detail'></td>
 </tr>
 <tr class='odd'>
  <td class='indexedColumn' title='Indexed'>flight_id</td>
- <td class='detail'>int</td>
+ <td class='detail'>int unsigned</td>
  <td class='detail' align='right'>10</td>
  <td class='detail' align='center'></td>
  <td class='detail' align='center'></td>
@@ -132,9 +134,9 @@ src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
  <td class='detail'>
   <table border='0' width='100%' cellspacing='0' cellpadding='0'>
    <tr class='relative odd' valign='top'>
-    <td class='relatedTable detail' title="flight_seat_prices.flight_id refs flights.id via flight_seat_prices_ibfk_2"><a href='flights.html'>flights</a><span class='relatedKey'>.id</span>
+    <td class='relatedTable detail' title="flight_seat_prices.flight_id refs flights.id via flight_seat_prices_flight_id_foreign"><a href='flights.html'>flights</a><span class='relatedKey'>.id</span>
     </td>
-    <td class='constraint detail'>flight_seat_prices_ibfk_2<span title='Cascade on delete:
+    <td class='constraint detail'>flight_seat_prices_flight_id_foreign<span title='Cascade on delete:
  Deletion of parent deletes child'>&nbsp;C</span></td>
    </tr>
   </table>
@@ -143,7 +145,7 @@ src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
 </tr>
 <tr class='even'>
  <td class='indexedColumn' title='Indexed'>aircraft_id</td>
- <td class='detail'>int</td>
+ <td class='detail'>int unsigned</td>
  <td class='detail' align='right'>10</td>
  <td class='detail' align='center'></td>
  <td class='detail' align='center'></td>
@@ -152,9 +154,9 @@ src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
  <td class='detail'>
   <table border='0' width='100%' cellspacing='0' cellpadding='0'>
    <tr class='relative even' valign='top'>
-    <td class='relatedTable detail' title="flight_seat_prices.aircraft_id refs aircrafts.id via flight_seat_prices_ibfk_1"><a href='aircrafts.html'>aircrafts</a><span class='relatedKey'>.id</span>
+    <td class='relatedTable detail' title="flight_seat_prices.aircraft_id refs aircrafts.id via flight_seat_prices_aircraft_id_foreign"><a href='aircrafts.html'>aircrafts</a><span class='relatedKey'>.id</span>
     </td>
-    <td class='constraint detail'>flight_seat_prices_ibfk_1<span title='Cascade on delete:
+    <td class='constraint detail'>flight_seat_prices_aircraft_id_foreign<span title='Cascade on delete:
  Deletion of parent deletes child'>&nbsp;C</span></td>
    </tr>
   </table>
@@ -162,51 +164,49 @@ src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
  <td class='comment detail'></td>
 </tr>
 <tr class='odd'>
- <td class='indexedColumn' title='Indexed'>seat_id</td>
- <td class='detail'>int</td>
+ <td class='indexedColumn' title='Indexed'>flight_seat_id</td>
+ <td class='detail'>int unsigned</td>
  <td class='detail' align='right'>10</td>
  <td class='detail' align='center'></td>
  <td class='detail' align='center'></td>
  <td class='detail'></td>
  <td class='detail'></td>
- <td class='detail'> </td>
+ <td class='detail'>
+  <table border='0' width='100%' cellspacing='0' cellpadding='0'>
+   <tr class='relative odd' valign='top'>
+    <td class='relatedTable detail' title="flight_seat_prices.flight_seat_id refs aircraft_seats.id via flight_seat_prices_flight_seat_id_foreign"><a href='aircraft_seats.html'>aircraft_seats</a><span class='relatedKey'>.id</span>
+    </td>
+    <td class='constraint detail'>flight_seat_prices_flight_seat_id_foreign<span title='Cascade on delete:
+ Deletion of parent deletes child'>&nbsp;C</span></td>
+   </tr>
+  </table>
+ </td>
  <td class='comment detail'></td>
 </tr>
 <tr class='even'>
- <td class='detail'>price</td>
- <td class='detail'>double</td>
- <td class='detail' align='right'>22</td>
+ <td class='detail'>created_at</td>
+ <td class='detail'>timestamp</td>
+ <td class='detail' align='right'>19</td>
+ <td class='detail' align='center' title='nullable'>&nbsp;&radic;&nbsp;</td>
  <td class='detail' align='center'></td>
- <td class='detail' align='center'></td>
- <td class='detail'></td>
+ <td class='detail' align='right'>null</td>
  <td class='detail'></td>
  <td class='detail'> </td>
  <td class='comment detail'></td>
 </tr>
 <tr class='odd'>
- <td class='detail'>created_at</td>
- <td class='detail'>timestamp</td>
- <td class='detail' align='right'>19</td>
- <td class='detail' align='center'></td>
- <td class='detail' align='center'></td>
- <td class='detail' align='right'>CURRENT_TIMESTAMP</td>
- <td class='detail'></td>
- <td class='detail'> </td>
- <td class='comment detail'></td>
-</tr>
-<tr class='even'>
  <td class='detail'>updated_at</td>
  <td class='detail'>timestamp</td>
  <td class='detail' align='right'>19</td>
+ <td class='detail' align='center' title='nullable'>&nbsp;&radic;&nbsp;</td>
  <td class='detail' align='center'></td>
- <td class='detail' align='center'></td>
- <td class='detail' align='right'>CURRENT_TIMESTAMP</td>
+ <td class='detail' align='right'>null</td>
  <td class='detail'></td>
  <td class='detail'> </td>
  <td class='comment detail'></td>
 </tr>
 </table>
-<p title='7 columns'>Table contained 0 rows at Sat Apr 22 20:35 SAST 2017<p/>
+<p title='7 columns'>Table contained 1,456 rows at Fri May 05 23:49 SAST 2017<p/>
 </td></tr></table>
 <div class='indent'>
 <b>Indexes:</b>
@@ -230,19 +230,19 @@ src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
   <td class='indexedColumn'>aircraft_id</td>
   <td class='detail'>Performance</td>
   <td class='detail' style='text-align:left;'><span title='Ascending'>Asc</span></td>
-  <td class='constraint' style='text-align:left;'>aircraft_id</td>
+  <td class='constraint' style='text-align:left;'>flight_seat_prices_aircraft_id_foreign</td>
  </tr>
  <tr>
   <td class='indexedColumn'>flight_id</td>
   <td class='detail'>Performance</td>
   <td class='detail' style='text-align:left;'><span title='Ascending'>Asc</span></td>
-  <td class='constraint' style='text-align:left;'>flight_id</td>
+  <td class='constraint' style='text-align:left;'>flight_seat_prices_flight_id_foreign</td>
  </tr>
  <tr>
-  <td class='indexedColumn'>seat_id</td>
+  <td class='indexedColumn'>flight_seat_id</td>
   <td class='detail'>Performance</td>
   <td class='detail' style='text-align:left;'><span title='Ascending'>Asc</span></td>
-  <td class='constraint' style='text-align:left;'>seat_id</td>
+  <td class='constraint' style='text-align:left;'>flight_seat_prices_flight_seat_id_foreign</td>
  </tr>
 </table>
 </div>
@@ -250,20 +250,23 @@ src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
 <br><form action='get'><b>Close relationships</b><span class='degrees' id='degrees' title='Detail diminishes with increased separation from flight_seat_prices'>
 &nbsp;within <label for='oneDegree'><input type='radio' name='degrees' id='oneDegree' checked>one</label>  <label for='twoDegrees'><input type='radio' name='degrees' id='twoDegrees'>two degrees</label> of separation</span><b>:</b></form>
 <map id="oneDegreeRelationshipsDiagram" name="oneDegreeRelationshipsDiagram">
-<area shape="rect" id="node1" href="flight_seat_prices.html" title="flight_seat_prices" alt="" coords="236,75,443,307">
-<area shape="rect" id="node2" href="aircrafts.html" title="aircrafts" alt="" coords="5,225,192,428">
-<area shape="rect" id="node3" href="flights.html" title="flights" alt="" coords="22,5,175,208">
+<area shape="rect" id="node1" href="aircraft_seats.html" title="aircraft_seats" alt="" coords="228,237,388,440">
+<area shape="rect" id="node2" href="aircrafts.html" title="aircrafts" alt="" coords="5,169,184,372">
+<area shape="rect" id="node3" href="flight_seat_prices.html" title="flight_seat_prices" alt="" coords="432,95,677,327">
+<area shape="rect" id="node4" href="flights.html" title="flights" alt="" coords="242,5,374,184">
 </map>
   <a name='diagram'><img id='oneDegreeImg' src='../diagrams/flight_seat_prices.1degree.png' usemap='#oneDegreeRelationshipsDiagram' class='diagram' border='0' alt='' align='left'></a>
 <map id="twoDegreesRelationshipsDiagram" name="twoDegreesRelationshipsDiagram">
-<area shape="rect" id="node1" href="aircraft_seats.html" title="aircraft_seats" alt="" coords="716,5,848,88">
-<area shape="rect" id="node2" href="aircrafts.html" title="aircrafts" alt="" coords="224,299,411,501">
-<area shape="rect" id="node3" href="aircraft_manufacturers.html" title="aircraft_manufacturers" alt="" coords="5,347,180,429">
-<area shape="rect" id="node4" href="bookings.html" title="bookings" alt="" coords="903,155,1035,237">
-<area shape="rect" id="node5" href="flights.html" title="flights" alt="" coords="705,155,859,357">
-<area shape="rect" id="node6" href="flight_seat_prices.html" title="flight_seat_prices" alt="" coords="455,248,661,480">
-<area shape="rect" id="node7" href="flight_statuses.html" title="flight_statuses" alt="" coords="497,148,619,231">
-<area shape="rect" id="node8" href="schedules.html" title="schedules" alt="" coords="492,48,624,131">
+<area shape="rect" id="node1" href="aircraft_seats.html" title="aircraft_seats" alt="" coords="447,305,607,508">
+<area shape="rect" id="node2" href="aircrafts.html" title="aircrafts" alt="" coords="224,237,403,440">
+<area shape="rect" id="node3" href="travel_classes.html" title="travel_classes" alt="" coords="253,493,373,576">
+<area shape="rect" id="node4" href="aircraft_manufacturers.html" title="aircraft_manufacturers" alt="" coords="5,309,180,392">
+<area shape="rect" id="node5" href="bookings.html" title="bookings" alt="" coords="707,5,839,88">
+<area shape="rect" id="node6" href="flights.html" title="flights" alt="" coords="461,73,593,252">
+<area shape="rect" id="node9" href="flight_statuses.html" title="flight_statuses" alt="" coords="253,121,374,204">
+<area shape="rect" id="node7" href="flight_seat_prices.html" title="flight_seat_prices" alt="" coords="651,205,896,437">
+<area shape="rect" id="node8" href="flight_seats.html" title="flight_seats" alt="" coords="693,475,853,557">
+<area shape="rect" id="node10" href="schedules.html" title="schedules" alt="" coords="713,105,833,188">
 </map>
 
   <a name='diagram'><img id='twoDegreesImg' src='../diagrams/flight_seat_prices.2degrees.png' usemap='#twoDegreesRelationshipsDiagram' class='diagram' border='0' alt='' align='left'></a>

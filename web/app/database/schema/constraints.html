@@ -32,7 +32,7 @@
 <div class='indent'>
 <table width='100%'>
 <tr><td class='container' valign='bottom'><b>
-24 Foreign Key Constraints:</b>
+28 Foreign Key Constraints:</b>
 </td><td class='container' align='right'>
 <table>
   <tr><td class='container' align='right' valign='top'><a href='http://sourceforge.net' target='_blank'><img src='http://sourceforge.net/sflogo.php?group_id=137197&amp;type=1' alt='SourceForge.net' border='0' height='31' width='88'></a></td></tr>
@@ -128,51 +128,93 @@ src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
  Deletion of parent deletes child'>Cascade on delete&nbsp;</span></td>
  </tr>
   <tr class='even'>
+  <td class='detail'>flight_seat_prices_aircraft_id_foreign</td>
+  <td class='detail'><a href='tables/flight_seat_prices.html'>flight_seat_prices</a>.aircraft_id</td>
+  <td class='detail'><a href='tables/aircrafts.html'>aircrafts</a>.id</td>
+  <td class='detail'><span title='Cascade on delete:
+ Deletion of parent deletes child'>Cascade on delete&nbsp;</span></td>
+ </tr>
+  <tr class='odd'>
+  <td class='detail'>flight_seat_prices_flight_id_foreign</td>
+  <td class='detail'><a href='tables/flight_seat_prices.html'>flight_seat_prices</a>.flight_id</td>
+  <td class='detail'><a href='tables/flights.html'>flights</a>.id</td>
+  <td class='detail'><span title='Cascade on delete:
+ Deletion of parent deletes child'>Cascade on delete&nbsp;</span></td>
+ </tr>
+  <tr class='even'>
+  <td class='detail'>flight_seat_prices_flight_seat_id_foreign</td>
+  <td class='detail'><a href='tables/flight_seat_prices.html'>flight_seat_prices</a>.flight_seat_id</td>
+  <td class='detail'><a href='tables/aircraft_seats.html'>aircraft_seats</a>.id</td>
+  <td class='detail'><span title='Cascade on delete:
+ Deletion of parent deletes child'>Cascade on delete&nbsp;</span></td>
+ </tr>
+  <tr class='odd'>
+  <td class='detail'>flight_seats_aircraft_id_foreign</td>
+  <td class='detail'><a href='tables/flight_seats.html'>flight_seats</a>.aircraft_id</td>
+  <td class='detail'><a href='tables/aircrafts.html'>aircrafts</a>.id</td>
+  <td class='detail'><span title='Cascade on delete:
+ Deletion of parent deletes child'>Cascade on delete&nbsp;</span></td>
+ </tr>
+  <tr class='even'>
+  <td class='detail'>flight_seats_aircraft_seat_id_foreign</td>
+  <td class='detail'><a href='tables/flight_seats.html'>flight_seats</a>.aircraft_seat_id</td>
+  <td class='detail'><a href='tables/aircraft_seats.html'>aircraft_seats</a>.id</td>
+  <td class='detail'><span title='Cascade on delete:
+ Deletion of parent deletes child'>Cascade on delete&nbsp;</span></td>
+ </tr>
+  <tr class='odd'>
+  <td class='detail'>flight_seats_flight_id_foreign</td>
+  <td class='detail'><a href='tables/flight_seats.html'>flight_seats</a>.flight_id</td>
+  <td class='detail'><a href='tables/flights.html'>flights</a>.id</td>
+  <td class='detail'><span title='Cascade on delete:
+ Deletion of parent deletes child'>Cascade on delete&nbsp;</span></td>
+ </tr>
+  <tr class='even'>
+  <td class='detail'>flight_seats_travel_class_id_foreign</td>
+  <td class='detail'><a href='tables/flight_seats.html'>flight_seats</a>.travel_class_id</td>
+  <td class='detail'><a href='tables/travel_classes.html'>travel_classes</a>.id</td>
+  <td class='detail'><span title='Cascade on delete:
+ Deletion of parent deletes child'>Cascade on delete&nbsp;</span></td>
+ </tr>
+  <tr class='odd'>
   <td class='detail'>flights_aircraft_id_foreign</td>
   <td class='detail'><a href='tables/flights.html'>flights</a>.aircraft_id</td>
   <td class='detail'><a href='tables/aircrafts.html'>aircrafts</a>.id</td>
   <td class='detail'><span title='Cascade on delete:
  Deletion of parent deletes child'>Cascade on delete&nbsp;</span></td>
  </tr>
-  <tr class='odd'>
+  <tr class='even'>
   <td class='detail'>flights_flight_status_id_foreign</td>
   <td class='detail'><a href='tables/flights.html'>flights</a>.flight_status_id</td>
   <td class='detail'><a href='tables/flight_statuses.html'>flight_statuses</a>.id</td>
   <td class='detail'><span title='Cascade on delete:
  Deletion of parent deletes child'>Cascade on delete&nbsp;</span></td>
  </tr>
-  <tr class='even'>
+  <tr class='odd'>
   <td class='detail'>foods_food_type_id_foreign</td>
   <td class='detail'><a href='tables/foods.html'>foods</a>.food_type_id</td>
   <td class='detail'><a href='tables/food_types.html'>food_types</a>.id</td>
   <td class='detail'><span title='Cascade on delete:
  Deletion of parent deletes child'>Cascade on delete&nbsp;</span></td>
  </tr>
-  <tr class='odd'>
+  <tr class='even'>
   <td class='detail'>meals_drink_id_foreign</td>
   <td class='detail'><a href='tables/meals.html'>meals</a>.drink_id</td>
   <td class='detail'><a href='tables/drinks.html'>drinks</a>.id</td>
   <td class='detail'><span title='Cascade on delete:
  Deletion of parent deletes child'>Cascade on delete&nbsp;</span></td>
  </tr>
-  <tr class='even'>
+  <tr class='odd'>
   <td class='detail'>meals_food_id_foreign</td>
   <td class='detail'><a href='tables/meals.html'>meals</a>.food_id</td>
   <td class='detail'><a href='tables/foods.html'>foods</a>.id</td>
   <td class='detail'><span title='Cascade on delete:
  Deletion of parent deletes child'>Cascade on delete&nbsp;</span></td>
  </tr>
-  <tr class='odd'>
+  <tr class='even'>
   <td class='detail'>meals_passenger_id_foreign</td>
   <td class='detail'><a href='tables/meals.html'>meals</a>.passenger_id</td>
   <td class='detail'><a href='tables/passengers.html'>passengers</a>.id</td>
-  <td class='detail'><span title='Cascade on delete:
- Deletion of parent deletes child'>Cascade on delete&nbsp;</span></td>
- </tr>
-  <tr class='even'>
-  <td class='detail'>passengers_aircraft_seat_id_foreign</td>
-  <td class='detail'><a href='tables/passengers.html'>passengers</a>.aircraft_seat_id</td>
-  <td class='detail'><a href='tables/aircraft_seats.html'>aircraft_seats</a>.id</td>
   <td class='detail'><span title='Cascade on delete:
  Deletion of parent deletes child'>Cascade on delete&nbsp;</span></td>
  </tr>
@@ -184,44 +226,30 @@ src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
  Deletion of parent deletes child'>Cascade on delete&nbsp;</span></td>
  </tr>
   <tr class='even'>
+  <td class='detail'>passengers_flight_seat_id_foreign</td>
+  <td class='detail'><a href='tables/passengers.html'>passengers</a>.flight_seat_id</td>
+  <td class='detail'><a href='tables/flight_seats.html'>flight_seats</a>.id</td>
+  <td class='detail'><span title='Cascade on delete:
+ Deletion of parent deletes child'>Cascade on delete&nbsp;</span></td>
+ </tr>
+  <tr class='odd'>
   <td class='detail'>schedules_destination_airport_id_foreign</td>
   <td class='detail'><a href='tables/schedules.html'>schedules</a>.destination_airport_id</td>
   <td class='detail'><a href='tables/airports.html'>airports</a>.id</td>
   <td class='detail'><span title='Cascade on delete:
  Deletion of parent deletes child'>Cascade on delete&nbsp;</span></td>
  </tr>
-  <tr class='odd'>
+  <tr class='even'>
   <td class='detail'>schedules_flight_id_foreign</td>
   <td class='detail'><a href='tables/schedules.html'>schedules</a>.flight_id</td>
   <td class='detail'><a href='tables/flights.html'>flights</a>.id</td>
   <td class='detail'><span title='Cascade on delete:
  Deletion of parent deletes child'>Cascade on delete&nbsp;</span></td>
  </tr>
-  <tr class='even'>
+  <tr class='odd'>
   <td class='detail'>schedules_origin_airport_id_foreign</td>
   <td class='detail'><a href='tables/schedules.html'>schedules</a>.origin_airport_id</td>
   <td class='detail'><a href='tables/airports.html'>airports</a>.id</td>
-  <td class='detail'><span title='Cascade on delete:
- Deletion of parent deletes child'>Cascade on delete&nbsp;</span></td>
- </tr>
-  <tr class='odd'>
-  <td class='detail'>seat_prices_aircraft_id_foreign</td>
-  <td class='detail'><a href='tables/seat_prices.html'>seat_prices</a>.aircraft_id</td>
-  <td class='detail'><a href='tables/aircrafts.html'>aircrafts</a>.id</td>
-  <td class='detail'><span title='Cascade on delete:
- Deletion of parent deletes child'>Cascade on delete&nbsp;</span></td>
- </tr>
-  <tr class='even'>
-  <td class='detail'>seat_prices_aircraft_seat_id_foreign</td>
-  <td class='detail'><a href='tables/seat_prices.html'>seat_prices</a>.aircraft_seat_id</td>
-  <td class='detail'><a href='tables/aircraft_seats.html'>aircraft_seats</a>.id</td>
-  <td class='detail'><span title='Cascade on delete:
- Deletion of parent deletes child'>Cascade on delete&nbsp;</span></td>
- </tr>
-  <tr class='odd'>
-  <td class='detail'>seat_prices_flight_id_foreign</td>
-  <td class='detail'><a href='tables/seat_prices.html'>seat_prices</a>.flight_id</td>
-  <td class='detail'><a href='tables/flights.html'>flights</a>.id</td>
   <td class='detail'><span title='Cascade on delete:
  Deletion of parent deletes child'>Cascade on delete&nbsp;</span></td>
  </tr>
