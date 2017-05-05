@@ -1,6 +1,7 @@
 package tut.flightbookingsystem.adapter;
 
 import android.support.annotation.Nullable;
+import android.support.v7.widget.AppCompatEditText;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -19,12 +20,13 @@ import java.util.List;
 import tut.flightbookingsystem.R;
 import tut.flightbookingsystem.listener.RecyclerClickListener;
 import tut.flightbookingsystem.model.AircraftSeat;
+import tut.flightbookingsystem.model.FlightSeat;
 import tut.flightbookingsystem.model.Passenger;
 
 public class PassengersAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     private RecyclerClickListener.OnItemClickCallback onItemClickCallback;
     private List<Passenger> items = Collections.emptyList();
-    private List<AircraftSeat> itemsAircraftSeats = Collections.emptyList();
+    private List<FlightSeat> flightSeatsItems = Collections.emptyList();
 
     public PassengersAdapter() {
     }
@@ -34,13 +36,14 @@ public class PassengersAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
         notifyDataSetChanged();
     }
 
-    public void setAircrafSeats(final List<AircraftSeat> itemsAircraftSeats) {
-        this.itemsAircraftSeats = itemsAircraftSeats;
+    public void setFlightSeats(final List<FlightSeat> flightSeatsItems) {
+        this.flightSeatsItems = flightSeatsItems;
         notifyDataSetChanged();
     }
 
     @Override
-    public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public RecyclerView.ViewHolder onCreateViewHolder(final ViewGroup parent,
+                                                      final int viewType) {
         final LayoutInflater layoutInflater = LayoutInflater.from(parent.getContext());
         return new MyScheduleHolder(layoutInflater.inflate(R.layout.passengers_item_layout, parent, false));
     }
@@ -66,17 +69,17 @@ public class PassengersAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
             setListenerAndData(vH.edt_id_number, "id_number", passenger);
             setListenerAndData(vH.txt_date_of_birth, "date_of_birth", passenger);
 
-            final AircraftSeatSpinnerAdapter aircraftSeatAdapter = new AircraftSeatSpinnerAdapter
-                    (vH.itemView.getContext(), R.layout.spinners_item_layout, itemsAircraftSeats);
+            final FlightSeatSpinnerAdapter flightSeatAdapter = new FlightSeatSpinnerAdapter
+                    (vH.itemView.getContext(), R.layout.spinners_item_layout, flightSeatsItems);
 
-            vH.spn_select_seat_id.setAdapter(aircraftSeatAdapter);
+            vH.spn_select_seat_id.setAdapter(flightSeatAdapter);
             vH.spn_select_seat_id.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                 @Override
                 public void onItemSelected(AdapterView<?> adapterView,
                                            View view,
                                            int i,
                                            long id) {
-                    passenger.aircraft_seat_id = id;
+                    passenger.flight_seat_id = id;
                 }
 
                 @Override
@@ -110,7 +113,7 @@ public class PassengersAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
         public EditText edt_middle_name;
         public EditText edt_last_name;
         public EditText edt_id_number;
-        public EditText txt_date_of_birth;
+        public AppCompatEditText txt_date_of_birth;
         public Button btn_add_meal;
         public Spinner spn_select_seat_id;
 
@@ -121,7 +124,7 @@ public class PassengersAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
             edt_middle_name = (EditText) itemView.findViewById(R.id.middle_name);
             edt_last_name = (EditText) itemView.findViewById(R.id.last_name);
             edt_id_number = (EditText) itemView.findViewById(R.id.id_number);
-            txt_date_of_birth = (EditText) itemView.findViewById(R.id.date_of_birth);
+            txt_date_of_birth = (AppCompatEditText) itemView.findViewById(R.id.date_of_birth);
             spn_select_seat_id = (Spinner) itemView.findViewById(R.id.select_seat_id);
             btn_add_meal = (Button) itemView.findViewById(R.id.add_meal);
         }

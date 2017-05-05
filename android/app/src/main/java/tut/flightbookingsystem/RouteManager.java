@@ -17,5 +17,5 @@ public class RouteManager {
     public static String GET_COUNTRIES = API_URL + "/countries";
     public static String GET_MY_BOOKINGS = API_URL + "/bookings";
     public static String MAKE_BOOKINGS = API_URL + "/make-booking";
-    public static String GET_FLIGHT_SEAT = API_URL + "/aircraft-seats";
+    public static String GET_FLIGHT_SEAT = API_URL + "/flight-seats";
 }

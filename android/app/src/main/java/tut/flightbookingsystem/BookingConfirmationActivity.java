@@ -1,9 +1,7 @@
 package tut.flightbookingsystem;
 
 import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.AppCompatButton;
 import android.support.v7.widget.CardView;
 import android.view.LayoutInflater;
@@ -17,10 +15,11 @@ import com.google.gson.reflect.TypeToken;
 
 import java.lang.reflect.Type;
 
+import tut.flightbookingsystem.base.BaseActivity;
 import tut.flightbookingsystem.model.Booking;
 import tut.flightbookingsystem.model.Passenger;
 
-public class BookingConfirmationActivity extends AppCompatActivity {
+public class BookingConfirmationActivity extends BaseActivity {
     private Booking mBooking;
 
     @Override
@@ -33,7 +32,8 @@ public class BookingConfirmationActivity extends AppCompatActivity {
         final Type type = new TypeToken<Booking>() {
         }.getType();
 
-        mBooking = (Booking) gson.fromJson(getIntent().getStringExtra(Constant.BOOKING), type);
+        final Bundle args = getIntent().getBundleExtra(Constant.DATA);
+        mBooking = (Booking) gson.fromJson(args.getString(Constant.BOOKING), type);
 
         ((TextView) findViewById(R.id.booking_date))
                 .setText(String.format("%1$s", mBooking.created_at));
@@ -57,7 +57,7 @@ public class BookingConfirmationActivity extends AppCompatActivity {
         final LinearLayout passengerLayout = (LinearLayout) findViewById(R.id.passengerLayout);
 
         final TextView textView = (TextView) findViewById(R.id.json);
-        textView.setText(getIntent().getStringExtra(Constant.BOOKING));
+        textView.setText(args.getString(Constant.BOOKING));
 
         passengerLayout.removeAllViewsInLayout();
         passengerLayout.removeAllViews();
@@ -70,9 +70,9 @@ public class BookingConfirmationActivity extends AppCompatActivity {
             final TextView foodType = (TextView) cardview.findViewById(R.id.foodType);
 
             name.setText(String.format("Name: %1$s", passenger.name));
-            travelClass.setText(String.format("Travel Class: %1$s", passenger.aircraft_seat.travel_class.name));
+            travelClass.setText(String.format("Travel Class: %1$s", passenger.flight_seat.travel_class.name));
             foodType.setText(String.format("Food Type: %1$s", passenger.meal.food.food_type.name));
-            foodType.setText(String.format("Seat Number: %1$s", passenger.aircraft_seat.number));
+            foodType.setText(String.format("Seat Number: %1$s", passenger.flight_seat.number));
             passengerLayout.addView(cardview);
         }
 
@@ -80,9 +80,8 @@ public class BookingConfirmationActivity extends AppCompatActivity {
         btnDone.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                final Intent intent = new Intent(BookingConfirmationActivity.this, NavigationDrawerActivity.class);
+                goToActivity(NavigationDrawerActivity.class);
                 finish();
-                startActivity(intent);
             }
         });
 

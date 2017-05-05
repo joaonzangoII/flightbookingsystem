@@ -16,6 +16,7 @@ import tut.flightbookingsystem.model.Airport;
 import tut.flightbookingsystem.model.Booking;
 import tut.flightbookingsystem.model.Country;
 import tut.flightbookingsystem.model.Drink;
+import tut.flightbookingsystem.model.FlightSeat;
 import tut.flightbookingsystem.model.Food;
 import tut.flightbookingsystem.model.Schedule;
 import tut.flightbookingsystem.model.TravelClass;
@@ -164,9 +165,9 @@ public class SessionManager {
         editor.apply();  // commit changes
     }
 
-    public List<AircraftSeat> getAircraftSeats() {
+    public List<FlightSeat> getFlightSeats() {
         final Gson gson = new GsonBuilder().create();
-        final Type type = new TypeToken<List<AircraftSeat>>() {
+        final Type type = new TypeToken<List<FlightSeat>>() {
         }.getType();
         return gson.fromJson(pref.getString(FLIGHT_SEATS, "[]"), type);
     }
@@ -182,8 +183,6 @@ public class SessionManager {
     }
 
     public String getServerUrl() {
-        //return "http://192.168.1.109:8000";
-        // return "http://10.0.0.102:8000";
         return pref.getString(KEY_SERVER_URL, "https://www.flightbookingsystem.tchinossanda.com");
     }
 }

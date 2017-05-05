@@ -13,8 +13,8 @@ public class Passenger implements Serializable {
     public String gender;
     public Meal meal;
     public long booking_id;
-    public long aircraft_seat_id;
-    public AircraftSeat aircraft_seat;
+    public long flight_seat_id;
+    public FlightSeat flight_seat;
     public String created_at;
     public String updated_at;
 }

@@ -1,0 +1,42 @@
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+    <PreferenceCategory
+        android:defaultValue="true"
+        android:title="@string/pref_title_display_name">
+        <Preference
+            android:capitalize="words"
+            android:defaultValue="@string/pref_default_display_name"
+            android:inputType="textCapWords"
+            android:key="example_text"
+            android:maxLines="1"
+            android:selectAllOnFocus="true"
+            android:singleLine="true"
+            android:title="@string/pref_default_display_name" />
+    </PreferenceCategory>
+
+    <PreferenceCategory
+        android:defaultValue="true"
+        android:title="Server Url">
+        <EditTextPreference
+            android:capitalize="words"
+            android:defaultValue="@string/pref_default_server_url"
+            android:inputType="textCapWords"
+            android:key="apiUrl"
+            android:maxLines="1"
+            android:selectAllOnFocus="true"
+            android:singleLine="true"
+            android:title="@string/pref_title_server_url" />
+    </PreferenceCategory>
+
+    <PreferenceCategory
+        android:defaultValue="@string/pref_title_app"
+        android:title="@string/pref_title_app">
+        <Preference
+            android:capitalize="words"
+            android:defaultValue="@string/pref_title_app_version"
+            android:key="pref_app_vers"
+            android:maxLines="1"
+            android:singleLine="true"
+            android:title="@string/pref_title_app_version" />
+    </PreferenceCategory>
+
+</PreferenceScreen>

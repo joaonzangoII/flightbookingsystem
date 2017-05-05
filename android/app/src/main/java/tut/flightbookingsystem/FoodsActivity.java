@@ -46,10 +46,6 @@ public class FoodsActivity extends AppCompatActivity implements FoodItemDetail.O
                                           int position) {
                     if (position >= 0) {
                         final Food food = foodsList.get(position);
-                        //                                final Gson gson = new GsonBuilder().create();
-                        //                                final Type type = new TypeToken<Schedule>() {
-                        //                                }.getType();
-                        //                                session.setSchedule(gson.toJson(schedule, type));
                         showEditDialog(food);
                     }
                 }

@@ -1,12 +1,12 @@
 package tut.flightbookingsystem;
 
-import android.content.Intent;
+import android.app.DatePickerDialog;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.AppCompatButton;
 import android.support.v7.widget.AppCompatEditText;
+import android.text.InputType;
 import android.view.View;
 import android.widget.Spinner;
 
@@ -15,18 +15,23 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 
 import java.lang.reflect.Type;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
+import java.util.Locale;
 
 import tut.flightbookingsystem.adapter.AirportsAdapter;
+import tut.flightbookingsystem.base.BaseActivity;
 import tut.flightbookingsystem.model.Airport;
 import tut.flightbookingsystem.model.Schedule;
 
-public class FlightTimetableActivity extends AppCompatActivity {
+public class FlightTimetableActivity extends BaseActivity {
     private SessionManager session;
     private List<Schedule> mSchedules;
     private List<Airport> airportsList = new ArrayList<>();
-
+    private AppCompatEditText departureDate;
+    private DatePickerDialog departureDatePickerDialog;
     final Handler requestHandler = new Handler(new Handler.Callback() {
         @Override
         public boolean handleMessage(Message message) {
@@ -40,11 +45,12 @@ public class FlightTimetableActivity extends AppCompatActivity {
                     if (mSchedules.size() == 0) {
                         Utils.showDialog(FlightTimetableActivity.this);
                     } else {
-                        final Intent intent = new Intent(FlightTimetableActivity.this, QueryResultsActivity.class);
-                        intent.putExtra(Constant.DATA_BUNDLE, data);
-                        intent.putExtra(Constant.TRAVEL_CLASS_ID, 0);
-                        intent.putExtra(Constant.NUM_PEOPLE, 0);
-                        startActivity(intent);
+
+                        final Bundle args = new Bundle();
+                        args.putBundle(Constant.DATA_BUNDLE, data);
+                        args.putInt(Constant.TRAVEL_CLASS_ID, 0);
+                        args.putInt(Constant.NUM_PEOPLE, 0);
+                        goToActivity(QueryResultsActivity.class, args);
                     }
                 }
             }
@@ -72,8 +78,14 @@ public class FlightTimetableActivity extends AppCompatActivity {
 
         final Spinner destinationAirport = (Spinner) findViewById(R.id.destination);
         destinationAirport.setAdapter(destinationAirportsAdapter);
+        departureDate = (AppCompatEditText) findViewById(R.id.departure_date);
+        departureDate.setInputType(InputType.TYPE_NULL);
 
-        final AppCompatEditText departureDate = (AppCompatEditText) findViewById(R.id.departure_date);
+        final Calendar c = Calendar.getInstance();
+        setDate(departureDate,
+                c.get(Calendar.YEAR),
+                c.get(Calendar.MONTH),
+                c.get(Calendar.DAY_OF_MONTH));
 
         final AppCompatButton btnCheckAvailability = (AppCompatButton) findViewById(R.id.check_availability);
         btnCheckAvailability.setOnClickListener(new View.OnClickListener() {
@@ -88,5 +100,19 @@ public class FlightTimetableActivity extends AppCompatActivity {
             }
 //            }
         });
+
+        setDateTimeField();
+    }
+
+    private void setDateTimeField() {
+        departureDate.setOnClickListener(this);
+        departureDatePickerDialog = datepicker(departureDate);
+    }
+
+    @Override
+    public void onClick(final View view) {
+        if (view == departureDate) {
+            departureDatePickerDialog.show();
+        }
     }
 }

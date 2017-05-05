@@ -309,11 +309,29 @@ public class RequestManager {
                     @Override
                     public void onResponse(String response) {
                         Log.e(tag_string_req, response);
-                        bundle.putString(Constant.BOOKING, response);
-                        bundle.putBoolean(Constant.ERROR, false);
-                        bundle.putBoolean(Constant.IS_BOOKING, true);
-                        msg.setData(bundle);
-                        requestHandler.sendMessage(msg);
+
+                        try {
+                            final JSONObject jObj = new JSONObject(response);
+                            final boolean error = jObj.getBoolean("erro");
+                            if (!error) {
+                                bundle.putString(Constant.BOOKING, jObj.getJSONObject("booking").toString());
+                                bundle.putBoolean(Constant.ERROR, false);
+                                bundle.putBoolean(Constant.IS_BOOKING, true);
+                                msg.setData(bundle);
+                                requestHandler.sendMessage(msg);
+                                setLoading(context, false);
+                            } else {
+                                setLoading(context, false);
+                                bundle.putBoolean(Constant.ERROR, true);
+                                requestHandler.sendMessage(msg);
+                                final String errorMsg = jObj.getString("messages");
+                                Toast.makeText(getApplicationContext(), errorMsg, Toast.LENGTH_LONG).show();
+                            }
+                        } catch (final JSONException e) {
+                            // JSON error
+                            e.printStackTrace();
+                            Toast.makeText(getApplicationContext(), "Json error: " + e.getMessage(), Toast.LENGTH_LONG).show();
+                        }
                         setLoading(context, false);
                     }
                 }, new Response.ErrorListener() {
@@ -324,7 +342,7 @@ public class RequestManager {
                 } else {
                     Toast.makeText(getApplicationContext(), error.toString(), Toast.LENGTH_LONG).show();
                 }
-                //session.setServicosByCategoria("[]");
+                //session.setServicosByCategoria$seat_price("[]");
                 setLoading(context, false);
                 bundle.putBoolean(Constant.ERROR, true);
                 requestHandler.sendMessage(msg);
@@ -540,7 +558,7 @@ public class RequestManager {
     }
 
     public static void getFlightSeats(final SessionManager session,
-                                      final long aircraft_id,
+                                      final long flight_id,
                                       final long travel_class_id,
                                       final Handler requestHandler) {
         final Message msg = requestHandler.obtainMessage();
@@ -548,7 +566,7 @@ public class RequestManager {
         final String url = session.getServerUrl() +
                 RouteManager.GET_FLIGHT_SEAT +
                 "/" +
-                aircraft_id +
+                flight_id +
                 "/" +
                 travel_class_id;
         final String tag_string_req = "req_flight_seat";

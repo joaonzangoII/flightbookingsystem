@@ -1,8 +1,7 @@
 package tut.flightbookingsystem;
 
-import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
+import android.support.v7.app.ActionBar;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -16,10 +15,11 @@ import java.lang.reflect.Type;
 import java.util.List;
 
 import tut.flightbookingsystem.adapter.ScheduleAdapter;
+import tut.flightbookingsystem.base.BaseActivity;
 import tut.flightbookingsystem.listener.RecyclerClickListener;
 import tut.flightbookingsystem.model.Schedule;
 
-public class QueryResultsActivity extends AppCompatActivity {
+public class QueryResultsActivity extends BaseActivity {
     private SessionManager session;
     private RecyclerView recyclerView;
     private ScheduleAdapter scheduleadapter;
@@ -39,17 +39,17 @@ public class QueryResultsActivity extends AppCompatActivity {
                 public void onItemClicked(final View view,
                                           int position) {
                     if (num_people > 0) {
-                        final Intent i = new Intent(QueryResultsActivity.this, BookingActivity.class);
                         if (position >= 0) {
                             final Schedule schedule = mSchedules.get(position);
                             Log.e(TAG, schedule.toString());
                             session.setSchedule(new GsonBuilder()
                                     .create()
                                     .toJson(schedule));
-                            i.putExtra(Constant.SCHEDULE, schedule);
-                            i.putExtra(Constant.NUM_PEOPLE, num_people);
-                            i.putExtra(Constant.TRAVEL_CLASS_ID, travel_class_id);
-                            startActivity(i);
+                            final Bundle args = new Bundle();
+                            args.putSerializable(Constant.SCHEDULE, schedule);
+                            args.putInt(Constant.NUM_PEOPLE, num_people);
+                            args.putInt(Constant.TRAVEL_CLASS_ID, travel_class_id);
+                            goToActivity(BookingActivity.class, args);
                         }
                     }
                 }
@@ -61,13 +61,19 @@ public class QueryResultsActivity extends AppCompatActivity {
         setContentView(R.layout.activity_query_results);
         setTitle("Flights");
         session = new SessionManager(this);
+        final ActionBar actionBar = getSupportActionBar();
+        if (actionBar != null) {
+            actionBar.setDisplayHomeAsUpEnabled(true);
+            actionBar.setHomeButtonEnabled(true);
+        }
 
         final Type type = new TypeToken<List<Schedule>>() {
         }.getType();
 
-        num_people = getIntent().getIntExtra(Constant.NUM_PEOPLE, 0);
-        travel_class_id = getIntent().getIntExtra(Constant.TRAVEL_CLASS_ID, 0);
-        final Bundle data = getIntent().getBundleExtra(Constant.DATA_BUNDLE);
+        final Bundle args = getIntent().getBundleExtra(Constant.DATA);
+        num_people = args.getInt(Constant.NUM_PEOPLE, 0);
+        travel_class_id = args.getInt(Constant.TRAVEL_CLASS_ID, 0);
+        final Bundle data = args.getBundle(Constant.DATA_BUNDLE);
         mSchedules = new GsonBuilder()
                 .create()
                 .fromJson(data.getString(Constant.STR_SCHEDULE), type);
@@ -91,4 +97,6 @@ public class QueryResultsActivity extends AppCompatActivity {
 
         scheduleadapter.setItems(mSchedules);
     }
+
+
 }

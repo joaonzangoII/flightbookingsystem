@@ -1,13 +1,10 @@
 package tut.flightbookingsystem;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.View;
 import android.widget.ProgressBar;
 
@@ -20,10 +17,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 import tut.flightbookingsystem.adapter.MyBookingsAdapter;
+import tut.flightbookingsystem.base.BaseActivity;
 import tut.flightbookingsystem.listener.RecyclerClickListener;
 import tut.flightbookingsystem.model.Booking;
 
-public class MyBookingsActivity extends AppCompatActivity {
+public class MyBookingsActivity extends BaseActivity {
     public static final String TAG = MyBookingsActivity.class.getSimpleName();
     private List<Booking> myBookingsList = new ArrayList<>();
     private MyBookingsAdapter myBookingsAdapter;
@@ -42,14 +40,12 @@ public class MyBookingsActivity extends AppCompatActivity {
                 @Override
                 public void onItemClicked(final View view,
                                           int position) {
-                    final Intent i = new Intent(MyBookingsActivity.this, BookingDetailActivity.class);
                     if (position >= 0) {
                         final Booking booking = myBookingsList.get(position);
                         final Gson gson = new GsonBuilder().create();
-                        //session.setSchedule(gson.toJson(schedule, type));
-                        // Log.e(TAG, booking.toString());
-                        i.putExtra(Constant.BOOKING, gson.toJson(booking));
-                        startActivity(i);
+                        final Bundle args = new Bundle();
+                        args.putString(Constant.BOOKING, gson.toJson(booking));
+                        goToActivity(BookingDetailActivity.class, args);
                     }
                 }
             };

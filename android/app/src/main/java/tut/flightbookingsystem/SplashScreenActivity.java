@@ -49,8 +49,6 @@ public class SplashScreenActivity extends AppCompatActivity {
         RequestManager.getAirports(session, requestHandler);
         RequestManager.getFoods(session, requestHandler);
         RequestManager.getDrinks(session, requestHandler);
-
-
         viewMain(session);
         btnLogin.setOnClickListener(new View.OnClickListener() {
             @Override

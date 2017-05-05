@@ -1,12 +1,12 @@
 package tut.flightbookingsystem;
 
-import android.content.Intent;
+import android.app.DatePickerDialog;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.AppCompatButton;
 import android.support.v7.widget.AppCompatEditText;
+import android.text.InputType;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -18,17 +18,21 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 
 import java.lang.reflect.Type;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
+import java.util.Locale;
 
 import tut.flightbookingsystem.adapter.AirportsAdapter;
 import tut.flightbookingsystem.adapter.PeopleAdapter;
 import tut.flightbookingsystem.adapter.TravelClassSpinnerAdapter;
+import tut.flightbookingsystem.base.BaseActivity;
 import tut.flightbookingsystem.model.Airport;
 import tut.flightbookingsystem.model.Schedule;
 import tut.flightbookingsystem.model.TravelClass;
 
-public class FindFlightActivity extends AppCompatActivity {
+public class FindFlightActivity extends BaseActivity {
     private static String TAG = FindFlightActivity.class.getName();
     private List<Airport> airportsList = new ArrayList<>();
     private List<TravelClass> travelClassesList = new ArrayList<>();
@@ -37,6 +41,12 @@ public class FindFlightActivity extends AppCompatActivity {
     private List<Schedule> mSchedules;
     private String num_people;
     private long travel_class_id;
+    private AppCompatEditText departureDate;
+    private AppCompatEditText returnDate;
+    private DatePickerDialog departureDatePickerDialog;
+    private DatePickerDialog returnDatePickerDialog;
+
+
     final Handler requestHandler = new Handler(new Handler.Callback() {
         @Override
         public boolean handleMessage(Message message) {
@@ -51,11 +61,11 @@ public class FindFlightActivity extends AppCompatActivity {
                     if (mSchedules.size() == 0) {
                         Utils.showDialog(FindFlightActivity.this);
                     } else {
-                        final Intent intent = new Intent(FindFlightActivity.this, QueryResultsActivity.class);
-                        intent.putExtra(Constant.DATA_BUNDLE, data);
-                        intent.putExtra(Constant.TRAVEL_CLASS_ID, (int) travel_class_id);
-                        intent.putExtra(Constant.NUM_PEOPLE, Integer.valueOf(num_people));
-                        startActivity(intent);
+                        final Bundle args = new Bundle();
+                        args.putBundle(Constant.DATA_BUNDLE, data);
+                        args.putInt(Constant.TRAVEL_CLASS_ID, (int) travel_class_id);
+                        args.putInt(Constant.NUM_PEOPLE, Integer.valueOf(num_people));
+                        goToActivity(QueryResultsActivity.class, args);
                     }
                 }
             }
@@ -101,8 +111,21 @@ public class FindFlightActivity extends AppCompatActivity {
         final Spinner spnNumPeople = (Spinner) findViewById(R.id.num_people);
         spnNumPeople.setAdapter(adapterPeople);
 
-        final AppCompatEditText departureDate = (AppCompatEditText) findViewById(R.id.departure_date);
-        final AppCompatEditText returnDate = (AppCompatEditText) findViewById(R.id.return_date);
+        departureDate = (AppCompatEditText) findViewById(R.id.departure_date);
+        returnDate = (AppCompatEditText) findViewById(R.id.return_date);
+        departureDate.setInputType(InputType.TYPE_NULL);
+        returnDate.setInputType(InputType.TYPE_NULL);
+
+        final Calendar c = Calendar.getInstance();
+        setDate(departureDate,
+                c.get(Calendar.YEAR),
+                c.get(Calendar.MONTH),
+                c.get(Calendar.DAY_OF_MONTH));
+
+        setDate(returnDate,
+                c.get(Calendar.YEAR),
+                c.get(Calendar.MONTH),
+                c.get(Calendar.DAY_OF_MONTH));
 
         final AppCompatButton btnCheckAvailability = (AppCompatButton) findViewById(R.id.check_availability);
         btnCheckAvailability.setOnClickListener(new View.OnClickListener() {
@@ -119,6 +142,8 @@ public class FindFlightActivity extends AppCompatActivity {
                         requestHandler);
             }
         });
+
+        setDateTimeField();
     }
 
 
@@ -145,14 +170,19 @@ public class FindFlightActivity extends AppCompatActivity {
         return true;
     }
 
-    public void logout() {
-        session.logout();
-        viewSplashScreen();
+    private void setDateTimeField() {
+        departureDate.setOnClickListener(this);
+        returnDate.setOnClickListener(this);
+        departureDatePickerDialog = datepicker(departureDate);
+        returnDatePickerDialog = datepicker(returnDate);
     }
 
-    private void viewSplashScreen() {
-        final Intent intent = new Intent(FindFlightActivity.this, SplashScreenActivity.class);
-        finish();
-        startActivity(intent);
+    @Override
+    public void onClick(final View view) {
+        if (view == departureDate) {
+            departureDatePickerDialog.show();
+        } else if (view == returnDate) {
+            returnDatePickerDialog.show();
+        }
     }
 }

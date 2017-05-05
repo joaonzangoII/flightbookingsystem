@@ -2,12 +2,10 @@ package tut.flightbookingsystem;
 
 import android.content.Context;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.support.v7.app.AlertDialog;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.AppCompatButton;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -28,6 +26,7 @@ import java.util.List;
 import tut.flightbookingsystem.adapter.DrinkSpinnerAdapter;
 import tut.flightbookingsystem.adapter.FoodSpinnerAdapter;
 import tut.flightbookingsystem.adapter.PassengersAdapter;
+import tut.flightbookingsystem.base.BaseActivity;
 import tut.flightbookingsystem.listener.RecyclerClickListener;
 import tut.flightbookingsystem.model.Drink;
 import tut.flightbookingsystem.model.Food;
@@ -35,7 +34,7 @@ import tut.flightbookingsystem.model.Meal;
 import tut.flightbookingsystem.model.Passenger;
 import tut.flightbookingsystem.model.Schedule;
 
-public class BookingActivity extends AppCompatActivity {
+public class BookingActivity extends BaseActivity {
     private SessionManager session;
     private RecyclerView recyclerView;
     private PassengersAdapter passengersAdapter;
@@ -50,12 +49,12 @@ public class BookingActivity extends AppCompatActivity {
             final Bundle data = message.getData();
             if (!data.getBoolean(Constant.ERROR)) {
                 if (data.getBoolean(Constant.IS_BOOKING)) {
-                    final Intent intent = new Intent(BookingActivity.this, BookingConfirmationActivity.class);
-                    intent.putExtra(Constant.BOOKING, data.getString(Constant.BOOKING));
+                    final Bundle args = new Bundle();
+                    args.putString(Constant.BOOKING, data.getString(Constant.BOOKING));
+                    goToActivity(BookingConfirmationActivity.class, args);
                     finish();
-                    startActivity(intent);
                 } else {
-                    passengersAdapter.setAircrafSeats(session.getAircraftSeats());
+                    passengersAdapter.setFlightSeats(session.getFlightSeats());
                 }
             }
             return false;
@@ -95,15 +94,16 @@ public class BookingActivity extends AppCompatActivity {
         setTitle("Book a Flight");
         session = new SessionManager(this);
         schedule = session.getSchedule();
+        final Bundle args = getIntent().getBundleExtra(Constant.DATA);
+        final int travel_class_id = args.getInt(Constant.TRAVEL_CLASS_ID, 0);
 
-        final int travel_class_id = getIntent().getIntExtra(Constant.TRAVEL_CLASS_ID, 0);
-
+        RequestManager.getAirports(session, requestHandler);
         RequestManager.getFlightSeats(session, schedule.flight_id, travel_class_id, requestHandler);
+
         ((TextView) findViewById(R.id.flight))
                 .setText(String.format("Flight: %1$s", schedule.flight.aircraft.name));
         ((TextView) findViewById(R.id.flight_date))
                 .setText(String.format("Date: %1$s", schedule.date));
-
         ((TextView) findViewById(R.id.origin_airport))
                 .setText(String.format("From: %1$s", schedule.origin_airport.name));
         ((TextView) findViewById(R.id.destination_airport))
@@ -114,7 +114,7 @@ public class BookingActivity extends AppCompatActivity {
                 .setText(String.format("Arrival Time: %1$s", schedule.arrival_time));
         ((TextView) findViewById(R.id.duration))
                 .setText(String.format("Duration: %1$s", schedule.duration));
-        final int numPeople = getIntent().getIntExtra(Constant.NUM_PEOPLE, 0);
+        final int numPeople = args.getInt(Constant.NUM_PEOPLE, 0);
 
         for (int x = 0; x < numPeople; x++) {
             final Passenger passenger = new Passenger();
@@ -141,6 +141,9 @@ public class BookingActivity extends AppCompatActivity {
         btnBook.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                Log.e("USER>FLIGHT>AIRCRAFT", session.getLoggedInUser().id + ">" +
+                        schedule.flight_id + ">" +
+                        schedule.flight.aircraft_id);
                 Log.e("ITEMS>>", gson.toJson(passengersList));
                 RequestManager.makeBooking(
                         session,
@@ -223,49 +226,6 @@ public class BookingActivity extends AppCompatActivity {
         });
         alertDialogBuilder.create().show();
     }
-
-    //
-    //    public void selectSeat(final Passenger passenger) {
-    //        final AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this, R.style.cust_dialog);
-    //        final View dialogView = getInflater().inflate(R.layout.seats_layout, null);
-    //        final List<AircraftSeat> aircraftSear = session.getAircraftSeats();
-    //        RequestManager.getFlightSeats(session, schedule.flight_id, requestHandler);
-    //        //        final FoodSpinnerAdapter adapterFoods = new FoodSpinnerAdapter
-    //        //                (this, foods);
-    //        //        final Spinner foodsSpinner = (Spinner) dialogView.findViewById(R.id.foodSpinner);
-    //        //        foodsSpinner.setAdapter(adapterFoods);
-    //        //        foodsSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-    //        //            @Override
-    //        //            public void onItemSelected(AdapterView<?> adapterView,
-    //        //                                       View view,
-    //        //                                       int i,
-    //        //                                       long l) {
-    //        //                selected_food_id = i;
-    //        //            }
-    //        //
-    //        //            @Override
-    //        //            public void onNothingSelected(AdapterView<?> adapterView) {
-    //        //
-    //        //            }
-    //        //        });
-    //
-    //        alertDialogBuilder.setTitle("Select Seat Choice");
-    //        alertDialogBuilder.setView(dialogView);
-    //        alertDialogBuilder.setPositiveButton("YES", new DialogInterface.OnClickListener() {
-    //            @Override
-    //            public void onClick(DialogInterface dialogInterface, int i) {
-    //                //passenger.meal = aircraft_seat_id;
-    //            }
-    //        });
-    //
-    //        alertDialogBuilder.setNegativeButton("NO", new DialogInterface.OnClickListener() {
-    //            @Override
-    //            public void onClick(DialogInterface dialogInterface, int i) {
-    //
-    //            }
-    //        });
-    //        alertDialogBuilder.create().show();
-    //    }
 
     public LayoutInflater getInflater() {
         return (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);

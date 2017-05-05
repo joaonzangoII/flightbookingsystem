@@ -1,18 +1,14 @@
 package tut.flightbookingsystem;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
-import android.support.design.widget.Snackbar;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
@@ -22,12 +18,16 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 
 import java.lang.reflect.Type;
+import java.text.NumberFormat;
 import java.util.ArrayList;
+import java.util.Currency;
 import java.util.List;
+import java.util.Locale;
 
+import tut.flightbookingsystem.base.BaseActivity;
 import tut.flightbookingsystem.model.Booking;
 
-public class NavigationDrawerActivity extends AppCompatActivity
+public class NavigationDrawerActivity extends BaseActivity
         implements NavigationView.OnNavigationItemSelectedListener {
     private SessionManager session;
     private List<Booking> myBookingsList = new ArrayList<>();
@@ -47,21 +47,37 @@ public class NavigationDrawerActivity extends AppCompatActivity
                             .setText(String.format("%1$d", myBookingsList.size()));
 
                     ((TextView) findViewById(R.id.money_spent))
-                            .setText(String.format("R%.2f", moneySpent(myBookingsList)));
+                            .setText(String.format("%1$s", moneySpent(myBookingsList)));
+
+                    ((TextView) findViewById(R.id.passengers_booked))
+                            .setText(String.format("%1$d", passengersBooked(myBookingsList)));
                 }
             }
             return false;
         }
     });
 
-    public double moneySpent(final List<Booking> myBookingsList) {
+    public String moneySpent(final List<Booking> myBookingsList) {
         double total = 0.0;
 
         for (final Booking booking : myBookingsList) {
             total = total + booking.total;
         }
 
-        return total;
+        final Locale locale2 = new Locale("en-ZA", "SOUTH AFRICA");
+        final NumberFormat format = NumberFormat.getCurrencyInstance(locale2);
+        format.setCurrency(Currency.getInstance("ZAR"));
+        return format.format(total);
+    }
+
+    public int passengersBooked(final List<Booking> myBookingsList) {
+        int total = 0;
+
+        for (final Booking booking : myBookingsList) {
+            total = total + booking.passengers.size();
+        }
+
+        return  total;
     }
 
     @Override
@@ -93,10 +109,10 @@ public class NavigationDrawerActivity extends AppCompatActivity
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
+                goToActivity(FindFlightActivity.class);
             }
         });
+
     }
 
     @Override
@@ -109,49 +125,21 @@ public class NavigationDrawerActivity extends AppCompatActivity
         }
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.navigation_drawer, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
-
-        return super.onOptionsItemSelected(item);
-    }
-
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
         // Handle navigation view item clicks here.
         final int id = item.getItemId();
-        final Intent intent;
         if (id == R.id.book) {
-            intent = new Intent(NavigationDrawerActivity.this, FindFlightActivity.class);
-            startActivity(intent);
+            goToActivity(FindFlightActivity.class);
         } else if (id == R.id.timetable) {
-            intent = new Intent(NavigationDrawerActivity.this, FlightTimetableActivity.class);
-            startActivity(intent);
+            goToActivity(FlightTimetableActivity.class);
         } else if (id == R.id.my_bookings) {
-            intent = new Intent(NavigationDrawerActivity.this, MyBookingsActivity.class);
-            startActivity(intent);
+            goToActivity(MyBookingsActivity.class);
         } else if (id == R.id.foods) {
-            intent = new Intent(NavigationDrawerActivity.this, FoodsActivity.class);
-            startActivity(intent);
+            goToActivity(FoodsActivity.class);
         } else if (id == R.id.drinks) {
-            intent = new Intent(NavigationDrawerActivity.this, DrinksActivity.class);
-            startActivity(intent);
+            goToActivity(DrinksActivity.class);
         } else {
             logout();
         }
@@ -159,16 +147,5 @@ public class NavigationDrawerActivity extends AppCompatActivity
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
-    }
-
-    public void logout() {
-        session.logout();
-        viewSplashScreen();
-    }
-
-    private void viewSplashScreen() {
-        final Intent intent = new Intent(NavigationDrawerActivity.this, SplashScreenActivity.class);
-        finish();
-        startActivity(intent);
     }
 }

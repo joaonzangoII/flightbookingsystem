@@ -59,42 +59,6 @@
                     android:hint="@string/prompt_destination" />
             </LinearLayout>
 
-            <!--<tut.flightbookingsystem.views.FloatingLabel-->
-            <!--android:layout_width="match_parent"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:padding="5dp"-->
-            <!--whatever:floatLabelTextAppearance="@style/TextAppearance.FloatLabel">-->
-            <!---->
-            <!--<AutoCompleteTextView-->
-            <!--android:id="@+id/departure"-->
-            <!--android:layout_width="match_parent"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:background="@drawable/border"-->
-            <!--android:hint="@string/prompt_departure"-->
-            <!--android:imeOptions="actionUnspecified"-->
-            <!--android:inputType="text"-->
-            <!--android:maxLines="1"-->
-            <!--android:textSize="@dimen/edit_text_font_size" />-->
-            <!--</tut.flightbookingsystem.views.FloatingLabel>-->
-
-            <!--<tut.flightbookingsystem.views.FloatingLabel-->
-            <!--android:layout_width="match_parent"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:padding="5dp"-->
-            <!--whatever:floatLabelTextAppearance="@style/TextAppearance.FloatLabel">-->
-
-            <!--<AutoCompleteTextView-->
-            <!--android:id="@+id/destination"-->
-            <!--android:layout_width="match_parent"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:background="@drawable/border"-->
-            <!--android:hint="@string/prompt_destination"-->
-            <!--android:imeOptions="actionUnspecified"-->
-            <!--android:inputType="text"-->
-            <!--android:maxLines="1"-->
-            <!--android:textSize="@dimen/edit_text_font_size" />-->
-            <!--</tut.flightbookingsystem.views.FloatingLabel>-->
-
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
@@ -109,14 +73,14 @@
                     android:textSize="12sp"
                     android:textStyle="bold" />
 
-                <tut.flightbookingsystem.views.DateDisplayPicker
+                <android.support.v7.widget.AppCompatEditText
                     android:id="@+id/departure_date"
-                    style="@android:style/Widget.DeviceDefault.Spinner"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@drawable/border"
                     android:hint="@string/departure_date"
                     android:textSize="@dimen/edit_text_font_size" />
+                <!--style="@android:style/Widget.DeviceDefault.Spinner"-->
             </LinearLayout>
 
             <LinearLayout
@@ -134,9 +98,8 @@
                     android:textSize="12sp"
                     android:textStyle="bold" />
 
-                <tut.flightbookingsystem.views.DateDisplayPicker
+                <android.support.v7.widget.AppCompatEditText
                     android:id="@+id/return_date"
-                    style="@android:style/Widget.DeviceDefault.Spinner"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@drawable/border"

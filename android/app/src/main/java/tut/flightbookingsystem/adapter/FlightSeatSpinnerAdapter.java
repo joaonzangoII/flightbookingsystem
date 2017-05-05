@@ -13,35 +13,37 @@ import java.util.List;
 import tut.flightbookingsystem.R;
 import tut.flightbookingsystem.model.AircraftSeat;
 import tut.flightbookingsystem.model.Drink;
+import tut.flightbookingsystem.model.Flight;
+import tut.flightbookingsystem.model.FlightSeat;
 
-public class AircraftSeatSpinnerAdapter extends BaseAdapter {
+public class FlightSeatSpinnerAdapter extends BaseAdapter {
     private final int mLayoutResourceId;
-    public List<AircraftSeat> aircraftSeats = Collections.emptyList();
+    public List<FlightSeat> flightSeats = Collections.emptyList();
     public Context context;
     public LayoutInflater layoutInflater;
 
-    public AircraftSeatSpinnerAdapter(Context context,
-                                      int resource,
-                                      List<AircraftSeat> aircraftSeats) {
+    public FlightSeatSpinnerAdapter(Context context,
+                                    int resource,
+                                    List<FlightSeat> flightSeats) {
         this.context = context;
         this.mLayoutResourceId = resource;
-        this.aircraftSeats = aircraftSeats;
+        this.flightSeats = flightSeats;
         this.layoutInflater = LayoutInflater.from(context);
     }
 
     @Override
     public int getCount() {
-        return aircraftSeats == null ? 0 : aircraftSeats.size();
+        return flightSeats == null ? 0 : flightSeats.size();
     }
 
     @Override
-    public AircraftSeat getItem(int i) {
-        return aircraftSeats.get(i);
+    public FlightSeat getItem(int i) {
+        return flightSeats.get(i);
     }
 
     @Override
     public long getItemId(int i) {
-        return aircraftSeats.get(i).id;
+        return flightSeats.get(i).id;
     }
 
     @Override
@@ -49,9 +51,9 @@ public class AircraftSeatSpinnerAdapter extends BaseAdapter {
                         View view,
                         final ViewGroup viewGroup) {
         view = getLayoutInflater().inflate(mLayoutResourceId, null);
-        final AircraftSeat aircraftSeat = getItem(i);
+        final FlightSeat flightSeat = getItem(i);
         final TextView title = (TextView) view.findViewById(android.R.id.text1);
-        title.setText(aircraftSeat.number);
+        title.setText(flightSeat.number);
         return view;
     }
 

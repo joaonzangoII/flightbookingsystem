@@ -75,9 +75,8 @@
                     android:textSize="16sp"
                     android:textStyle="bold" />
 
-                <tut.flightbookingsystem.views.DateDisplayPicker
+                <android.support.v7.widget.AppCompatEditText
                     android:id="@+id/departure_date"
-                    style="@android:style/Widget.DeviceDefault.Spinner"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@drawable/border"

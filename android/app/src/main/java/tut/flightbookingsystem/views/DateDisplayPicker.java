@@ -37,6 +37,7 @@ public class DateDisplayPicker extends AppCompatEditText
                 c.get(Calendar.DAY_OF_MONTH));
     }
 
+
     public DateDisplayPicker(final Context context) {
         super(context);
         _context = context;
@@ -63,6 +64,7 @@ public class DateDisplayPicker extends AppCompatEditText
                 c.get(Calendar.YEAR),
                 c.get(Calendar.MONTH),
                 c.get(Calendar.DAY_OF_MONTH));
+        dp.getDatePicker().setMinDate(c.getTimeInMillis());
         dp.show();
     }
 
@@ -71,7 +73,6 @@ public class DateDisplayPicker extends AppCompatEditText
                           final int year,
                           final int monthOfYear,
                           final int dayOfMonth) {
-        //setText(String.format("%s-%02d-%02d", year, (monthOfYear + 1), dayOfMonth));
         setDate(year, monthOfYear, dayOfMonth);
     }
 
