@@ -18,3 +18,4 @@ public class Passenger implements Serializable {
     public String created_at;
     public String updated_at;
 }
+

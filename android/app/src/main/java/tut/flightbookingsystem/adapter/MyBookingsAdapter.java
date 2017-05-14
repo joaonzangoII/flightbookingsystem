@@ -19,6 +19,10 @@ public class MyBookingsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
     private OnItemClickCallback onItemClickCallback;
     private List<Booking> items = Collections.emptyList();
 
+    public void setOnItemClickCallback(OnItemClickCallback onItemClickCallback) {
+        this.onItemClickCallback = onItemClickCallback;
+    }
+
     public MyBookingsAdapter() {
     }
 
@@ -64,10 +68,6 @@ public class MyBookingsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
     @Nullable
     public Booking getItem(final int position) {
         return items.get(position);
-    }
-
-    public void setOnItemClickCallback(OnItemClickCallback onItemClickCallback) {
-        this.onItemClickCallback = onItemClickCallback;
     }
 
     class MyScheduleHolder extends RecyclerView.ViewHolder {

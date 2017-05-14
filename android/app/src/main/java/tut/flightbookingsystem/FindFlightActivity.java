@@ -18,16 +18,15 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 
 import java.lang.reflect.Type;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
-import java.util.Locale;
 
 import tut.flightbookingsystem.adapter.AirportsAdapter;
 import tut.flightbookingsystem.adapter.PeopleAdapter;
 import tut.flightbookingsystem.adapter.TravelClassSpinnerAdapter;
 import tut.flightbookingsystem.base.BaseActivity;
+import tut.flightbookingsystem.manager.RequestManager;
 import tut.flightbookingsystem.model.Airport;
 import tut.flightbookingsystem.model.Schedule;
 import tut.flightbookingsystem.model.TravelClass;
@@ -45,27 +44,33 @@ public class FindFlightActivity extends BaseActivity {
     private AppCompatEditText returnDate;
     private DatePickerDialog departureDatePickerDialog;
     private DatePickerDialog returnDatePickerDialog;
-
+    private AirportsAdapter originAirportsAdapter;
+    private AirportsAdapter destinationAirportsAdapter;
 
     final Handler requestHandler = new Handler(new Handler.Callback() {
         @Override
         public boolean handleMessage(Message message) {
             final Bundle data = message.getData();
             if (!data.getBoolean(Constant.ERROR)) {
-                final Gson gson = new GsonBuilder().create();
-                final Type type = new TypeToken<List<Schedule>>() {
-                }.getType();
-                mSchedules = gson.fromJson(data.getString(Constant.STR_SCHEDULE), type);
+                if (data.getBoolean(Constant.IS_GETTING_AIRPORTS)) {
+                    originAirportsAdapter.setItems(session.getAirports());
+                    destinationAirportsAdapter.setItems(session.getAirports());
+                } else {
+                    final Gson gson = new GsonBuilder().create();
+                    final Type type = new TypeToken<List<Schedule>>() {
+                    }.getType();
+                    mSchedules = gson.fromJson(data.getString(Constant.STR_SCHEDULE), type);
 
-                if (mSchedules != null) {
-                    if (mSchedules.size() == 0) {
-                        Utils.showDialog(FindFlightActivity.this);
-                    } else {
-                        final Bundle args = new Bundle();
-                        args.putBundle(Constant.DATA_BUNDLE, data);
-                        args.putInt(Constant.TRAVEL_CLASS_ID, (int) travel_class_id);
-                        args.putInt(Constant.NUM_PEOPLE, Integer.valueOf(num_people));
-                        goToActivity(QueryResultsActivity.class, args);
+                    if (mSchedules != null) {
+                        if (mSchedules.size() == 0) {
+                            Utils.showDialog(FindFlightActivity.this);
+                        } else {
+                            final Bundle args = new Bundle();
+                            args.putBundle(Constant.DATA_BUNDLE, data);
+                            args.putInt(Constant.TRAVEL_CLASS_ID, (int) travel_class_id);
+                            args.putInt(Constant.NUM_PEOPLE, Integer.valueOf(num_people));
+                            goToActivity(QueryResultsActivity.class, args);
+                        }
                     }
                 }
             }
@@ -77,6 +82,7 @@ public class FindFlightActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_find_flight);
+
         setTitle("Find Flight");
         session = new SessionManager(this);
         mSchedules = new ArrayList<>();
@@ -87,10 +93,10 @@ public class FindFlightActivity extends BaseActivity {
             people.add(String.format("%1$d people", (x + 1)));
         }
 
-        //Creating the instance of ArrayAdapter containing list of language names
-        final AirportsAdapter originAirportsAdapter = new AirportsAdapter
+//Creating the instance of ArrayAdapter containing list of language names
+        originAirportsAdapter = new AirportsAdapter
                 (this, R.layout.spinners_item_layout, airportsList);
-        final AirportsAdapter destinationAirportsAdapter = new AirportsAdapter
+        destinationAirportsAdapter = new AirportsAdapter
                 (this, R.layout.spinners_item_layout, airportsList);
 
         final TravelClassSpinnerAdapter adapterTravelClass = new TravelClassSpinnerAdapter
@@ -154,7 +160,7 @@ public class FindFlightActivity extends BaseActivity {
     }
 
     @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
+    public boolean onOptionsItemSelected(final MenuItem item) {
         final int id = item.getItemId();
         switch (id) {
             case android.R.id.home:

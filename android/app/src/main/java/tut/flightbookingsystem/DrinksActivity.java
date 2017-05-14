@@ -20,6 +20,7 @@ import java.util.List;
 
 import tut.flightbookingsystem.adapter.DrinksAdapter;
 import tut.flightbookingsystem.listener.RecyclerClickListener;
+import tut.flightbookingsystem.manager.RequestManager;
 import tut.flightbookingsystem.model.Drink;
 import tut.flightbookingsystem.views.SupportSwipeRefreshLayout;
 

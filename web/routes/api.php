@@ -104,7 +104,7 @@ Route::name('find-seats')->get('/aircraft-seats', function(Request $request){
 Route::name('find-seats')->get('/aircraft-seats/{aircraft_id}',
                                 function(Request $request,
                                          String $aircraft_id){
-  $aircraft_seats = AircraftSeat::with('travel_class', 'seat_price')
+  $aircraft_seats = AircraftSeat::with('travel_class')
                        ->where('aircraft_id', $aircraft_id)
                        ->get();
   return $aircraft_seats;
@@ -144,6 +144,16 @@ Route::name('flight-seats')->get('/flight-seats/{flight_id}/{travel_class_id}',
                        ->where('flight_id', $flight_id)
                        ->where('available', true)
                        ->where('travel_class_id', $travel_class_id)
+                       ->get();
+
+  return $flight_seats;
+});
+
+Route::name('flight-seats-all')->get('/flight-seats/{flight_id}',
+                                function(Request $request,
+                                         String $flight_id){
+  $flight_seats = FlightSeat::with('travel_class', 'flight_seat_price')
+                       ->where('flight_id', $flight_id)
                        ->get();
 
   return $flight_seats;
@@ -278,9 +288,9 @@ Route::name('book')->post('/make-booking', function(Request $request){
     $departure_flight_id = $request->input('departure_flight_id');
     $aircraft_id = $request->input('aircraft_id');
     $passengers_str = $request->input('passengers');
-    $passengersObjs = json_decode($passengers_str);
+    $passengersList = json_decode($passengers_str);
 
-    foreach ($passengersObjs as $key => $p) {
+    foreach ($passengersList as $key => $p) {
       $flight_seat_id = $p->flight_seat_id;
       $flight_seat = FlightSeat::where('id', $flight_seat_id)->first();
       if($flight_seat->available==false){
@@ -319,7 +329,7 @@ Route::name('book')->post('/make-booking', function(Request $request){
     $booking = Booking::create($data);
     $total = 0;
 
-    foreach ($passengersObjs as $key => $p) {
+    foreach ($passengersList as $key => $p) {
       $passenger = Passenger::create([
         'first_name' => $p->first_name,
         'middle_name' => $p->middle_name,

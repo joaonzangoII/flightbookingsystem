@@ -5,6 +5,8 @@ import android.os.Handler;
 import android.os.Message;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.View;
 import android.widget.ProgressBar;
 
@@ -19,6 +21,7 @@ import java.util.List;
 import tut.flightbookingsystem.adapter.MyBookingsAdapter;
 import tut.flightbookingsystem.base.BaseActivity;
 import tut.flightbookingsystem.listener.RecyclerClickListener;
+import tut.flightbookingsystem.manager.RequestManager;
 import tut.flightbookingsystem.model.Booking;
 
 public class MyBookingsActivity extends BaseActivity {
@@ -82,5 +85,11 @@ public class MyBookingsActivity extends BaseActivity {
         myBookingsAdapter.setItems(myBookingsList);
         myBookingsAdapter.setOnItemClickCallback(onItemClickCallback);
         recyclerView.setAdapter(myBookingsAdapter);
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        new MenuInflater(this).inflate(R.menu.main, menu);
+        return true;
     }
 }

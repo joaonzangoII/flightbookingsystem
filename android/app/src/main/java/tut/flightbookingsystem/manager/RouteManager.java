@@ -1,4 +1,4 @@
-package tut.flightbookingsystem;
+package tut.flightbookingsystem.manager;
 
 /**
  * Created by joaonzangoii on 4/21/17.

@@ -1,4 +1,4 @@
-package tut.flightbookingsystem;
+package tut.flightbookingsystem.manager;
 
 import android.app.ProgressDialog;
 import android.content.Context;
@@ -18,6 +18,11 @@ import org.json.JSONObject;
 
 import java.util.HashMap;
 import java.util.Map;
+
+import tut.flightbookingsystem.Constant;
+import tut.flightbookingsystem.MyApplication;
+import tut.flightbookingsystem.SessionManager;
+import tut.flightbookingsystem.model.User;
 
 public class RequestManager {
     private static String TAG = RequestManager.class.getName();
@@ -475,6 +480,7 @@ public class RequestManager {
                         Log.e(tag_string_req, response);
                         session.setAirports(response);
                         bundle.putBoolean(Constant.ERROR, false);
+                        bundle.putBoolean(Constant.IS_GETTING_AIRPORTS, true);
                         msg.setData(bundle);
                         requestHandler.sendMessage(msg);
                     }
@@ -484,6 +490,7 @@ public class RequestManager {
                 Toast.makeText(getApplicationContext(), error.getMessage(), Toast.LENGTH_LONG).show();
                 session.setAirports("[]");
                 bundle.putBoolean(Constant.ERROR, true);
+                bundle.putBoolean(Constant.IS_GETTING_AIRPORTS, false);
                 requestHandler.sendMessage(msg);
             }
         });
@@ -528,6 +535,11 @@ public class RequestManager {
                                      final Handler requestHandler) {
         final Message msg = requestHandler.obtainMessage();
         final Bundle bundle = new Bundle();
+        final User user = session.getLoggedInUser();
+        if (user == null) {
+            session.logout();
+        }
+
         final String url = session.getServerUrl() + RouteManager.GET_MY_BOOKINGS + "/" + session.getLoggedInUser().id;
         final String tag_string_req = "req_my_bookings";
         final StringRequest stringRequest = new StringRequest(

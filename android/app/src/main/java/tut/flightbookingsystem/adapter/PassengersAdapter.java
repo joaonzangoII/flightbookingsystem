@@ -1,176 +1,116 @@
 package tut.flightbookingsystem.adapter;
 
-import android.support.annotation.Nullable;
-import android.support.v7.widget.AppCompatEditText;
-import android.support.v7.widget.RecyclerView;
-import android.text.Editable;
-import android.text.TextWatcher;
+import android.app.DatePickerDialog;
+import android.content.Context;
+import android.support.annotation.NonNull;
+import android.util.SparseBooleanArray;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.Spinner;
-import android.widget.TextView;
+
+import com.bignerdranch.expandablerecyclerview.ExpandableRecyclerAdapter;
 
 import java.util.Collections;
 import java.util.List;
 
 import tut.flightbookingsystem.R;
+import tut.flightbookingsystem.adapter.holder.PassengerDetailViewHolder;
+import tut.flightbookingsystem.adapter.holder.PassengerHeaderViewHolder;
 import tut.flightbookingsystem.listener.RecyclerClickListener;
-import tut.flightbookingsystem.model.AircraftSeat;
 import tut.flightbookingsystem.model.FlightSeat;
 import tut.flightbookingsystem.model.Passenger;
+import tut.flightbookingsystem.model.PassengerHeader;
 
-public class PassengersAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+public class PassengersAdapter extends
+        ExpandableRecyclerAdapter<PassengerHeader,
+                Passenger,
+                PassengerHeaderViewHolder,
+                PassengerDetailViewHolder> {
     private RecyclerClickListener.OnItemClickCallback onItemClickCallback;
     private List<Passenger> items = Collections.emptyList();
     private List<FlightSeat> flightSeatsItems = Collections.emptyList();
+    private DatePickerDialog departureDatePickerDialog;
+    private SparseBooleanArray expandState = new SparseBooleanArray();
 
-    public PassengersAdapter() {
-    }
-
-    public void setItems(final List<Passenger> items) {
-        this.items = items;
-        notifyDataSetChanged();
-    }
-
-    public void setFlightSeats(final List<FlightSeat> flightSeatsItems) {
-        this.flightSeatsItems = flightSeatsItems;
-        notifyDataSetChanged();
-    }
-
-    @Override
-    public RecyclerView.ViewHolder onCreateViewHolder(final ViewGroup parent,
-                                                      final int viewType) {
-        final LayoutInflater layoutInflater = LayoutInflater.from(parent.getContext());
-        return new MyScheduleHolder(layoutInflater.inflate(R.layout.passengers_item_layout, parent, false));
-    }
-
-    @Override
-    public void onBindViewHolder(RecyclerView.ViewHolder holder,
-                                 final int position) {
-        final MyScheduleHolder vH = (MyScheduleHolder) holder;
-        final Passenger passenger = getItem(position);
-        if (passenger != null) {
-            vH.txt_title.setText(String.format("Passenger: %1$s", (position + 1)));
-            vH.edt_first_name.setText(passenger.last_name);
-            vH.edt_middle_name.setText(passenger.middle_name);
-            vH.edt_last_name.setText(passenger.last_name);
-            vH.edt_id_number.setText(passenger.id_number);
-            vH.txt_date_of_birth.setText(passenger.date_of_birth);
-            vH.btn_add_meal.setOnClickListener(new RecyclerClickListener(position, onItemClickCallback));
-            vH.itemView.setOnClickListener(new RecyclerClickListener(position, onItemClickCallback));
-
-            setListenerAndData(vH.edt_first_name, "first_name", passenger);
-            setListenerAndData(vH.edt_middle_name, "middle_name", passenger);
-            setListenerAndData(vH.edt_last_name, "last_name", passenger);
-            setListenerAndData(vH.edt_id_number, "id_number", passenger);
-            setListenerAndData(vH.txt_date_of_birth, "date_of_birth", passenger);
-
-            final FlightSeatSpinnerAdapter flightSeatAdapter = new FlightSeatSpinnerAdapter
-                    (vH.itemView.getContext(), R.layout.spinners_item_layout, flightSeatsItems);
-
-            vH.spn_select_seat_id.setAdapter(flightSeatAdapter);
-            vH.spn_select_seat_id.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-                @Override
-                public void onItemSelected(AdapterView<?> adapterView,
-                                           View view,
-                                           int i,
-                                           long id) {
-                    passenger.flight_seat_id = id;
-                }
-
-                @Override
-                public void onNothingSelected(AdapterView<?> adapterView) {
-
-                }
-            });
-        }
-    }
-
-    @Override
-    public int getItemCount() {
-        if (items == null) {
-            return 0;
-        }
-        return items.size();
-    }
-
-    @Nullable
-    public Passenger getItem(final int position) {
-        return items.get(position);
-    }
+    private LayoutInflater mInflater;
 
     public void setOnItemClickCallback(RecyclerClickListener.OnItemClickCallback onItemClickCallback) {
         this.onItemClickCallback = onItemClickCallback;
     }
 
-    class MyScheduleHolder extends RecyclerView.ViewHolder {
-        public TextView txt_title;
-        public EditText edt_first_name;
-        public EditText edt_middle_name;
-        public EditText edt_last_name;
-        public EditText edt_id_number;
-        public AppCompatEditText txt_date_of_birth;
-        public Button btn_add_meal;
-        public Spinner spn_select_seat_id;
+    //    public PassengersAdapter() {
+    //
+    //    }
 
-        public MyScheduleHolder(View itemView) {
-            super(itemView);
-            txt_title = (TextView) itemView.findViewById(R.id.passengerNumber);
-            edt_first_name = (EditText) itemView.findViewById(R.id.first_name);
-            edt_middle_name = (EditText) itemView.findViewById(R.id.middle_name);
-            edt_last_name = (EditText) itemView.findViewById(R.id.last_name);
-            edt_id_number = (EditText) itemView.findViewById(R.id.id_number);
-            txt_date_of_birth = (AppCompatEditText) itemView.findViewById(R.id.date_of_birth);
-            spn_select_seat_id = (Spinner) itemView.findViewById(R.id.select_seat_id);
-            btn_add_meal = (Button) itemView.findViewById(R.id.add_meal);
+    public PassengersAdapter(final Context context,
+                             final @NonNull List<PassengerHeader> groups) {
+        super(groups);
+        mInflater = LayoutInflater.from(context);
+    }
+
+    public void setItems(final List<Passenger> items) {
+        this.items = items;
+        for (int i = 0; i < this.items.size(); i++) {
+            expandState.append(i, false);
         }
+        notifyDataSetChanged();
     }
 
-    public void setListenerAndData(final View view,
-                                   final String column,
-                                   final Passenger passenger) {
-        final EditText edt = ((EditText) (view));
-        edt.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence charSequence,
-                                          int i,
-                                          int i1,
-                                          int i2) {
+    //    public void setFlightSeats(final List<FlightSeat> flightSeatsItems) {
+    //        this.flightSeatsItems = flightSeatsItems;
+    //        notifyDataSetChanged();
+    //    }
 
-            }
-
-            @Override
-            public void onTextChanged(CharSequence charSequence,
-                                      int i,
-                                      int i1,
-                                      int i2) {
-                switch (column) {
-                    case "first_name":
-                        passenger.first_name = edt.getText().toString();
-                        break;
-                    case "middle_name":
-                        passenger.middle_name = edt.getText().toString();
-                        break;
-                    case "last_name":
-                        passenger.last_name = edt.getText().toString();
-                        break;
-                    case "id_number":
-                        passenger.id_number = edt.getText().toString();
-                        break;
-                    case "date_of_birth":
-                        passenger.date_of_birth = edt.getText().toString();
-                        break;
-                }
-            }
-
-            @Override
-            public void afterTextChanged(Editable editable) {
-
-            }
-        });
+    @Override
+    public PassengerHeaderViewHolder onCreateParentViewHolder(@NonNull ViewGroup parentViewGroup,
+                                                              int viewType) {
+        final View recipeView = mInflater.inflate(R.layout.passenger_header_layout, parentViewGroup, false);
+        return new PassengerHeaderViewHolder(recipeView);
     }
+
+
+    @Override
+    public PassengerDetailViewHolder onCreateChildViewHolder(final @NonNull ViewGroup childViewGroup,
+                                                             final int viewType) {
+        final View passengerDetailView = mInflater.inflate(R.layout.passengers_item_layout, childViewGroup, false);
+        return new PassengerDetailViewHolder(passengerDetailView);
+    }
+
+    // onBind ...
+    @Override
+    public void onBindParentViewHolder(final @NonNull PassengerHeaderViewHolder recipeViewHolder,
+                                       final int parentPosition,
+                                       final @NonNull PassengerHeader passengerHeader) {
+        recipeViewHolder.bind(passengerHeader, parentPosition);
+    }
+
+    @Override
+    public void onBindChildViewHolder(@NonNull PassengerDetailViewHolder passengerDetailViewHolder,
+                                      int parentPosition,
+                                      int childPosition,
+                                      @NonNull Passenger ingredient) {
+        passengerDetailViewHolder.bind(ingredient, childPosition, onItemClickCallback);
+    }
+
+
+    //    @Override
+    //    public RecyclerView.ViewHolder onCreateViewHolder(final ViewGroup parent,
+    //                                                      final int viewType) {
+    //        final LayoutInflater layoutInflater = LayoutInflater.from(parent.getContext());
+    //        return new MyScheduleHolder(layoutInflater.inflate(R.layout.passengers_item_layout, parent, false));
+    //    }
+
+    //    @Override
+    //    public int getItemCount() {
+    //        if (items == null) {
+    //            return 0;
+    //        }
+    //        return items.size();
+    //    }
+    //
+    //    @Nullable
+    //    public Passenger getItem(final int position) {
+    //        return items.get(position);
+    //    }
+    //
 }

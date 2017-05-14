@@ -14,6 +14,7 @@ import android.widget.Toast;
 import java.util.List;
 
 import tut.flightbookingsystem.adapter.CountrySpinnerAdapter;
+import tut.flightbookingsystem.manager.RequestManager;
 import tut.flightbookingsystem.model.Country;
 
 public class RegisterActivity extends AppCompatActivity {

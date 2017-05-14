@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.Nullable;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.AppCompatEditText;
 import android.view.Menu;
@@ -26,8 +27,8 @@ import tut.flightbookingsystem.SessionManager;
 import tut.flightbookingsystem.SettingsActivity;
 import tut.flightbookingsystem.SplashScreenActivity;
 
-public class BaseActivity extends AppCompatActivity implements View.OnClickListener {
-    private SessionManager session;
+public class BaseActivity extends AppCompatActivity implements View.OnClickListener, SwipeRefreshLayout.OnRefreshListener {
+    protected SessionManager session;
     protected SimpleDateFormat dateFormatter;
 
     @Override
@@ -140,5 +141,10 @@ public class BaseActivity extends AppCompatActivity implements View.OnClickListe
     @Override
     public void onClick(View v) {
 
+    }
+
+    @Override
+    public void onRefresh() {
+        
     }
 }

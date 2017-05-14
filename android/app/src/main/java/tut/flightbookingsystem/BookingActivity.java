@@ -9,7 +9,6 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.AppCompatButton;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.AdapterView;
@@ -27,14 +26,17 @@ import tut.flightbookingsystem.adapter.DrinkSpinnerAdapter;
 import tut.flightbookingsystem.adapter.FoodSpinnerAdapter;
 import tut.flightbookingsystem.adapter.PassengersAdapter;
 import tut.flightbookingsystem.base.BaseActivity;
+import tut.flightbookingsystem.listener.OnSeatSelected;
 import tut.flightbookingsystem.listener.RecyclerClickListener;
+import tut.flightbookingsystem.manager.RequestManager;
 import tut.flightbookingsystem.model.Drink;
 import tut.flightbookingsystem.model.Food;
 import tut.flightbookingsystem.model.Meal;
 import tut.flightbookingsystem.model.Passenger;
+import tut.flightbookingsystem.model.PassengerHeader;
 import tut.flightbookingsystem.model.Schedule;
 
-public class BookingActivity extends BaseActivity {
+public class BookingActivity extends BaseActivity implements OnSeatSelected {
     private SessionManager session;
     private RecyclerView recyclerView;
     private PassengersAdapter passengersAdapter;
@@ -54,7 +56,7 @@ public class BookingActivity extends BaseActivity {
                     goToActivity(BookingConfirmationActivity.class, args);
                     finish();
                 } else {
-                    passengersAdapter.setFlightSeats(session.getFlightSeats());
+                    //passengersAdapter.setFlightSeats(session.getFlightSeats());
                 }
             }
             return false;
@@ -96,6 +98,7 @@ public class BookingActivity extends BaseActivity {
         schedule = session.getSchedule();
         final Bundle args = getIntent().getBundleExtra(Constant.DATA);
         final int travel_class_id = args.getInt(Constant.TRAVEL_CLASS_ID, 0);
+        final int numPeople = args.getInt(Constant.NUM_PEOPLE, 0);
 
         RequestManager.getAirports(session, requestHandler);
         RequestManager.getFlightSeats(session, schedule.flight_id, travel_class_id, requestHandler);
@@ -114,7 +117,6 @@ public class BookingActivity extends BaseActivity {
                 .setText(String.format("Arrival Time: %1$s", schedule.arrival_time));
         ((TextView) findViewById(R.id.duration))
                 .setText(String.format("Duration: %1$s", schedule.duration));
-        final int numPeople = args.getInt(Constant.NUM_PEOPLE, 0);
 
         for (int x = 0; x < numPeople; x++) {
             final Passenger passenger = new Passenger();
@@ -129,9 +131,18 @@ public class BookingActivity extends BaseActivity {
             passengersList.add(passenger);
         }
 
+        final List<PassengerHeader> passengerHeadersList = new ArrayList<>();
+        for (Passenger passenger: passengersList) {
+            List<Passenger> p = new ArrayList<>();
+            p.add(passenger);
+            passengerHeadersList.add(new PassengerHeader("", p));
+        }
+
         recyclerView = (RecyclerView) findViewById(R.id.my_recycler_view);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        passengersAdapter = new PassengersAdapter();
+
+        passengersAdapter = new PassengersAdapter(this, passengerHeadersList);
+
         passengersAdapter.setItems(passengersList);
         passengersAdapter.setOnItemClickCallback(onItemClickCallback);
         recyclerView.setAdapter(passengersAdapter);
@@ -141,25 +152,31 @@ public class BookingActivity extends BaseActivity {
         btnBook.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Log.e("USER>FLIGHT>AIRCRAFT", session.getLoggedInUser().id + ">" +
-                        schedule.flight_id + ">" +
-                        schedule.flight.aircraft_id);
-                Log.e("ITEMS>>", gson.toJson(passengersList));
-                RequestManager.makeBooking(
-                        session,
-                        BookingActivity.this,
-                        session.getLoggedInUser().id,
-                        schedule.flight_id,
-                        schedule.flight.aircraft_id,
-                        gson.toJson(passengersList),
-                        requestHandler);
+                final Bundle args = new Bundle();
+                args.putSerializable(Constant.SCHEDULE, schedule);
+                args.putInt(Constant.NUM_PEOPLE, numPeople);
+                args.putInt(Constant.TRAVEL_CLASS_ID, travel_class_id);
+                goToActivity(SelectSeatActivity.class, args);
+                //                Log.e("USER>FLIGHT>AIRCRAFT", session.getLoggedInUser().id + ">" +
+                //                        schedule.flight_id + ">" +
+                //                        schedule.flight.aircraft_id);
+                //                Log.e("ITEMS>>", gson.toJson(passengersList));
+                //                RequestManager.makeBooking(
+                //                        session,
+                //                        BookingActivity.this,
+                //                        session.getLoggedInUser().id,
+                //                        schedule.flight_id,
+                //                        schedule.flight.aircraft_id,
+                //                        gson.toJson(passengersList),
+                //                        requestHandler);
             }
         });
     }
 
 
     public void addMeal(final Passenger passenger) {
-        final AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this, R.style.cust_dialog);
+        // final AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this, R.style.cust_dialog);
+        final AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
         final View dialogView = getInflater().inflate(R.layout.add_meal_layout, null);
 
         final List<Food> foods = session.getFoods();
@@ -229,5 +246,10 @@ public class BookingActivity extends BaseActivity {
 
     public LayoutInflater getInflater() {
         return (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+    }
+
+    @Override
+    public void onSeatSelected(int count) {
+
     }
 }

@@ -9,6 +9,8 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ProgressBar;
 
+import tut.flightbookingsystem.manager.RequestManager;
+
 public class SplashScreenActivity extends AppCompatActivity {
     private Button btnLogin;
     private Button btnRegister;

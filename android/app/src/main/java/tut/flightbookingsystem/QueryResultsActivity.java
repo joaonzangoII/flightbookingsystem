@@ -41,10 +41,12 @@ public class QueryResultsActivity extends BaseActivity {
                     if (num_people > 0) {
                         if (position >= 0) {
                             final Schedule schedule = mSchedules.get(position);
-                            Log.e(TAG, schedule.toString());
-                            session.setSchedule(new GsonBuilder()
+                            final String strSchedule = new GsonBuilder()
                                     .create()
-                                    .toJson(schedule));
+                                    .toJson(schedule);
+
+                            session.setSchedule(strSchedule);
+                            Log.e(TAG, strSchedule);
                             final Bundle args = new Bundle();
                             args.putSerializable(Constant.SCHEDULE, schedule);
                             args.putInt(Constant.NUM_PEOPLE, num_people);
@@ -77,7 +79,6 @@ public class QueryResultsActivity extends BaseActivity {
         mSchedules = new GsonBuilder()
                 .create()
                 .fromJson(data.getString(Constant.STR_SCHEDULE), type);
-
 
         ((TextView) findViewById(R.id.number_flights))
                 .setText(getResources().getQuantityString(R.plurals.flights, mSchedules.size(), mSchedules.size()));

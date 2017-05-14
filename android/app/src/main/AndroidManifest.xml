@@ -26,6 +26,7 @@
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
+        android:screenOrientation="portrait"
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:windowSoftInputMode="stateHidden|adjustPan">
@@ -75,6 +76,7 @@
             android:name=".BookingDetailActivity"
             android:parentActivityName=".MyBookingsActivity" />
         <activity android:name=".SettingsActivity" />
+        <activity android:name=".SelectSeatActivity"></activity>
     </application>
 
 </manifest>

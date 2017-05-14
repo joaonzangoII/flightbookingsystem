@@ -9,6 +9,8 @@ import android.view.View;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 
+import tut.flightbookingsystem.manager.RequestManager;
+
 public class LoginActivity extends AppCompatActivity {
 
     final Handler requestHandler = new Handler(new Handler.Callback() {

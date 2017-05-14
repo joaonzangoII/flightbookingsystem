@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="5dp">
+
+    <android.support.v7.widget.AppCompatTextView
+        android:id="@+id/txt_seat_selected"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:gravity="end"
+        android:text=""
+        android:textColor="@color/Black"
+        android:textSize="16sp"
+        android:visibility="gone" />
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/lst_items"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="9" />
+
+    <android.support.v7.widget.AppCompatButton
+        android:id="@+id/btn_select_seat"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:drawablePadding="6dp"
+        android:text="Select Seat"
+        android:textColor="@color/White"
+        android:textStyle="bold" />
+
+</LinearLayout>

@@ -17,5 +17,6 @@ public class Constant {
     public static String DRINKS = "drinks";
     public static String FLIGHT_SEATS = "flight_seats";
     public static String IS_BOOKING = "is_booking";
+    public static String IS_GETTING_AIRPORTS = "is_getting_airports";
     public static String DATA_BUNDLE = "data_bundle";
 }

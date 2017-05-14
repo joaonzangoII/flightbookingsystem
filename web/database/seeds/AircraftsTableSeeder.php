@@ -65,30 +65,43 @@ class AircraftsTableSeeder extends Seeder
           'aircraft_manufaturer_id' => $air['aircraft_manufaturer_id'],
         ]);
 
-        $first_class_number = 10;
-        for ($x=1; $x <= $first_class_number; $x++){
+        $subtotal_seat_number = 0;
+        $first=[];
+        $business=[];
+        $economy=[];
+        $number_of_seats = $aircraft->number_of_seats;
+        $seats_num = 12;
+        for ($x=1; $x <= $seats_num; $x++){
+          $number = $x;
+          $first[]= $number;
           AircraftSeat::create([
             'aircraft_id' => $aircraft->id,
-            'number' =>  $x . '-' . $aircraft->model,
+            'number' => $number,
             'travel_class_id' => $first_travel_class->id,
           ]);
         }
 
-        $business_class_number = $first_class_number + 10;
-        for ($x=11; $x <= $business_class_number; $x++){
+        $seats_num = $seats_num + 16;
+        for ($x=1; $x <= $seats_num; $x++){
+          $number = $first[count($first)-1] + $x;
+          $business[]= $number;
           AircraftSeat::create([
             'aircraft_id' => $aircraft->id,
-            'number' =>  $x . '-' . $aircraft->model,
+            'number' => $number,
             'travel_class_id' => $business_travel_class->id,
           ]);
         }
 
-        for ($x= 21; $x <= $aircraft->number_of_seats ; $x++){
-          AircraftSeat::create([
-            'aircraft_id' => $aircraft->id,
-            'number' =>  $x . '-' . $aircraft->model,
-            'travel_class_id' => $economy_travel_class->id,
-          ]);
+        $subtotal_seat_number = count($first) + count($business);
+        $seats_num = $number_of_seats - $subtotal_seat_number;
+        for ($x= 1 ; $x <= $seats_num ; $x++){
+          $number= $business[count($business)-1] + $x;
+          $economy[]=  $number;
+            AircraftSeat::create([
+              'aircraft_id' => $aircraft->id,
+              'number' => $number,
+              'travel_class_id' => $economy_travel_class->id,
+            ]);
         }
       }
     }

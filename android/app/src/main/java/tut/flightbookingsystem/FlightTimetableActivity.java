@@ -15,14 +15,13 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 
 import java.lang.reflect.Type;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
-import java.util.Locale;
 
 import tut.flightbookingsystem.adapter.AirportsAdapter;
 import tut.flightbookingsystem.base.BaseActivity;
+import tut.flightbookingsystem.manager.RequestManager;
 import tut.flightbookingsystem.model.Airport;
 import tut.flightbookingsystem.model.Schedule;
 
@@ -32,25 +31,36 @@ public class FlightTimetableActivity extends BaseActivity {
     private List<Airport> airportsList = new ArrayList<>();
     private AppCompatEditText departureDate;
     private DatePickerDialog departureDatePickerDialog;
+    private AirportsAdapter originAirportsAdapter;
+    private AirportsAdapter destinationAirportsAdapter;
+
+
+    //private SwipeRefreshLayout swipeRefreshLayout;
     final Handler requestHandler = new Handler(new Handler.Callback() {
         @Override
         public boolean handleMessage(Message message) {
             final Bundle data = message.getData();
             if (!data.getBoolean(Constant.ERROR)) {
-                final Gson gson = new GsonBuilder().create();
-                final Type type = new TypeToken<List<Schedule>>() {
-                }.getType();
-                mSchedules = gson.fromJson(data.getString(Constant.STR_SCHEDULE), type);
-                if (mSchedules != null) {
-                    if (mSchedules.size() == 0) {
-                        Utils.showDialog(FlightTimetableActivity.this);
-                    } else {
+                 if (data.getBoolean(Constant.IS_GETTING_AIRPORTS )) {
+                    originAirportsAdapter.setItems(session.getAirports());
+                    destinationAirportsAdapter.setItems(session.getAirports());
 
-                        final Bundle args = new Bundle();
-                        args.putBundle(Constant.DATA_BUNDLE, data);
-                        args.putInt(Constant.TRAVEL_CLASS_ID, 0);
-                        args.putInt(Constant.NUM_PEOPLE, 0);
-                        goToActivity(QueryResultsActivity.class, args);
+                } else {
+                     final Gson gson = new GsonBuilder().create();
+                     final Type type = new TypeToken<List<Schedule>>() {
+                     }.getType();
+                     mSchedules = gson.fromJson(data.getString(Constant.STR_SCHEDULE), type);
+                    if (mSchedules != null) {
+                        if (mSchedules.size() == 0) {
+                            Utils.showDialog(FlightTimetableActivity.this);
+                        } else {
+
+                            final Bundle args = new Bundle();
+                            args.putBundle(Constant.DATA_BUNDLE, data);
+                            args.putInt(Constant.TRAVEL_CLASS_ID, 0);
+                            args.putInt(Constant.NUM_PEOPLE, 0);
+                            goToActivity(QueryResultsActivity.class, args);
+                        }
                     }
                 }
             }
@@ -68,9 +78,9 @@ public class FlightTimetableActivity extends BaseActivity {
         mSchedules = new ArrayList<>();
         airportsList = session.getAirports();
 
-        final AirportsAdapter originAirportsAdapter = new AirportsAdapter
+        originAirportsAdapter = new AirportsAdapter
                 (this, R.layout.spinners_item_layout, airportsList);
-        final AirportsAdapter destinationAirportsAdapter = new AirportsAdapter
+        destinationAirportsAdapter = new AirportsAdapter
                 (this, R.layout.spinners_item_layout, airportsList);
 
         final Spinner originAirport = (Spinner) findViewById(R.id.departure);
@@ -78,6 +88,7 @@ public class FlightTimetableActivity extends BaseActivity {
 
         final Spinner destinationAirport = (Spinner) findViewById(R.id.destination);
         destinationAirport.setAdapter(destinationAirportsAdapter);
+
         departureDate = (AppCompatEditText) findViewById(R.id.departure_date);
         departureDate.setInputType(InputType.TYPE_NULL);
 
@@ -102,6 +113,29 @@ public class FlightTimetableActivity extends BaseActivity {
         });
 
         setDateTimeField();
+
+        //        swipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.swipe_refresh_layout);
+        //        swipeRefreshLayout.setOnRefreshListener(this);
+        //
+        //        /**
+        //         * Showing Swipe Refresh animation on activity create
+        //         * As animation won't start on onCreate, post runnable is used
+        //         */
+        //        swipeRefreshLayout.post(new Runnable() {
+        //                                    @Override
+        //                                    public void run() {
+        //                                        swipeRefreshLayout.setRefreshing(true);
+        //                                        RequestManager.getAirports(session, requestHandler);
+        //                                    }
+        //                                }
+        //        );
+    }
+
+    @Override
+    public void onRefresh() {
+        // showing refresh animation before making http call
+        //        swipeRefreshLayout.setRefreshing(true);
+        //        RequestManager.getAirports(session, requestHandler);
     }
 
     private void setDateTimeField() {

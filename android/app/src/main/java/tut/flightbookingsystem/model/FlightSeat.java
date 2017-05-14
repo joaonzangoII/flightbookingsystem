@@ -8,7 +8,7 @@ import java.io.Serializable;
 
 public class FlightSeat implements Serializable {
     public long id;
-    public String number;
+    public int number;
     public boolean available;
     public long travel_class_id;
     public TravelClass travel_class;
