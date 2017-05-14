@@ -22,7 +22,7 @@ class UsersTableSeeder extends Seeder
       $faker = Faker\Factory::create();
       $user = User::create([
         'first_name' => 'System',
-        'middle_name' => '',
+        'middle_name' => '0000000000000',
         'last_name' => 'Admin',
         'phone' => '0000000000',
         'id_number' => '',
@@ -35,7 +35,7 @@ class UsersTableSeeder extends Seeder
 
       $user = User::create([
         'first_name' => 'Oscar',
-        'middle_name' => '',
+        'middle_name' => '1234567890123',
         'last_name' => 'Mahlompopane',
         'phone' => '0769622448',
         'id_number' => '',
