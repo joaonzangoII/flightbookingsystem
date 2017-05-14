@@ -22,10 +22,10 @@ class UsersTableSeeder extends Seeder
       $faker = Faker\Factory::create();
       $user = User::create([
         'first_name' => 'System',
-        'middle_name' => '0000000000000',
+        'middle_name' => '',
         'last_name' => 'Admin',
         'phone' => '0000000000',
-        'id_number' => '',
+        'id_number' => '0000000000000',
         'email' => 'systemadmin@flightbookingsystem.com',
         'country_id' => $country_id,
         'user_type_id' => $user_type_admin->id,
@@ -35,10 +35,10 @@ class UsersTableSeeder extends Seeder
 
       $user = User::create([
         'first_name' => 'Oscar',
-        'middle_name' => '1234567890123',
+        'middle_name' => '',
         'last_name' => 'Mahlompopane',
         'phone' => '0769622448',
-        'id_number' => '',
+        'id_number' => '1234567890123',
         'email' => 'mahlompopaneo@gmail.com',
         'country_id' => $country_id,
         'user_type_id' => $user_type_normal->id,
