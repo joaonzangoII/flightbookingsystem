@@ -18,7 +18,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
-import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,40 +25,16 @@ import java.util.List;
 import tut.flightbookingsystem.adapter.AirplaneFlightSeatAdapter;
 import tut.flightbookingsystem.listener.MyDialogListener;
 import tut.flightbookingsystem.listener.OnSeatSelected;
-import tut.flightbookingsystem.listener.RecyclerClickListener;
 import tut.flightbookingsystem.model.AbstractItem;
 import tut.flightbookingsystem.model.CenterItem;
 import tut.flightbookingsystem.model.EdgeItem;
 import tut.flightbookingsystem.model.EmptyItem;
 import tut.flightbookingsystem.model.FlightSeat;
 
-public class PassengerSeatsDialog extends DialogFragment implements OnSeatSelected {
-    private int addMore = 0;
+public class PassengerSeatsDialogFragment extends DialogFragment implements OnSeatSelected {
     private MyDialogListener myDialogListener;
     private AirplaneFlightSeatAdapter adapter;
-    private List<FlightSeat> fligtSeatsList;
-    private RecyclerClickListener.OnItemClickCallback onItemClickCallback =
-            new RecyclerClickListener.OnItemClickCallback() {
-
-                @Override
-                public void onItemClicked(final View view,
-                                          final int parentPosition,
-                                          final int childPosition) {
-                }
-
-                @Override
-                public void onItemClicked(final View view,
-                                          int position) {
-                    //if (adapter.getSelectedItems().size() > 0) {
-                    //final int position = position == 0 ? position : position - 1;
-                    final FlightSeat flightSeat = fligtSeatsList.get(position);
-                    myDialogListener.userSelectedAValue(flightSeat.number);
-                    Toast.makeText(getActivity(), position + "", Toast.LENGTH_SHORT).show();
-                    // listener is object of your MyDialogListener, which you have set from Activity.
-                    dismiss();
-                    //}
-                }
-            };
+    private List<FlightSeat> flightSeatsList = new ArrayList<>();
 
     /**
      * The system calls this to get the DialogFragment's layout, regardless
@@ -69,7 +44,7 @@ public class PassengerSeatsDialog extends DialogFragment implements OnSeatSelect
     public View onCreateView(final LayoutInflater inflater,
                              final ViewGroup container,
                              final Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_airplane_seat_selection, null, false);
+        return inflater.inflate(R.layout.dialog_fragment_airplane_seat_selection, null, false);
     }
 
     @Override
@@ -128,12 +103,14 @@ public class PassengerSeatsDialog extends DialogFragment implements OnSeatSelect
 
     private void setupView(final Context context,
                            final View itemView) {
-        int COLUMNS = 5;
+        int COLUMNS = 0;
+        int addMore = 0;
         final SessionManager session = new SessionManager(context);
-        fligtSeatsList = session.getFlightSeats();
+        flightSeatsList = session.getFlightSeats();
         String classNName = "First";
-        if (fligtSeatsList != null) {
-            classNName = fligtSeatsList.get(0).travel_class.name;
+        if (flightSeatsList != null &&
+                flightSeatsList.size() > 0) {
+            classNName = flightSeatsList.get(0).travel_class.name;
             if (classNName.equals("First")) {
                 COLUMNS = 2;
             } else if (classNName.equals("Business")) {
@@ -142,70 +119,70 @@ public class PassengerSeatsDialog extends DialogFragment implements OnSeatSelect
                 COLUMNS = 10;
             }
 
+            /*if (COLUMNS == 2) {
+                addMore = 1;
+            } else {
+                addMore = 2;
+            }*/
+
+            COLUMNS = COLUMNS + addMore;
             final List<AbstractItem> items = new ArrayList<>();
-            for (int i = 0; i < fligtSeatsList.size(); i++) {
+            for (int i = 0; i < flightSeatsList.size(); i++) {
                 final int remainder = i % COLUMNS;
                 if (COLUMNS == 2) {
                     if (remainder == 0) {
-                        items.add(new EdgeItem(String.valueOf(i)));
-                        // items.add(new EmptyItem(String.valueOf(i)));
+                        items.add(new EdgeItem(flightSeatsList.get(i).id, String.valueOf(flightSeatsList.get(i).number)));
+                        //items.add(new EmptyItem(flightSeatsList.get(i).id, String.valueOf(flightSeatsList.get(i).number)));
                     } else if (remainder == 1) {
-                        items.add(new EdgeItem(String.valueOf(i)));
+                        items.add(new EdgeItem(flightSeatsList.get(i).id, String.valueOf(flightSeatsList.get(i).number)));
                     } else {
-                        items.add(new EmptyItem(String.valueOf(i)));
+                        items.add(new EmptyItem(flightSeatsList.get(i).id, String.valueOf(flightSeatsList.get(i).number)));
                     }
                 } else if (COLUMNS == 7) {
                     if (remainder == 0 || remainder == 1 || remainder == 5 || remainder == 6) {
-                        items.add(new EdgeItem(String.valueOf(i)));
+                        items.add(new EdgeItem(flightSeatsList.get(i).id, String.valueOf(flightSeatsList.get(i).number)));
                     } else if (remainder == 2) {
-                        // items.add(new EmptyItem(String.valueOf(i)));
-                        items.add(new CenterItem(String.valueOf(i)));
+                        //items.add(new EmptyItem(flightSeatsList.get(i).id, String.valueOf(flightSeatsList.get(i).number)));
+                        items.add(new CenterItem(flightSeatsList.get(i).id, String.valueOf(flightSeatsList.get(i).number)));
                     } else if (remainder == 3) {
-                        items.add(new CenterItem(String.valueOf(i)));
+                        items.add(new CenterItem(flightSeatsList.get(i).id, String.valueOf(flightSeatsList.get(i).number)));
                     } else if (remainder == 4) {
-                        items.add(new CenterItem(String.valueOf(i)));
-                        // items.add(new EmptyItem(String.valueOf(i)));
+                        items.add(new CenterItem(flightSeatsList.get(i).id, String.valueOf(flightSeatsList.get(i).number)));
+                        // items.add(new EmptyItem(flightSeatsList.get(i).id, String.valueOf(flightSeatsList.get(i).number)));
                     } else {
-                        items.add(new EmptyItem(String.valueOf(i)));
+                        items.add(new EmptyItem(flightSeatsList.get(i).id, String.valueOf(flightSeatsList.get(i).number)));
                     }
                 } else {
                     if (remainder == 0 || remainder == 1 || remainder == 2 ||
                             remainder == 7 || remainder == 8 || remainder == 9) {
-                        items.add(new EdgeItem(String.valueOf(i)));
+                        items.add(new EdgeItem(flightSeatsList.get(i).id, String.valueOf(flightSeatsList.get(i).number)));
                     } else if (remainder == 3) {
-                        // items.add(new EmptyItem(String.valueOf(i)));
-                        items.add(new CenterItem(String.valueOf(i)));
+                        //items.add(new EmptyItem(flightSeatsList.get(i).id, String.valueOf(flightSeatsList.get(i).number)));
+                        items.add(new CenterItem(flightSeatsList.get(i).id, String.valueOf(flightSeatsList.get(i).number)));
                     } else if (remainder == 4 || remainder == 5) {
-                        items.add(new CenterItem(String.valueOf(i)));
+                        items.add(new CenterItem(flightSeatsList.get(i).id, String.valueOf(flightSeatsList.get(i).number)));
                     } else if (remainder == 6) {
-                        items.add(new CenterItem(String.valueOf(i)));
-                        // items.add(new EmptyItem(String.valueOf(i)));
+                        items.add(new CenterItem(flightSeatsList.get(i).id, String.valueOf(flightSeatsList.get(i).number)));
+                        //items.add(new EmptyItem(flightSeatsList.get(i).id, String.valueOf(flightSeatsList.get(i).number)));
                     } else {
-                        items.add(new EmptyItem(String.valueOf(i)));
+                        items.add(new EmptyItem(flightSeatsList.get(i).id, String.valueOf(flightSeatsList.get(i).number)));
                     }
                 }
             }
 
-            if (COLUMNS == 2) {
-                addMore = 1;
-            } else {
-                addMore = 2;
-            }
-
-            final GridLayoutManager manager = new GridLayoutManager(context, COLUMNS + addMore);
-            final RecyclerView recyclerView = (RecyclerView) itemView.findViewById(R.id.lst_items);
+            final GridLayoutManager manager = new GridLayoutManager(context, COLUMNS);
+            final RecyclerView recyclerView = (RecyclerView) itemView.findViewById(R.id.my_recycler_view);
             recyclerView.setLayoutManager(manager);
             adapter = new AirplaneFlightSeatAdapter(context, items);
-            adapter.setOnItemClickCallback(onItemClickCallback);
             recyclerView.setAdapter(adapter);
 
             final AppCompatButton btnSelectSeat = (AppCompatButton) itemView.findViewById(R.id.btn_select_seat);
-            btnSelectSeat.setVisibility(View.GONE);
+            // btnSelectSeat.setVisibility(View.GONE);
             btnSelectSeat.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     if (adapter.getSelectedItems().size() > 0) {
-                        myDialogListener.userSelectedAValue(adapter.getSelectedItems().get(0));
+                        myDialogListener.userSelectedAValue(items.get(adapter.getSelectedItems().get(0)));
                         // listener is object of your MyDialogListener, which you have set from // Activity.
                         dismiss();
                     }
@@ -216,7 +193,7 @@ public class PassengerSeatsDialog extends DialogFragment implements OnSeatSelect
     }
 
     @Override
-    public void onSeatSelected(int count) {
+    public void onSeatSelected(AbstractItem item) {
 
     }
 

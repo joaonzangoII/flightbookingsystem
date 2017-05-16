@@ -11,7 +11,7 @@ class FlightSeat extends Model
   }
 
   public function flight_seat_price(){
-    return $this->hasOne('App\FlightSeatPrice', 'flight_seat_id', 'id');
+    return $this->hasOne('App\FlightSeatPrice', 'id', 'id');
   }
 
   public function getAvailableAttribute($value)

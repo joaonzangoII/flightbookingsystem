@@ -73,10 +73,9 @@
             android:parentActivityName=".NavigationDrawerActivity" />
         <activity android:name=".QueryResultsActivity" />
         <activity
-            android:name=".BookingDetailActivity"
+            android:name=".MyBookingsDetailActivity"
             android:parentActivityName=".MyBookingsActivity" />
         <activity android:name=".SettingsActivity" />
-        <activity android:name=".SelectSeatActivity"></activity>
     </application>
 
 </manifest>

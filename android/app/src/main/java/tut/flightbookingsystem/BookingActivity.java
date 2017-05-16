@@ -9,6 +9,7 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.AppCompatButton;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.AdapterView;
@@ -29,6 +30,7 @@ import tut.flightbookingsystem.base.BaseActivity;
 import tut.flightbookingsystem.listener.OnSeatSelected;
 import tut.flightbookingsystem.listener.RecyclerClickListener;
 import tut.flightbookingsystem.manager.RequestManager;
+import tut.flightbookingsystem.model.AbstractItem;
 import tut.flightbookingsystem.model.Drink;
 import tut.flightbookingsystem.model.Food;
 import tut.flightbookingsystem.model.Meal;
@@ -132,7 +134,7 @@ public class BookingActivity extends BaseActivity implements OnSeatSelected {
         }
 
         final List<PassengerHeader> passengerHeadersList = new ArrayList<>();
-        for (Passenger passenger: passengersList) {
+        for (Passenger passenger : passengersList) {
             List<Passenger> p = new ArrayList<>();
             p.add(passenger);
             passengerHeadersList.add(new PassengerHeader("", p));
@@ -142,7 +144,6 @@ public class BookingActivity extends BaseActivity implements OnSeatSelected {
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
         passengersAdapter = new PassengersAdapter(this, passengerHeadersList);
-
         passengersAdapter.setItems(passengersList);
         passengersAdapter.setOnItemClickCallback(onItemClickCallback);
         recyclerView.setAdapter(passengersAdapter);
@@ -152,23 +153,23 @@ public class BookingActivity extends BaseActivity implements OnSeatSelected {
         btnBook.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                final Bundle args = new Bundle();
-                args.putSerializable(Constant.SCHEDULE, schedule);
-                args.putInt(Constant.NUM_PEOPLE, numPeople);
-                args.putInt(Constant.TRAVEL_CLASS_ID, travel_class_id);
-                goToActivity(SelectSeatActivity.class, args);
-                //                Log.e("USER>FLIGHT>AIRCRAFT", session.getLoggedInUser().id + ">" +
-                //                        schedule.flight_id + ">" +
-                //                        schedule.flight.aircraft_id);
-                //                Log.e("ITEMS>>", gson.toJson(passengersList));
-                //                RequestManager.makeBooking(
-                //                        session,
-                //                        BookingActivity.this,
-                //                        session.getLoggedInUser().id,
-                //                        schedule.flight_id,
-                //                        schedule.flight.aircraft_id,
-                //                        gson.toJson(passengersList),
-                //                        requestHandler);
+                //                final Bundle args = new Bundle();
+                //                args.putSerializable(Constant.SCHEDULE, schedule);
+                //                args.putInt(Constant.NUM_PEOPLE, numPeople);
+                //                args.putInt(Constant.TRAVEL_CLASS_ID, travel_class_id);
+                //                goToActivity(SelectSeatActivity.class, args);
+                Log.e("USER>FLIGHT>AIRCRAFT", session.getLoggedInUser().id + ">" +
+                        schedule.flight_id + ">" +
+                        schedule.flight.aircraft_id);
+                Log.e("ITEMS>>", gson.toJson(passengersList));
+                RequestManager.makeBooking(
+                        session,
+                        BookingActivity.this,
+                        session.getLoggedInUser().id,
+                        schedule.flight_id,
+                        schedule.flight.aircraft_id,
+                        gson.toJson(passengersList),
+                        requestHandler);
             }
         });
     }
@@ -249,7 +250,9 @@ public class BookingActivity extends BaseActivity implements OnSeatSelected {
     }
 
     @Override
-    public void onSeatSelected(int count) {
+    public void onSeatSelected(final AbstractItem count) {
 
     }
+
+
 }

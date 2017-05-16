@@ -5,6 +5,7 @@ import java.util.List;
 
 public class Booking implements Serializable {
     public long id;
+    public String booking_number;
     public double total;
     public double subtotal;
     public long user_id;

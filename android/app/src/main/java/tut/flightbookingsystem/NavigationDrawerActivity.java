@@ -8,6 +8,8 @@ import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
@@ -24,13 +26,16 @@ import java.util.Currency;
 import java.util.List;
 import java.util.Locale;
 
+import tut.flightbookingsystem.adapter.HomeAdapter;
 import tut.flightbookingsystem.base.BaseActivity;
 import tut.flightbookingsystem.manager.RequestManager;
 import tut.flightbookingsystem.model.Booking;
+import tut.flightbookingsystem.model.MainItem;
 
 public class NavigationDrawerActivity extends BaseActivity
         implements NavigationView.OnNavigationItemSelectedListener {
     private SessionManager session;
+    private HomeAdapter myHomeAdapter;
     private List<Booking> myBookingsList = new ArrayList<>();
     final Handler requestHandler = new Handler(new Handler.Callback() {
         @Override
@@ -42,17 +47,22 @@ public class NavigationDrawerActivity extends BaseActivity
                 final Type type = new TypeToken<List<Booking>>() {
                 }.getType();
                 myBookingsList = gson.fromJson(data.getString(Constant.MY_BOOKINGS), type);
+                List<MainItem> items = new ArrayList<>();
+                items.add(new MainItem(1, String.format("%1$d", myBookingsList.size()), "Number of Bookings"));
+                items.add(new MainItem(2, String.format("%1$s", moneySpent(myBookingsList)), "Money Spent"));
+                items.add(new MainItem(3, String.format("%1$d", passengersBooked(myBookingsList)), "Passengers Booked"));
+                myHomeAdapter.setItems(items);
 
-                if (myBookingsList != null) {
-                    ((TextView) findViewById(R.id.num_of_bookings))
-                            .setText(String.format("%1$d", myBookingsList.size()));
-
-                    ((TextView) findViewById(R.id.money_spent))
-                            .setText(String.format("%1$s", moneySpent(myBookingsList)));
-
-                    ((TextView) findViewById(R.id.passengers_booked))
-                            .setText(String.format("%1$d", passengersBooked(myBookingsList)));
-                }
+                //                if (myBookingsList != null) {
+                //                    ((TextView) findViewById(R.id.num_of_bookings))
+                //                            .setText(String.format("%1$d", myBookingsList.size()));
+                //
+                //                    ((TextView) findViewById(R.id.money_spent))
+                //                            .setText(String.format("%1$s", moneySpent(myBookingsList)));
+                //
+                //                    ((TextView) findViewById(R.id.passengers_booked))
+                //                            .setText(String.format("%1$d", passengersBooked(myBookingsList)));
+                //                }
             }
             return false;
         }
@@ -78,13 +88,14 @@ public class NavigationDrawerActivity extends BaseActivity
             total = total + booking.passengers.size();
         }
 
-        return  total;
+        return total;
     }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_navigation_drawer);
+        final RecyclerView recyclerView = (RecyclerView) findViewById(R.id.my_recycler_view);
         session = new SessionManager(this);
         RequestManager.getMyBookings(session, requestHandler);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -113,6 +124,12 @@ public class NavigationDrawerActivity extends BaseActivity
                 goToActivity(FindFlightActivity.class);
             }
         });
+
+        recyclerView.setLayoutManager(new GridLayoutManager(this, 2));
+        myHomeAdapter = new HomeAdapter();
+        // myHomeAdapter.setItems(myBookingsList);
+        // myHomeAdapter.setOnItemClickCallback(onItemClickCallback);
+        recyclerView.setAdapter(myHomeAdapter);
 
     }
 

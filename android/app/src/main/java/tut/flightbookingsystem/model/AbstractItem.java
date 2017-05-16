@@ -6,10 +6,17 @@ public abstract class AbstractItem {
     public static final int TYPE_EDGE = 1;
     public static final int TYPE_EMPTY = 2;
 
+    private long id;
     private String label;
 
-    public AbstractItem(String label) {
+    public AbstractItem(final long id,
+                        final String label) {
+        this.id = id;
         this.label = label;
+    }
+
+    public long getId() {
+        return id;
     }
 
     public String getLabel() {

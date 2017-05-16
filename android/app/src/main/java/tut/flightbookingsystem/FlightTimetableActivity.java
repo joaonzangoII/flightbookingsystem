@@ -24,6 +24,7 @@ import tut.flightbookingsystem.base.BaseActivity;
 import tut.flightbookingsystem.manager.RequestManager;
 import tut.flightbookingsystem.model.Airport;
 import tut.flightbookingsystem.model.Schedule;
+import tut.flightbookingsystem.util.Utils;
 
 public class FlightTimetableActivity extends BaseActivity {
     private SessionManager session;

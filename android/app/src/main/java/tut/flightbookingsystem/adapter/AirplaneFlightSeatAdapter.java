@@ -8,7 +8,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import java.util.List;
 
@@ -25,10 +24,13 @@ public class AirplaneFlightSeatAdapter extends SelectableAdapter<RecyclerView.Vi
     private List<AbstractItem> mItems;
     private OnSeatSelected mOnSeatSelected;
     private int position;
-    private RecyclerClickListener.OnItemClickCallback onItemClickCallback;
 
-    public void setOnItemClickCallback(RecyclerClickListener.OnItemClickCallback onItemClickCallback) {
-        this.onItemClickCallback = onItemClickCallback;
+    public AirplaneFlightSeatAdapter(Context context,
+                                     List<AbstractItem> items) {
+        mOnSeatSelected = (OnSeatSelected) context;
+        mContext = context;
+        mLayoutInflater = LayoutInflater.from(context);
+        mItems = items;
     }
 
     private static class EdgeViewHolder extends RecyclerView.ViewHolder {
@@ -65,14 +67,6 @@ public class AirplaneFlightSeatAdapter extends SelectableAdapter<RecyclerView.Vi
 
     }
 
-    public AirplaneFlightSeatAdapter(Context context,
-                                     List<AbstractItem> items) {
-        mOnSeatSelected = (OnSeatSelected) context;
-        mContext = context;
-        mLayoutInflater = LayoutInflater.from(context);
-        mItems = items;
-    }
-
     @Override
     public int getItemCount() {
         return mItems.size();
@@ -104,55 +98,47 @@ public class AirplaneFlightSeatAdapter extends SelectableAdapter<RecyclerView.Vi
         if (type == AbstractItem.TYPE_CENTER) {
             final CenterItem item = (CenterItem) getItem(position);
             final CenterViewHolder holder = (CenterViewHolder) viewHolder;
-            setupView(holder, position, item.getLabel());
+            setupView(holder, position, item.getId(), item.getLabel());
         } else if (type == AbstractItem.TYPE_EDGE) {
             final EdgeItem item = (EdgeItem) getItem(position);
             final EdgeViewHolder holder = (EdgeViewHolder) viewHolder;
-            setupView(holder, position, item.getLabel());
+            setupView(holder, position, item.getId(), item.getLabel());
         }
     }
 
     private void setupView(final Object clazz,
                            final int position,
+                           final long id,
                            final String label) {
         this.position = position;
-        Log.e("TAG", clazz.getClass().getName());
         if (clazz instanceof EdgeViewHolder) {
             ((EdgeViewHolder) clazz).txtLabel.setText(label);
             ((EdgeViewHolder) clazz).imgSeatNormal.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(final View v) {
+                    clearSelection();
                     toggleSelection(position);
-                    mOnSeatSelected.onSeatSelected(position);
+                    mOnSeatSelected.onSeatSelected(mItems.get(position));
+                    Log.e("SELECTED", String.valueOf(mItems.get(position).getId()));
                 }
             });
-
             ((EdgeViewHolder) clazz).imgSeatSelected.setVisibility(isSelected(position) ? View.VISIBLE : View.INVISIBLE);
-            //((EdgeViewHolder) clazz).imgSeatNormal.setOnClickListener(new RecyclerClickListener(position, onItemClickCallback));
         } else {
             ((CenterViewHolder) clazz).txtLabel.setText(label);
             ((CenterViewHolder) clazz).imgSeatNormal.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(final View v) {
+                    clearSelection();
                     toggleSelection(position);
-                    mOnSeatSelected.onSeatSelected(position);
-                    // mOnSeatSelected.onSeatSelected(getSelectedItemCount());
+                    mOnSeatSelected.onSeatSelected(mItems.get(position));
+                    Log.e("SELECTED", String.valueOf(mItems.get(position).getId()));
                 }
             });
             ((CenterViewHolder) clazz).imgSeatSelected.setVisibility(isSelected(position) ? View.VISIBLE : View.INVISIBLE);
-            //((CenterViewHolder) clazz).imgSeatNormal.setOnClickListener(new RecyclerClickListener(position, onItemClickCallback));
         }
     }
 
     private Object getItem(final int position) {
         return mItems.get(position);
-    }
-
-    public int getSelectedPosition() {
-        return this.position;
-    }
-
-    public int getSelectedText(final int position) {
-        return super.getSelectedItemCount();
     }
 }

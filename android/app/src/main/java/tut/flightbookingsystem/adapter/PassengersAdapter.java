@@ -8,7 +8,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.bignerdranch.expandablerecyclerview.ExpandableRecyclerAdapter;
+import com.thoughtbot.expandablerecyclerview.ExpandableRecyclerViewAdapter;
+import com.thoughtbot.expandablerecyclerview.models.ExpandableGroup;
 
 import java.util.Collections;
 import java.util.List;
@@ -21,11 +22,8 @@ import tut.flightbookingsystem.model.FlightSeat;
 import tut.flightbookingsystem.model.Passenger;
 import tut.flightbookingsystem.model.PassengerHeader;
 
-public class PassengersAdapter extends
-        ExpandableRecyclerAdapter<PassengerHeader,
-                Passenger,
-                PassengerHeaderViewHolder,
-                PassengerDetailViewHolder> {
+public class PassengersAdapter extends ExpandableRecyclerViewAdapter<PassengerHeaderViewHolder,
+        PassengerDetailViewHolder> {
     private RecyclerClickListener.OnItemClickCallback onItemClickCallback;
     private List<Passenger> items = Collections.emptyList();
     private List<FlightSeat> flightSeatsItems = Collections.emptyList();
@@ -38,9 +36,9 @@ public class PassengersAdapter extends
         this.onItemClickCallback = onItemClickCallback;
     }
 
-    //    public PassengersAdapter() {
-    //
-    //    }
+    public PassengersAdapter(List<? extends ExpandableGroup> groups) {
+        super(groups);
+    }
 
     public PassengersAdapter(final Context context,
                              final @NonNull List<PassengerHeader> groups) {
@@ -56,61 +54,40 @@ public class PassengersAdapter extends
         notifyDataSetChanged();
     }
 
-    //    public void setFlightSeats(final List<FlightSeat> flightSeatsItems) {
-    //        this.flightSeatsItems = flightSeatsItems;
-    //        notifyDataSetChanged();
-    //    }
-
     @Override
-    public PassengerHeaderViewHolder onCreateParentViewHolder(@NonNull ViewGroup parentViewGroup,
-                                                              int viewType) {
+    @NonNull
+    public PassengerHeaderViewHolder onCreateGroupViewHolder(final ViewGroup parentViewGroup,
+                                                             final int viewType) {
         final View recipeView = mInflater.inflate(R.layout.passenger_header_layout, parentViewGroup, false);
         return new PassengerHeaderViewHolder(recipeView);
     }
 
-
     @Override
+    @NonNull
     public PassengerDetailViewHolder onCreateChildViewHolder(final @NonNull ViewGroup childViewGroup,
                                                              final int viewType) {
         final View passengerDetailView = mInflater.inflate(R.layout.passengers_item_layout, childViewGroup, false);
         return new PassengerDetailViewHolder(passengerDetailView);
     }
 
-    // onBind ...
+
     @Override
-    public void onBindParentViewHolder(final @NonNull PassengerHeaderViewHolder recipeViewHolder,
-                                       final int parentPosition,
-                                       final @NonNull PassengerHeader passengerHeader) {
-        recipeViewHolder.bind(passengerHeader, parentPosition);
+    public void onBindGroupViewHolder(final @NonNull PassengerHeaderViewHolder headerViewHolder,
+                                      final int parentPosition,
+                                      final @NonNull ExpandableGroup passengerHeader) {
+        headerViewHolder.setHeaderTitle(passengerHeader, parentPosition);
     }
 
     @Override
     public void onBindChildViewHolder(@NonNull PassengerDetailViewHolder passengerDetailViewHolder,
-                                      int parentPosition,
-                                      int childPosition,
-                                      @NonNull Passenger ingredient) {
-        passengerDetailViewHolder.bind(ingredient, childPosition, onItemClickCallback);
+                                      final int parentPosition,
+                                      final ExpandableGroup group,
+                                      final int childPosition) {
+        passengerDetailViewHolder.bind(getClildItems(group, childPosition), childPosition, onItemClickCallback);
     }
 
-
-    //    @Override
-    //    public RecyclerView.ViewHolder onCreateViewHolder(final ViewGroup parent,
-    //                                                      final int viewType) {
-    //        final LayoutInflater layoutInflater = LayoutInflater.from(parent.getContext());
-    //        return new MyScheduleHolder(layoutInflater.inflate(R.layout.passengers_item_layout, parent, false));
-    //    }
-
-    //    @Override
-    //    public int getItemCount() {
-    //        if (items == null) {
-    //            return 0;
-    //        }
-    //        return items.size();
-    //    }
-    //
-    //    @Nullable
-    //    public Passenger getItem(final int position) {
-    //        return items.get(position);
-    //    }
-    //
+    public Passenger getClildItems(final ExpandableGroup group,
+                                   final int childIndex) {
+        return ((PassengerHeader) group).getItems().get(childIndex);
+    }
 }

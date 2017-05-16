@@ -11,7 +11,7 @@ import java.util.Collections;
 import java.util.List;
 
 import tut.flightbookingsystem.R;
-import tut.flightbookingsystem.Utils;
+import tut.flightbookingsystem.util.Utils;
 import tut.flightbookingsystem.listener.RecyclerClickListener;
 import tut.flightbookingsystem.listener.RecyclerClickListener.OnItemClickCallback;
 import tut.flightbookingsystem.model.Schedule;

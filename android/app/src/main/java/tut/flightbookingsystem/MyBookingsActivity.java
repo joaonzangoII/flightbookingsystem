@@ -48,7 +48,7 @@ public class MyBookingsActivity extends BaseActivity {
                         final Gson gson = new GsonBuilder().create();
                         final Bundle args = new Bundle();
                         args.putString(Constant.BOOKING, gson.toJson(booking));
-                        goToActivity(BookingDetailActivity.class, args);
+                        goToActivity(MyBookingsDetailActivity.class, args);
                     }
                 }
             };

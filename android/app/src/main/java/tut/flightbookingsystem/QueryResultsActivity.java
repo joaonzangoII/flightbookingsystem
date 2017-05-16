@@ -44,7 +44,6 @@ public class QueryResultsActivity extends BaseActivity {
                             final String strSchedule = new GsonBuilder()
                                     .create()
                                     .toJson(schedule);
-
                             session.setSchedule(strSchedule);
                             Log.e(TAG, strSchedule);
                             final Bundle args = new Bundle();

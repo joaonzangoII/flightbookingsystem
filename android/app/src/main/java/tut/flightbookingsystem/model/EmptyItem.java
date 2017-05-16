@@ -1,8 +1,9 @@
 package tut.flightbookingsystem.model;
 
 public class EmptyItem extends AbstractItem {
-    public EmptyItem(String label) {
-        super(label);
+    public EmptyItem(final long id,
+                     final String label) {
+        super(id, label);
     }
 
     @Override

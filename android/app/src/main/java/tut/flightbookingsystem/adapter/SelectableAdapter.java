@@ -5,6 +5,9 @@ import android.util.SparseBooleanArray;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
+
+import tut.flightbookingsystem.model.AbstractItem;
 
 public abstract class SelectableAdapter<VH extends RecyclerView.ViewHolder> extends RecyclerView.Adapter<VH> {
     @SuppressWarnings("unused")
@@ -62,7 +65,7 @@ public abstract class SelectableAdapter<VH extends RecyclerView.ViewHolder> exte
      * @return List of selected items ids
      */
     public List<Integer> getSelectedItems() {
-        List<Integer> items = new ArrayList<>(selectedItems.size());
+        final List<Integer> items = new ArrayList<>(selectedItems.size());
         for (int i = 0; i < selectedItems.size(); ++i) {
             items.add(selectedItems.keyAt(i));
         }

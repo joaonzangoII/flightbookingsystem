@@ -37,6 +37,7 @@ class FlightSeatPricesTableSeeder extends Seeder
           }else{
             $price = 500;
           }
+          
           $seat_price = FlightSeatPrice::create([
             'price' => $price,
             'flight_id' => $flight->id,

@@ -2,9 +2,6 @@ package tut.flightbookingsystem.model;
 
 import java.io.Serializable;
 
-/**
- * Created by joaonzangoii on 4/23/17.
- */
 
 public class Aircraft implements Serializable {
     private long id;

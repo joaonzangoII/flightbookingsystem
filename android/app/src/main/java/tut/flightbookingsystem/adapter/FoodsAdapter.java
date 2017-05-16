@@ -19,6 +19,9 @@ import tut.flightbookingsystem.model.Food;
 public class FoodsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     private OnItemClickCallback onItemClickCallback;
     private List<Food> items = Collections.emptyList();
+    public void setOnItemClickCallback(OnItemClickCallback onItemClickCallback) {
+        this.onItemClickCallback = onItemClickCallback;
+    }
 
     public FoodsAdapter() {
     }
@@ -57,10 +60,6 @@ public class FoodsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
     @Nullable
     public Food getItem(final int position) {
         return items.get(position);
-    }
-
-    public void setOnItemClickCallback(OnItemClickCallback onItemClickCallback) {
-        this.onItemClickCallback = onItemClickCallback;
     }
 
     class MyScheduleHolder extends RecyclerView.ViewHolder {

@@ -1,4 +1,4 @@
-package tut.flightbookingsystem;
+package tut.flightbookingsystem.util;
 
 import android.app.Activity;
 import android.content.Context;
@@ -7,9 +7,14 @@ import android.support.v7.app.AlertDialog;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 
+import com.android.volley.VolleyError;
+
+import java.io.UnsupportedEncodingException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Arrays;
+
+import tut.flightbookingsystem.R;
 
 public class Utils {
     public static void showKeyboard(final Context context,
@@ -60,8 +65,8 @@ public class Utils {
     }
 
     public static Object[][] splitArray(final Object[] arrayToSplit,
-                                        final int chunkSize){
-        if(chunkSize<=0){
+                                        final int chunkSize) {
+        if (chunkSize <= 0) {
             return null;  // just in case :)
         }
         // first we have to check if the array can be split in multiple
@@ -75,14 +80,35 @@ public class Utils {
         // part from the input array. If we have a rest (rest>0), then
         // the last array will have less elements than the others. This
         // needs to be handled separately, so we iterate 1 times less.
-        for(int i = 0; i < (rest > 0 ? chunks - 1 : chunks); i++){
+        for (int i = 0; i < (rest > 0 ? chunks - 1 : chunks); i++) {
             // this copies 'chunk' times 'chunkSize' elements into a new array
             arrays[i] = Arrays.copyOfRange(arrayToSplit, i * chunkSize, i * chunkSize + chunkSize);
         }
-        if(rest > 0){ // only when we have a rest
+        if (rest > 0) { // only when we have a rest
             // we copy the remaining elemeLnts into the last chunk
             arrays[chunks - 1] = Arrays.copyOfRange(arrayToSplit, (chunks - 1) * chunkSize, (chunks - 1) * chunkSize + rest);
         }
         return arrays; // that's it
+    }
+
+
+    public static String getVolleymessage(final VolleyError error) {
+        String body = "";
+        //get status code here
+        if (error.networkResponse != null) {
+           final String statusCode = String.valueOf(error.networkResponse.statusCode);
+            //get response body and parse with appropriate encoding
+            if (error.networkResponse.data != null) {
+                try {
+                    body = new String(error.networkResponse.data, "UTF-8");
+                } catch (final UnsupportedEncodingException e) {
+                    e.printStackTrace();
+                }
+            }
+        }else{
+            body = error.getMessage();
+        }
+
+        return body;
     }
 }

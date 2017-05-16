@@ -16,6 +16,13 @@
     <PreferenceCategory
         android:defaultValue="true"
         android:title="Server Url">
+
+        <!--<ListPreference-->
+        <!--android:key="pref_server_url"-->
+        <!--android:title="@string/pref_title_server_url"-->
+        <!--android:entries="@array/Voice"-->
+        <!--android:entryValues="@array/serverUrls"/>-->
+
         <EditTextPreference
             android:capitalize="words"
             android:defaultValue="@string/pref_default_server_url"

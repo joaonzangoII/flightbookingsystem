@@ -17,6 +17,8 @@ import java.lang.reflect.Type;
 
 import tut.flightbookingsystem.base.BaseActivity;
 import tut.flightbookingsystem.model.Booking;
+import tut.flightbookingsystem.model.FlightSeat;
+import tut.flightbookingsystem.model.Meal;
 import tut.flightbookingsystem.model.Passenger;
 
 public class BookingConfirmationActivity extends BaseActivity {
@@ -27,14 +29,11 @@ public class BookingConfirmationActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_booking_confirmation);
         setTitle("Booking Confirmation");
-
         final Gson gson = new GsonBuilder().create();
         final Type type = new TypeToken<Booking>() {
         }.getType();
-
         final Bundle args = getIntent().getBundleExtra(Constant.DATA);
         mBooking = (Booking) gson.fromJson(args.getString(Constant.BOOKING), type);
-
         ((TextView) findViewById(R.id.booking_date))
                 .setText(String.format("%1$s", mBooking.created_at));
         ((TextView) findViewById(R.id.total))
@@ -53,27 +52,13 @@ public class BookingConfirmationActivity extends BaseActivity {
                 .setText(String.format("Arrival Time: %1$s", mBooking.departure_flight.schedule.arrival_time));
         ((TextView) findViewById(R.id.duration))
                 .setText(String.format("Duration: %1$s", mBooking.departure_flight.schedule.duration));
-
         final LinearLayout passengerLayout = (LinearLayout) findViewById(R.id.passengerLayout);
-
         final TextView textView = (TextView) findViewById(R.id.json);
         textView.setText(args.getString(Constant.BOOKING));
-
         passengerLayout.removeAllViewsInLayout();
         passengerLayout.removeAllViews();
         for (Passenger passenger : mBooking.passengers) {
-            final CardView cardview = (CardView) getInflater()
-                    .inflate(R.layout.passenger_confirmation_layout, null)
-                    .findViewById(R.id.layout);
-            final TextView name = (TextView) cardview.findViewById(R.id.name);
-            final TextView travelClass = (TextView) cardview.findViewById(R.id.travel_class);
-            final TextView foodType = (TextView) cardview.findViewById(R.id.foodType);
-
-            name.setText(String.format("Name: %1$s", passenger.name));
-            travelClass.setText(String.format("Travel Class: %1$s", passenger.flight_seat.travel_class.name));
-            foodType.setText(String.format("Food Type: %1$s", passenger.meal.food.food_type.name));
-            foodType.setText(String.format("Seat Number: %1$s", passenger.flight_seat.number));
-            passengerLayout.addView(cardview);
+            passengerLayout.addView(setupPassenger(passenger));
         }
 
         final AppCompatButton btnDone = (AppCompatButton) findViewById(R.id.done);
@@ -85,6 +70,42 @@ public class BookingConfirmationActivity extends BaseActivity {
             }
         });
 
+    }
+
+    public CardView setupPassenger(final Passenger passenger) {
+        final CardView cardview = (CardView) getInflater()
+                .inflate(R.layout.passenger_confirmation_layout, null)
+                .findViewById(R.id.layout);
+        final TextView firstName = (TextView) cardview.findViewById(R.id.first_name);
+        final TextView lastName = (TextView) cardview.findViewById(R.id.last_name);
+        final TextView travelClass = (TextView) cardview.findViewById(R.id.travel_class);
+        final TextView seatNumber = (TextView) cardview.findViewById(R.id.seat_number);
+        final TextView foodType = (TextView) cardview.findViewById(R.id.food_type);
+
+        firstName.setText(String.format("First Name: %1$s", passenger.first_name));
+        lastName.setText(String.format("Last Name: %1$s", passenger.last_name));
+        //name.setText(String.format("Name: %1$s", passenger.name));
+
+        final FlightSeat flight_seat = passenger.flight_seat;
+        if (flight_seat != null) {
+            seatNumber.setText(String.format("Seat Number: %1$s", passenger.flight_seat.number));
+            if (flight_seat.travel_class != null) {
+                if (flight_seat.travel_class.name != null) {
+                    travelClass.setText(String.format("Travel Class: %1$s", flight_seat.travel_class.name));
+                }
+            }
+        }
+
+        final Meal meal = passenger.meal;
+        if (meal != null) {
+            if (meal.food != null) {
+                if (meal.food.food_type != null) {
+                    foodType.setText(String.format("Food Type:  %1$s", passenger.meal.food.food_type.name));
+                }
+            }
+        }
+
+        return cardview;
     }
 
     public LayoutInflater getInflater() {

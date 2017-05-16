@@ -53,7 +53,7 @@
         <item name="android:textColor">@color/Black</item>
     </style>
 
-    <style name="DialogFragmentTheme" parent="@style/Theme.AppCompat.Light.DarkActionBar">
+    <style name="DialogFragmentTheme" parent="AppTheme">
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>

@@ -23,6 +23,7 @@ import tut.flightbookingsystem.Constant;
 import tut.flightbookingsystem.MyApplication;
 import tut.flightbookingsystem.SessionManager;
 import tut.flightbookingsystem.model.User;
+import tut.flightbookingsystem.util.Utils;
 
 public class RequestManager {
     private static String TAG = RequestManager.class.getName();
@@ -87,7 +88,7 @@ public class RequestManager {
             @Override
             public void onErrorResponse(VolleyError error) {
                 Log.e(TAG, "Registration Error: " + error.getMessage());
-                Toast.makeText(getApplicationContext(), error.getMessage(), Toast.LENGTH_LONG).show();
+                Toast.makeText(getApplicationContext(), Utils.getVolleymessage(error), Toast.LENGTH_LONG).show();
                 setLoading(context, false);
                 session.setLogin(false);
                 session.setLoggedinUser(null);
@@ -169,7 +170,7 @@ public class RequestManager {
             @Override
             public void onErrorResponse(VolleyError error) {
                 Log.e(TAG, "Login Error: " + error.getMessage());
-                Toast.makeText(getApplicationContext(), error.getMessage(), Toast.LENGTH_LONG).show();
+                Toast.makeText(getApplicationContext(), Utils.getVolleymessage(error), Toast.LENGTH_LONG).show();
                 setLoading(context, false);
                 session.setLogin(false);
                 session.setLoggedinUser(null);
@@ -221,7 +222,7 @@ public class RequestManager {
                 }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                Toast.makeText(getApplicationContext(), error.getMessage(), Toast.LENGTH_LONG).show();
+                Toast.makeText(getApplicationContext(), Utils.getVolleymessage(error), Toast.LENGTH_LONG).show();
                 //session.setServicosByCategoria("[]");
                 setLoading(context, false);
                 bundle.putBoolean(Constant.ERROR, true);
@@ -271,7 +272,7 @@ public class RequestManager {
                 }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                Toast.makeText(getApplicationContext(), error.getMessage(), Toast.LENGTH_LONG).show();
+                Toast.makeText(getApplicationContext(), Utils.getVolleymessage(error), Toast.LENGTH_LONG).show();
                 //session.setServicosByCategoria("[]");
                 setLoading(context, false);
                 bundle.putBoolean(Constant.ERROR, true);
@@ -332,20 +333,19 @@ public class RequestManager {
                                 final String errorMsg = jObj.getString("messages");
                                 Toast.makeText(getApplicationContext(), errorMsg, Toast.LENGTH_LONG).show();
                             }
-                        } catch (final JSONException e) {
-                            // JSON error
-                            e.printStackTrace();
-                            Toast.makeText(getApplicationContext(), "Json error: " + e.getMessage(), Toast.LENGTH_LONG).show();
+                        } catch (final JSONException error) {
+                            error.printStackTrace();
+                            Toast.makeText(getApplicationContext(), error.getMessage(), Toast.LENGTH_LONG).show();
                         }
                         setLoading(context, false);
                     }
                 }, new Response.ErrorListener() {
             @Override
-            public void onErrorResponse(VolleyError error) {
+            public void onErrorResponse(final VolleyError error) {
                 if (error.getMessage() != null) {
-                    Toast.makeText(getApplicationContext(), error.getMessage(), Toast.LENGTH_LONG).show();
+                    Toast.makeText(getApplicationContext(), Utils.getVolleymessage(error), Toast.LENGTH_LONG).show();
                 } else {
-                    Toast.makeText(getApplicationContext(), error.toString(), Toast.LENGTH_LONG).show();
+                    Toast.makeText(getApplicationContext(), Utils.getVolleymessage(error), Toast.LENGTH_LONG).show();
                 }
                 //session.setServicosByCategoria$seat_price("[]");
                 setLoading(context, false);
@@ -391,7 +391,7 @@ public class RequestManager {
                 }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                Toast.makeText(getApplicationContext(), error.getMessage(), Toast.LENGTH_LONG).show();
+                Toast.makeText(getApplicationContext(), Utils.getVolleymessage(error), Toast.LENGTH_LONG).show();
                 session.setCountries("[]");
                 bundle.putBoolean(Constant.ERROR, true);
                 requestHandler.sendMessage(msg);
@@ -424,7 +424,7 @@ public class RequestManager {
                 }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                Toast.makeText(getApplicationContext(), error.getMessage(), Toast.LENGTH_LONG).show();
+                Toast.makeText(getApplicationContext(), Utils.getVolleymessage(error), Toast.LENGTH_LONG).show();
                 session.setFoods("[]");
                 bundle.putBoolean(Constant.ERROR, true);
                 requestHandler.sendMessage(msg);
@@ -456,7 +456,7 @@ public class RequestManager {
                 }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                Toast.makeText(getApplicationContext(), error.getMessage(), Toast.LENGTH_LONG).show();
+                Toast.makeText(getApplicationContext(), Utils.getVolleymessage(error), Toast.LENGTH_LONG).show();
                 session.setDrinks("[]");
                 requestHandler.sendMessage(msg);
             }
@@ -487,7 +487,7 @@ public class RequestManager {
                 }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                Toast.makeText(getApplicationContext(), error.getMessage(), Toast.LENGTH_LONG).show();
+                Toast.makeText(getApplicationContext(), Utils.getVolleymessage(error), Toast.LENGTH_LONG).show();
                 session.setAirports("[]");
                 bundle.putBoolean(Constant.ERROR, true);
                 bundle.putBoolean(Constant.IS_GETTING_AIRPORTS, false);
@@ -519,7 +519,7 @@ public class RequestManager {
                 }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                Toast.makeText(getApplicationContext(), error.getMessage(), Toast.LENGTH_LONG).show();
+                Toast.makeText(getApplicationContext(), Utils.getVolleymessage(error), Toast.LENGTH_LONG).show();
                 session.setTravelClasses("[]");
                 bundle.putBoolean(Constant.ERROR, true);
                 requestHandler.sendMessage(msg);
@@ -558,7 +558,7 @@ public class RequestManager {
                 }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                Toast.makeText(getApplicationContext(), error.getMessage(), Toast.LENGTH_LONG).show();
+                Toast.makeText(getApplicationContext(), Utils.getVolleymessage(error), Toast.LENGTH_LONG).show();
                 session.setMyBookings("[]");
                 bundle.putBoolean(Constant.ERROR, true);
                 requestHandler.sendMessage(msg);
@@ -599,7 +599,7 @@ public class RequestManager {
                 }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                Toast.makeText(getApplicationContext(), error.getMessage(), Toast.LENGTH_LONG).show();
+                Toast.makeText(getApplicationContext(), Utils.getVolleymessage(error), Toast.LENGTH_LONG).show();
                 session.setFlightSeats("[]");
                 bundle.putBoolean(Constant.ERROR, true);
                 requestHandler.sendMessage(msg);

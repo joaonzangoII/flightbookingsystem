@@ -60,6 +60,14 @@ public class BaseActivity extends AppCompatActivity implements View.OnClickListe
             case R.id.action_settings:
                 goToActivity(SettingsActivity.class);
                 break;
+            case R.id.action_reload:
+                final Intent intent = getIntent();
+                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP |
+                        Intent.FLAG_ACTIVITY_NEW_TASK |
+                        Intent.FLAG_ACTIVITY_NO_ANIMATION);
+                finish();
+                startActivity(intent);
+                break;
         }
         return true;
     }
@@ -145,6 +153,6 @@ public class BaseActivity extends AppCompatActivity implements View.OnClickListe
 
     @Override
     public void onRefresh() {
-        
+
     }
 }

@@ -2,42 +2,36 @@ package tut.flightbookingsystem.adapter.holder;
 
 import android.support.v7.widget.AppCompatTextView;
 import android.view.View;
-import android.widget.RelativeLayout;
+import android.widget.Button;
 
-import com.bignerdranch.expandablerecyclerview.ParentViewHolder;
+import com.thoughtbot.expandablerecyclerview.models.ExpandableGroup;
+import com.thoughtbot.expandablerecyclerview.viewholders.GroupViewHolder;
 
 import tut.flightbookingsystem.R;
-import tut.flightbookingsystem.listener.RecyclerClickListener;
-import tut.flightbookingsystem.model.PassengerHeader;
 
-public class PassengerHeaderViewHolder extends ParentViewHolder {
+public class PassengerHeaderViewHolder extends GroupViewHolder {
     private AppCompatTextView mTxtTitle;
-    private RelativeLayout rLButton;
+    private Button rLButton;
 
     public PassengerHeaderViewHolder(final View itemView) {
         super(itemView);
         mTxtTitle = (AppCompatTextView) itemView.findViewById(R.id.passengerNumber);
-        rLButton = (RelativeLayout) itemView.findViewById(R.id.button);
-        rLButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (isExpanded()) {
-                    collapseView();
-                } else {
-                    expandView();
-                }
-            }
-        });
     }
 
-    public void bind(final PassengerHeader passengerHeader,
-                     final int position) {
-        //mTxtTitle.setText(passengerHeader.getName());
+    public void setHeaderTitle(final ExpandableGroup group,
+                               final int position) {
+        mTxtTitle.setText(group.getTitle());
         mTxtTitle.setText(String.format("Passenger: %1$s", (position + 1)));
+
     }
 
     @Override
-    public boolean shouldItemViewClickToggleExpansion() {
-        return false;
+    public void expand() {
+        //animateExpand();
+    }
+
+    @Override
+    public void collapse() {
+        //animateCollapse();
     }
 }

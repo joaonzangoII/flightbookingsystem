@@ -30,6 +30,7 @@ import tut.flightbookingsystem.manager.RequestManager;
 import tut.flightbookingsystem.model.Airport;
 import tut.flightbookingsystem.model.Schedule;
 import tut.flightbookingsystem.model.TravelClass;
+import tut.flightbookingsystem.util.Utils;
 
 public class FindFlightActivity extends BaseActivity {
     private static String TAG = FindFlightActivity.class.getName();

@@ -52,7 +52,6 @@ public class MyBookingsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
             vH.txt_departure_time.setText(String.format("Departure Time: %1$s", mBooking.departure_flight.schedule.departure_time));
             vH.txt_arrival_time.setText(String.format("Arrival Time: %1$s", mBooking.departure_flight.schedule.arrival_time));
             vH.txt_duration.setText(String.format("Duration: %1$s", mBooking.departure_flight.schedule.duration));
-
             vH.itemView.setOnClickListener(new RecyclerClickListener(position, onItemClickCallback));
         }
     }

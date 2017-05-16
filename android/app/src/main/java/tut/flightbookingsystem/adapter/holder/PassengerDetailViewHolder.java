@@ -10,23 +10,25 @@ import android.support.v7.widget.AppCompatEditText;
 import android.text.Editable;
 import android.text.InputType;
 import android.text.TextWatcher;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.bignerdranch.expandablerecyclerview.ChildViewHolder;
+import com.thoughtbot.expandablerecyclerview.viewholders.ChildViewHolder;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Locale;
 
-import tut.flightbookingsystem.PassengerSeatsDialog;
+import tut.flightbookingsystem.PassengerSeatsDialogFragment;
 import tut.flightbookingsystem.R;
 import tut.flightbookingsystem.listener.MyDialogListener;
 import tut.flightbookingsystem.listener.RecyclerClickListener;
+import tut.flightbookingsystem.model.AbstractItem;
+import tut.flightbookingsystem.model.FlightSeat;
 import tut.flightbookingsystem.model.Passenger;
 
 public class PassengerDetailViewHolder extends ChildViewHolder {
@@ -40,11 +42,9 @@ public class PassengerDetailViewHolder extends ChildViewHolder {
     public Button btn_add_meal;
     public AppCompatEditText txt_select_seat_id;
     // public Spinner spn_select_seat_id;
-    public RelativeLayout buttonLayout;
 
     public PassengerDetailViewHolder(final View itemView) {
         super(itemView);
-        buttonLayout = (RelativeLayout) itemView.findViewById(R.id.button);
         txt_title = (TextView) itemView.findViewById(R.id.passengerNumber);
         edt_first_name = (AppCompatEditText) itemView.findViewById(R.id.first_name);
         edt_middle_name = (AppCompatEditText) itemView.findViewById(R.id.middle_name);
@@ -82,7 +82,6 @@ public class PassengerDetailViewHolder extends ChildViewHolder {
             });
 
             departureDatePickerDialog = datepicker(itemView.getContext(), txt_date_of_birth);
-
             btn_add_meal.setOnClickListener(new RecyclerClickListener(position, onItemClickCallback));
             itemView.setOnClickListener(new RecyclerClickListener(position, onItemClickCallback));
             setListenerAndData(edt_first_name, "first_name", passenger);
@@ -91,53 +90,44 @@ public class PassengerDetailViewHolder extends ChildViewHolder {
             setListenerAndData(edt_id_number, "id_number", passenger);
             setListenerAndData(txt_date_of_birth, "date_of_birth", passenger);
 
-            /*final FlightSeatSpinnerAdapter flightSeatAdapter = new FlightSeatSpinnerAdapter
-                    (itemView.getContext(), R.layout.spinners_item_layout, flightSeatsItems);*/
-
-            txt_select_seat_id.setOnClickListener(new View.OnClickListener() {
+            txt_select_seat_id.setOnTouchListener(new View.OnTouchListener() {
                 @Override
-                public void onClick(View v) {
-                    final FragmentManager manager = ((FragmentActivity)
-                            itemView.getContext()).getSupportFragmentManager();
-                    final Fragment frag = manager.findFragmentByTag("fragment_passenger_dialog");
-                    if (frag != null) {
-                        manager.beginTransaction().remove(frag).commit();
+                public boolean onTouch(final View v,
+                                       final MotionEvent event) {
+                    if (MotionEvent.ACTION_UP == event.getAction()) {
+                        final FragmentManager manager = ((FragmentActivity)
+                                itemView.getContext()).getSupportFragmentManager();
+                        final Fragment frag = manager.findFragmentByTag("fragment_passenger_dialog");
+                        if (frag != null) {
+                            manager.beginTransaction().remove(frag).commit();
+                        }
+
+                        final PassengerSeatsDialogFragment dialog = new PassengerSeatsDialogFragment();
+                        dialog.setStyle(DialogFragment.STYLE_NORMAL, R.style.DialogFragmentTheme);
+                        dialog.setMyDialogListener(new MyDialogListener() {
+                            public void userSelectedAValue(final Object value) {
+                                if (value instanceof AbstractItem) {
+                                    passenger.flight_seat_id = ((AbstractItem) value).getId();
+                                    txt_select_seat_id.setText(((AbstractItem) value).getLabel());
+                                } else if (value instanceof FlightSeat) {
+                                    passenger.flight_seat_id = ((FlightSeat) value).id;
+                                    txt_select_seat_id.setText(String.valueOf(((FlightSeat) value).number));
+                                } else {
+                                    passenger.flight_seat_id = (int) value;
+                                    txt_select_seat_id.setText(String.valueOf(value));
+                                }
+                                //Toast.makeText(itemView.getContext(), value.getClass().getCanonicalName(), Toast.LENGTH_SHORT).show();
+                            }
+
+                            public void userCanceled() {
+                            }
+                        });
+                        dialog.show(manager, "fragment_passenger_dialog");
                     }
 
-                    final PassengerSeatsDialog dialog = new PassengerSeatsDialog();
-                    dialog.setStyle(DialogFragment.STYLE_NORMAL, R.style.DialogFragmentTheme);
-                    dialog.setMyDialogListener(new MyDialogListener() {
-                        public void userSelectedAValue(final Object value) {
-                            if (value instanceof Integer) {
-                                passenger.flight_seat_id = (int) value;
-
-                                txt_select_seat_id.setText(passenger.flight_seat_id + "");
-                            }
-                        }
-
-                        public void userCanceled() {
-                        }
-                    });
-                    dialog.show(manager, "fragment_passenger_dialog");
-
+                    return true;
                 }
             });
-
-            /*spn_select_seat_id.setAdapter(flightSeatAdapter);
-            spn_select_seat_id.setOnItemSelectedListener(new AdapterV iew.OnItemSelectedListener() {
-                @Override
-                public void onItemSelected(AdapterView<?> adapterView,
-                                           View view,
-                                           int i,
-                                           long id) {
-
-                }
-
-                @Override
-                public void onNothingSelected(AdapterView<?> adapterView) {
-
-                }
-            });*/
         }
     }
 
@@ -211,9 +201,4 @@ public class PassengerDetailViewHolder extends ChildViewHolder {
                 newCalendar.get(Calendar.MONTH),
                 newCalendar.get(Calendar.DAY_OF_MONTH));
     }
-
-//    public void setFlightSeats(final List<FlightSeat> flightSeatsItems) {
-//        this.flightSeatsItems = flightSeatsItems;
-//        notifyDataSetChanged();
-//    }
 }
