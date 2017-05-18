@@ -6,6 +6,8 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Passenger;
 use App\Meal;
+use Auth;
+use App\User;
 use App\Flight;
 use App\AircraftSeat;
 use App\FlightSeat;
@@ -13,11 +15,10 @@ use App\FlightSeatPrice;
 use App\Booking;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Log;
-use Nexmo\Laravel\Facade\Nexm);
+use Nexmo\Laravel\Facade\Nexmo;
 
-class FlightsController extends Controller
+class AuthController extends Controller
 {
-
   public function login(Request $request)
   {
     $email = $request->input('email');

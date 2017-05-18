@@ -20,6 +20,7 @@ class CreateBookingsTable extends Migration
             $table->decimal('subtotal')->default(0.0);
             $table->decimal('total')->default(0.0);
             $table->boolean('return')->default(true);
+            $table->enum('status', ['booked', 'paid'])->default('booked');
             $table->integer('user_id')->unsigned();
             $table->foreign('user_id')
                   ->references('id')

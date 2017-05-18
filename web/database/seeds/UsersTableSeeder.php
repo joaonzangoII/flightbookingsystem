@@ -26,7 +26,7 @@ class UsersTableSeeder extends Seeder
         'last_name' => 'Admin',
         'phone' => '0000000000',
         'id_number' => '0000000000000',
-        'email' => 'systemadmin@flightbookingsystem.com',
+        'email' => 'admin@flightbookingsystem.com',
         'country_id' => $country_id,
         'user_type_id' => $user_type_admin->id,
         'password' => $password ?: $password = bcrypt('secret'),

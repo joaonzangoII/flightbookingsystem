@@ -16,8 +16,8 @@ class Passenger extends Model
     return $this->hasOne('App\Meal');
   }
 
-  public function bookings(){
-    return $this->hasMany('App\Booking');
+  public function booking(){
+    return $this->belongsTo('App\Booking');
   }
 
   public function flight_seat(){

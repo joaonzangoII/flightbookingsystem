@@ -8,7 +8,7 @@ class Booking extends Model
 {
     protected $fillable = [
       'booking_number', 'return', 'user_id','departure_flight_id',
-      'return_flight_id','aircraft_id', 'subtotal', 'total'
+      'status','return_flight_id','aircraft_id', 'subtotal', 'total'
     ];
 
     public function departure_flight(){
