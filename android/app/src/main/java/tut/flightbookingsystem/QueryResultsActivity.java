@@ -1,12 +1,14 @@
 package tut.flightbookingsystem;
 
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.support.v7.app.ActionBar;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
@@ -17,6 +19,8 @@ import java.util.List;
 import tut.flightbookingsystem.adapter.ScheduleAdapter;
 import tut.flightbookingsystem.base.BaseActivity;
 import tut.flightbookingsystem.listener.RecyclerClickListener;
+import tut.flightbookingsystem.manager.RequestManager;
+import tut.flightbookingsystem.model.FlightSeat;
 import tut.flightbookingsystem.model.Schedule;
 
 public class QueryResultsActivity extends BaseActivity {
@@ -27,6 +31,30 @@ public class QueryResultsActivity extends BaseActivity {
     private static String TAG = QueryResultsActivity.class.getName();
     private int num_people;
     private int travel_class_id;
+
+    final Handler requestHandler = new Handler(new Handler.Callback() {
+        @Override
+        public boolean handleMessage(Message message) {
+            final Bundle data = message.getData();
+            if (!data.getBoolean(Constant.ERROR)) {
+
+                final List<FlightSeat> flighSeatsList = session.getFlightSeats();
+                if (flighSeatsList.size() >= num_people) {
+                    final Bundle args = new Bundle();
+                    args.putSerializable(Constant.SCHEDULE, session.getSchedule());
+                    args.putInt(Constant.NUM_PEOPLE, num_people);
+                    args.putInt(Constant.TRAVEL_CLASS_ID, travel_class_id);
+                    goToActivity(BookingActivity.class, args);
+                } else {
+                    Toast.makeText(QueryResultsActivity.this,
+                            String.format("There are are only %1$d available", flighSeatsList.size()),
+                            Toast.LENGTH_SHORT).show();
+                }
+            }
+            return false;
+        }
+    });
+
     private RecyclerClickListener.OnItemClickCallback onItemClickCallback =
             new RecyclerClickListener.OnItemClickCallback() {
                 @Override
@@ -45,12 +73,7 @@ public class QueryResultsActivity extends BaseActivity {
                                     .create()
                                     .toJson(schedule);
                             session.setSchedule(strSchedule);
-                            Log.e(TAG, strSchedule);
-                            final Bundle args = new Bundle();
-                            args.putSerializable(Constant.SCHEDULE, schedule);
-                            args.putInt(Constant.NUM_PEOPLE, num_people);
-                            args.putInt(Constant.TRAVEL_CLASS_ID, travel_class_id);
-                            goToActivity(BookingActivity.class, args);
+                            RequestManager.getFlightSeats(session, schedule.flight_id, travel_class_id, requestHandler);
                         }
                     }
                 }

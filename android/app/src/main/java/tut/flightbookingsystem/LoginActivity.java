@@ -9,9 +9,10 @@ import android.view.View;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 
+import tut.flightbookingsystem.base.AuthBaseActivity;
 import tut.flightbookingsystem.manager.RequestManager;
 
-public class LoginActivity extends AppCompatActivity {
+public class LoginActivity extends AuthBaseActivity {
 
     final Handler requestHandler = new Handler(new Handler.Callback() {
         @Override
@@ -51,7 +52,7 @@ public class LoginActivity extends AppCompatActivity {
 
     private void viewMain(final  boolean isLoggedIn) {
         if (isLoggedIn) {
-            final Intent intent = new Intent(LoginActivity.this, NavigationDrawerActivity.class);
+            final Intent intent = new Intent(LoginActivity.this, MainActivity.class);
             finish();
             startActivity(intent);
         }

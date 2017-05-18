@@ -65,7 +65,7 @@ public class BookingConfirmationActivity extends BaseActivity {
         btnDone.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                goToActivity(NavigationDrawerActivity.class);
+                goToActivity(MainActivity.class);
                 finish();
             }
         });

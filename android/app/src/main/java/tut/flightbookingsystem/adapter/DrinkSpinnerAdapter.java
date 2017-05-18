@@ -53,6 +53,15 @@ public class DrinkSpinnerAdapter extends BaseAdapter {
         return view;
     }
 
+    public int getById(final long id) {
+        for (int x = 0; x < drinks.size(); x++) {
+            if(drinks.get(x).id == id) {
+                return x;
+            }
+        }
+        return 0;
+    }
+
     public LayoutInflater getLayoutInflater() {
         return layoutInflater;
     }

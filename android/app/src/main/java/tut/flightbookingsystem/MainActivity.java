@@ -32,7 +32,7 @@ import tut.flightbookingsystem.manager.RequestManager;
 import tut.flightbookingsystem.model.Booking;
 import tut.flightbookingsystem.model.MainItem;
 
-public class NavigationDrawerActivity extends BaseActivity
+public class MainActivity extends BaseActivity
         implements NavigationView.OnNavigationItemSelectedListener {
     private SessionManager session;
     private HomeAdapter myHomeAdapter;
@@ -48,9 +48,11 @@ public class NavigationDrawerActivity extends BaseActivity
                 }.getType();
                 myBookingsList = gson.fromJson(data.getString(Constant.MY_BOOKINGS), type);
                 List<MainItem> items = new ArrayList<>();
-                items.add(new MainItem(1, String.format("%1$d", myBookingsList.size()), "Number of Bookings"));
-                items.add(new MainItem(2, String.format("%1$s", moneySpent(myBookingsList)), "Money Spent"));
-                items.add(new MainItem(3, String.format("%1$d", passengersBooked(myBookingsList)), "Passengers Booked"));
+                if (myBookingsList != null) {
+                    items.add(new MainItem(1, String.format("%1$d", myBookingsList.size()), "Number of Bookings"));
+                    items.add(new MainItem(2, String.format("%1$s", moneySpent(myBookingsList)), "Money Spent"));
+                    items.add(new MainItem(3, String.format("%1$d", passengersBooked(myBookingsList)), "Passengers Booked"));
+                }
                 myHomeAdapter.setItems(items);
 
                 //                if (myBookingsList != null) {
@@ -94,10 +96,10 @@ public class NavigationDrawerActivity extends BaseActivity
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_navigation_drawer);
+        setContentView(R.layout.activity_main);
         final RecyclerView recyclerView = (RecyclerView) findViewById(R.id.my_recycler_view);
         session = new SessionManager(this);
-        RequestManager.getMyBookings(session, requestHandler);
+        RequestManager.getMyBookings(session, MainActivity.this, requestHandler);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 

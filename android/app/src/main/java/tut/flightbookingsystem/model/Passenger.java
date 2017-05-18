@@ -16,6 +16,7 @@ public class Passenger implements Serializable, Parcelable {
     public String gender;
     public Meal meal;
     public long booking_id;
+    public Booking booking;
     public long flight_seat_id;
     public FlightSeat flight_seat;
     public String created_at;

@@ -162,6 +162,7 @@ public class FindFlightActivity extends BaseActivity {
 
     @Override
     public boolean onOptionsItemSelected(final MenuItem item) {
+        super.onOptionsItemSelected(item);
         final int id = item.getItemId();
         switch (id) {
             case android.R.id.home:

@@ -2,34 +2,57 @@ package tut.flightbookingsystem.base;
 
 import android.app.DatePickerDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.AppCompatEditText;
+import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.AdapterView;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.Spinner;
 import android.widget.Toast;
+
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.List;
 import java.util.Locale;
 
 import tut.flightbookingsystem.Constant;
+import tut.flightbookingsystem.QueryResultsActivity;
 import tut.flightbookingsystem.R;
 import tut.flightbookingsystem.SessionManager;
 import tut.flightbookingsystem.SettingsActivity;
 import tut.flightbookingsystem.SplashScreenActivity;
+import tut.flightbookingsystem.adapter.DrinkSpinnerAdapter;
+import tut.flightbookingsystem.adapter.FoodSpinnerAdapter;
+import tut.flightbookingsystem.manager.RequestManager;
+import tut.flightbookingsystem.model.Drink;
+import tut.flightbookingsystem.model.Food;
+import tut.flightbookingsystem.model.Meal;
+import tut.flightbookingsystem.model.Passenger;
 
 public class BaseActivity extends AppCompatActivity implements View.OnClickListener, SwipeRefreshLayout.OnRefreshListener {
+    private static String TAG = BaseActivity.class.getName();
     protected SessionManager session;
     protected SimpleDateFormat dateFormatter;
+    private int selected_drink_id;
+    private int selected_food_id;
+    private Spinner foodsSpinner;
+    private Spinner drinksSpinner;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -154,5 +177,117 @@ public class BaseActivity extends AppCompatActivity implements View.OnClickListe
     @Override
     public void onRefresh() {
 
+    }
+
+    public AlertDialog.Builder createDialog(final Passenger passenger) {
+        final AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
+        final View dialogView = getInflater().inflate(R.layout.add_meal_layout, null);
+        final List<Food> foods = session.getFoods();
+        final List<Drink> drinks = session.getDrinks();
+        final FoodSpinnerAdapter adapterFoods = new FoodSpinnerAdapter
+                (this, R.layout.spinners_item_layout, foods);
+        final DrinkSpinnerAdapter drinksAdapter = new DrinkSpinnerAdapter
+                (this, R.layout.spinners_item_layout, drinks);
+
+        foodsSpinner = (Spinner) dialogView.findViewById(R.id.foodSpinner);
+        foodsSpinner.setAdapter(adapterFoods);
+        foodsSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView,
+                                       View view,
+                                       int i,
+                                       long l) {
+                selected_food_id = i;
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
+
+        drinksSpinner = (Spinner) dialogView.findViewById(R.id.drinksSpinner);
+        drinksSpinner.setAdapter(drinksAdapter);
+        drinksSpinner.setAdapter(drinksAdapter);
+        drinksSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView,
+                                       View view,
+                                       int i,
+                                       long l) {
+                selected_drink_id = i;
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
+
+        if(passenger.meal !=null){
+            drinksSpinner.setSelection(drinksAdapter.getById(passenger.meal.drink_id));
+            foodsSpinner.setSelection(adapterFoods.getById(passenger.meal.food_id));
+        }
+
+        alertDialogBuilder.setTitle("Select Meal Choice");
+        alertDialogBuilder.setView(dialogView);
+        return alertDialogBuilder;
+    }
+
+    public void addMeal(final Passenger passenger) {
+        final AlertDialog.Builder alertDialogBuilder = createDialog(passenger);
+        alertDialogBuilder.setPositiveButton("YES", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                final Meal meal = new Meal();
+                meal.drink_id = drinksSpinner.getSelectedItemId();
+                meal.food_id = foodsSpinner.getSelectedItemId();
+                passenger.meal = meal;
+            }
+        });
+
+        alertDialogBuilder.setNegativeButton("NO", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+
+            }
+        });
+        alertDialogBuilder.create().show();
+    }
+
+    public void addEditMeal(final Passenger passenger,
+                            final Handler requestHandler) {
+        final AlertDialog.Builder alertDialogBuilder = createDialog(passenger);
+        alertDialogBuilder.setPositiveButton("YES", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                final Meal meal = new Meal();
+                meal.drink_id = drinksSpinner.getSelectedItemId();
+                meal.food_id = foodsSpinner.getSelectedItemId();
+                passenger.meal = meal;
+                final Gson gson = new GsonBuilder().create();
+                RequestManager.updateBooking(session,
+                        BaseActivity.this,
+                        passenger.booking.user_id,
+                        gson.toJson(passenger),
+                        requestHandler);
+                Log.e(TAG,  gson.toJson(passenger));
+                Toast.makeText(BaseActivity.this,
+                        "Passender ID" + passenger.id,
+                        Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        alertDialogBuilder.setNegativeButton("NO", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+
+            }
+        });
+        alertDialogBuilder.create().show();
+    }
+
+    public LayoutInflater getInflater() {
+        return (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
     }
 }

@@ -78,7 +78,9 @@ public class RequestManager {
                         } catch (final JSONException e) {
                             // JSON error
                             e.printStackTrace();
-                            Toast.makeText(getApplicationContext(), "Json error: " + e.getMessage(), Toast.LENGTH_LONG).show();
+                            Toast.makeText(getApplicationContext(),
+                                    "Json error: " + e.getMessage(),
+                                    Toast.LENGTH_LONG).show();
                         }
                         setLoading(context, false);
 
@@ -87,8 +89,10 @@ public class RequestManager {
 
             @Override
             public void onErrorResponse(VolleyError error) {
-                Log.e(TAG, "Registration Error: " + error.getMessage());
-                Toast.makeText(getApplicationContext(), Utils.getVolleymessage(error), Toast.LENGTH_LONG).show();
+                Utils.logVolleyMessage(error, "Registration");
+                Toast.makeText(getApplicationContext(),
+                        Utils.getVolleyMessage(error),
+                        Toast.LENGTH_LONG).show();
                 setLoading(context, false);
                 session.setLogin(false);
                 session.setLoggedinUser(null);
@@ -168,9 +172,11 @@ public class RequestManager {
                 }, new Response.ErrorListener() {
 
             @Override
-            public void onErrorResponse(VolleyError error) {
-                Log.e(TAG, "Login Error: " + error.getMessage());
-                Toast.makeText(getApplicationContext(), Utils.getVolleymessage(error), Toast.LENGTH_LONG).show();
+            public void onErrorResponse(final VolleyError error) {
+                Utils.logVolleyMessage(error, "Login");
+                Toast.makeText(getApplicationContext(),
+                        Utils.getVolleyMessage(error),
+                        Toast.LENGTH_LONG).show();
                 setLoading(context, false);
                 session.setLogin(false);
                 session.setLoggedinUser(null);
@@ -222,7 +228,10 @@ public class RequestManager {
                 }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                Toast.makeText(getApplicationContext(), Utils.getVolleymessage(error), Toast.LENGTH_LONG).show();
+                Utils.logVolleyMessage(error, "Get Timetable");
+                Toast.makeText(getApplicationContext(),
+                        Utils.getVolleyMessage(error),
+                        Toast.LENGTH_LONG).show();
                 //session.setServicosByCategoria("[]");
                 setLoading(context, false);
                 bundle.putBoolean(Constant.ERROR, true);
@@ -272,7 +281,10 @@ public class RequestManager {
                 }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                Toast.makeText(getApplicationContext(), Utils.getVolleymessage(error), Toast.LENGTH_LONG).show();
+                Utils.logVolleyMessage(error, "Find Flights");
+                Toast.makeText(getApplicationContext(),
+                        Utils.getVolleyMessage(error),
+                        Toast.LENGTH_LONG).show();
                 //session.setServicosByCategoria("[]");
                 setLoading(context, false);
                 bundle.putBoolean(Constant.ERROR, true);
@@ -294,7 +306,6 @@ public class RequestManager {
         // Adding request to request queue
         MyApplication.getInstance().addToRequestQueue(stringRequest, tag_string_req);
     }
-
 
     public static void makeBooking(final SessionManager session,
                                    final Context context,
@@ -342,12 +353,10 @@ public class RequestManager {
                 }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(final VolleyError error) {
-                if (error.getMessage() != null) {
-                    Toast.makeText(getApplicationContext(), Utils.getVolleymessage(error), Toast.LENGTH_LONG).show();
-                } else {
-                    Toast.makeText(getApplicationContext(), Utils.getVolleymessage(error), Toast.LENGTH_LONG).show();
-                }
-                //session.setServicosByCategoria$seat_price("[]");
+                Utils.logVolleyMessage(error, "Make Booking");
+                Toast.makeText(getApplicationContext(),
+                        Utils.getVolleyMessage(error),
+                        Toast.LENGTH_LONG).show();
                 setLoading(context, false);
                 bundle.putBoolean(Constant.ERROR, true);
                 requestHandler.sendMessage(msg);
@@ -370,7 +379,139 @@ public class RequestManager {
         MyApplication.getInstance().addToRequestQueue(stringRequest, tag_string_req);
     }
 
-    public static void getCountries(final SessionManager session, final Handler requestHandler) {
+    public static void updateBooking(final SessionManager session,
+                                     final Context context,
+                                     final long user_id,
+                                     final String passenger,
+                                     final Handler requestHandler) {
+        final Message msg = requestHandler.obtainMessage();
+        final Bundle bundle = new Bundle();
+        final String url = session.getServerUrl() + RouteManager.UPDATE_BOOKINGS;
+        final String tag_string_req = "req_update_bookings";
+        setLoading(context, "Updating Passenger Meal..", true);
+        final StringRequest stringRequest = new StringRequest(
+                Request.Method.POST,
+                url,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        Log.e(tag_string_req, response);
+                        try {
+                            final JSONObject jObj = new JSONObject(response);
+                            final boolean error = jObj.getBoolean("erro");
+                            if (!error) {
+                                bundle.putString(Constant.BOOKING,
+                                        jObj.getJSONObject("booking").toString());
+                                bundle.putBoolean(Constant.ERROR, false);
+                                bundle.putBoolean(Constant.IS_BOOKING, true);
+                                msg.setData(bundle);
+                                requestHandler.sendMessage(msg);
+                                setLoading(context, false);
+                            } else {
+                                setLoading(context, false);
+                                bundle.putBoolean(Constant.ERROR, true);
+                                requestHandler.sendMessage(msg);
+                                final String errorMsg = jObj.getString("messages");
+                                Toast.makeText(getApplicationContext(),
+                                        errorMsg,
+                                        Toast.LENGTH_LONG).show();
+                            }
+                        } catch (final JSONException error) {
+                            error.printStackTrace();
+                            Toast.makeText(getApplicationContext(),
+                                    error.getMessage(),
+                                    Toast.LENGTH_LONG).show();
+                        }
+                        setLoading(context, false);
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(final VolleyError error) {
+                Utils.logVolleyMessage(error, "Update Booking");
+                Toast.makeText(getApplicationContext(),
+                        Utils.getVolleyMessage(error),
+                        Toast.LENGTH_LONG).show();
+                setLoading(context, false);
+                bundle.putBoolean(Constant.ERROR, true);
+                requestHandler.sendMessage(msg);
+            }
+        }) {
+            @Override
+            protected Map<String, String> getParams() {
+                // Posting parameters to login url
+                Map<String, String> params = new HashMap<>();
+                params.put("user_id", String.valueOf(user_id));
+                params.put("passenger", passenger);
+                return params;
+            }
+
+        };
+        // Adding request to request queue
+        MyApplication.getInstance().addToRequestQueue(stringRequest, tag_string_req);
+    }
+
+    public static void getInitialData(final SessionManager session,
+                                      final Handler requestHandler) {
+        final Message msg = requestHandler.obtainMessage();
+        final Bundle bundle = new Bundle();
+        final String url = session.getServerUrl() + RouteManager.GET_INITIAL_DATA;
+        final String tag_string_req = "req_get_initial_data";
+        final StringRequest stringRequest = new StringRequest(
+                Request.Method.GET,
+                url,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        Log.e(tag_string_req, response);
+                        try {
+                            final JSONObject jObj = new JSONObject(response);
+                            session.setCountries(jObj.getJSONArray("countries").toString());
+                            session.setTravelClasses(jObj.getJSONArray("travelClasses").toString());
+                            session.setAirports(jObj.getJSONArray("airports").toString());
+                            session.setFoods(jObj.getJSONArray("foods").toString());
+                            session.setDrinks(jObj.getJSONArray("drinks").toString());
+                            bundle.putBoolean(Constant.ERROR, false);
+                            bundle.putBoolean(Constant.DONE_LOADING, true);
+                            msg.setData(bundle);
+                            requestHandler.sendMessage(msg);
+                        } catch (final JSONException error) {
+                            /*session.setCountries("[]");
+                            session.setTravelClasses("[]");
+                            session.setAirports("[]");
+                            session.setFoods("[]");
+                            session.setDrinks("[]");*/
+                            bundle.putBoolean(Constant.ERROR, true);
+                            bundle.putBoolean(Constant.DONE_LOADING, true);
+                            requestHandler.sendMessage(msg);
+                            error.printStackTrace();
+                            Toast.makeText(getApplicationContext(),
+                                    error.getMessage(),
+                                    Toast.LENGTH_LONG).show();
+                        }
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Utils.logVolleyMessage(error, "Get Initial Data");
+                Toast.makeText(getApplicationContext(),
+                        Utils.getVolleyMessage(error),
+                        Toast.LENGTH_LONG).show();
+                session.setCountries("[]");
+                session.setTravelClasses("[]");
+                session.setAirports("[]");
+                session.setFoods("[]");
+                session.setDrinks("[]");
+                bundle.putBoolean(Constant.ERROR, true);
+                requestHandler.sendMessage(msg);
+            }
+        });
+
+        // Adding request to request queue
+        MyApplication.getInstance().addToRequestQueue(stringRequest, tag_string_req);
+    }
+
+    public static void getCountries(final SessionManager session,
+                                    final Handler requestHandler) {
         final Message msg = requestHandler.obtainMessage();
         final Bundle bundle = new Bundle();
         final String url = session.getServerUrl() + RouteManager.GET_COUNTRIES;
@@ -391,7 +532,10 @@ public class RequestManager {
                 }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                Toast.makeText(getApplicationContext(), Utils.getVolleymessage(error), Toast.LENGTH_LONG).show();
+                Utils.logVolleyMessage(error, "Get Countries");
+                Toast.makeText(getApplicationContext(),
+                        Utils.getVolleyMessage(error),
+                        Toast.LENGTH_LONG).show();
                 session.setCountries("[]");
                 bundle.putBoolean(Constant.ERROR, true);
                 requestHandler.sendMessage(msg);
@@ -402,8 +546,8 @@ public class RequestManager {
         MyApplication.getInstance().addToRequestQueue(stringRequest, tag_string_req);
     }
 
-
-    public static void getFoods(final SessionManager session, final Handler requestHandler) {
+    public static void getFoods(final SessionManager session,
+                                final Handler requestHandler) {
         final Message msg = requestHandler.obtainMessage();
         final Bundle bundle = new Bundle();
         final String url = session.getServerUrl() + RouteManager.GET_FOODS;
@@ -424,7 +568,10 @@ public class RequestManager {
                 }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                Toast.makeText(getApplicationContext(), Utils.getVolleymessage(error), Toast.LENGTH_LONG).show();
+                Utils.logVolleyMessage(error, "Get Foods");
+                Toast.makeText(getApplicationContext(),
+                        Utils.getVolleyMessage(error),
+                        Toast.LENGTH_LONG).show();
                 session.setFoods("[]");
                 bundle.putBoolean(Constant.ERROR, true);
                 requestHandler.sendMessage(msg);
@@ -456,7 +603,10 @@ public class RequestManager {
                 }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                Toast.makeText(getApplicationContext(), Utils.getVolleymessage(error), Toast.LENGTH_LONG).show();
+                Utils.logVolleyMessage(error, "Get Drinks");
+                Toast.makeText(getApplicationContext(),
+                        Utils.getVolleyMessage(error),
+                        Toast.LENGTH_LONG).show();
                 session.setDrinks("[]");
                 requestHandler.sendMessage(msg);
             }
@@ -466,7 +616,8 @@ public class RequestManager {
         MyApplication.getInstance().addToRequestQueue(stringRequest, tag_string_req);
     }
 
-    public static void getAirports(final SessionManager session, final Handler requestHandler) {
+    public static void getAirports(final SessionManager session,
+                                   final Handler requestHandler) {
         final Message msg = requestHandler.obtainMessage();
         final Bundle bundle = new Bundle();
         final String url = session.getServerUrl() + RouteManager.GET_AIRPORTS;
@@ -487,7 +638,10 @@ public class RequestManager {
                 }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                Toast.makeText(getApplicationContext(), Utils.getVolleymessage(error), Toast.LENGTH_LONG).show();
+                Utils.logVolleyMessage(error, "Get Airports");
+                Toast.makeText(getApplicationContext(),
+                        Utils.getVolleyMessage(error),
+                        Toast.LENGTH_LONG).show();
                 session.setAirports("[]");
                 bundle.putBoolean(Constant.ERROR, true);
                 bundle.putBoolean(Constant.IS_GETTING_AIRPORTS, false);
@@ -499,7 +653,8 @@ public class RequestManager {
         MyApplication.getInstance().addToRequestQueue(stringRequest, tag_string_req);
     }
 
-    public static void getTravelclasses(final SessionManager session, final Handler requestHandler) {
+    public static void getTravelclasses(final SessionManager session,
+                                        final Handler requestHandler) {
         final Message msg = requestHandler.obtainMessage();
         final Bundle bundle = new Bundle();
         final String url = session.getServerUrl() + RouteManager.GET_TRAVEL_CLASSES;
@@ -519,7 +674,10 @@ public class RequestManager {
                 }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                Toast.makeText(getApplicationContext(), Utils.getVolleymessage(error), Toast.LENGTH_LONG).show();
+                Utils.logVolleyMessage(error, "Get Travel Classes");
+                Toast.makeText(getApplicationContext(),
+                        Utils.getVolleyMessage(error),
+                        Toast.LENGTH_LONG).show();
                 session.setTravelClasses("[]");
                 bundle.putBoolean(Constant.ERROR, true);
                 requestHandler.sendMessage(msg);
@@ -532,6 +690,7 @@ public class RequestManager {
 
 
     public static void getMyBookings(final SessionManager session,
+                                     final Context context,
                                      final Handler requestHandler) {
         final Message msg = requestHandler.obtainMessage();
         final Bundle bundle = new Bundle();
@@ -539,8 +698,10 @@ public class RequestManager {
         if (user == null) {
             session.logout();
         }
-
-        final String url = session.getServerUrl() + RouteManager.GET_MY_BOOKINGS + "/" + session.getLoggedInUser().id;
+        setLoading(context, "Getting bookings..", true);
+        final String url = session.getServerUrl() +
+                RouteManager.GET_MY_BOOKINGS + "/" +
+                session.getLoggedInUser().id;
         final String tag_string_req = "req_my_bookings";
         final StringRequest stringRequest = new StringRequest(
                 Request.Method.GET,
@@ -553,14 +714,19 @@ public class RequestManager {
                         bundle.putBoolean(Constant.ERROR, false);
                         bundle.putString(Constant.MY_BOOKINGS, response);
                         msg.setData(bundle);
+                        setLoading(context, false);
                         requestHandler.sendMessage(msg);
                     }
                 }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                Toast.makeText(getApplicationContext(), Utils.getVolleymessage(error), Toast.LENGTH_LONG).show();
+                Utils.logVolleyMessage(error, "Get My Bookings");
+                Toast.makeText(getApplicationContext(),
+                        Utils.getVolleyMessage(error),
+                        Toast.LENGTH_LONG).show();
                 session.setMyBookings("[]");
                 bundle.putBoolean(Constant.ERROR, true);
+                setLoading(context, false);
                 requestHandler.sendMessage(msg);
             }
         });
@@ -599,7 +765,10 @@ public class RequestManager {
                 }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                Toast.makeText(getApplicationContext(), Utils.getVolleymessage(error), Toast.LENGTH_LONG).show();
+                Utils.logVolleyMessage(error, "Get Flight Seats");
+                Toast.makeText(getApplicationContext(),
+                        Utils.getVolleyMessage(error),
+                        Toast.LENGTH_LONG).show();
                 session.setFlightSeats("[]");
                 bundle.putBoolean(Constant.ERROR, true);
                 requestHandler.sendMessage(msg);

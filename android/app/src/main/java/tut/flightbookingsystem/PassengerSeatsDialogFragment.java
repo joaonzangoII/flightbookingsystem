@@ -52,7 +52,7 @@ public class PassengerSeatsDialogFragment extends DialogFragment implements OnSe
                               final @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         final Toolbar toolbar = (Toolbar) view.findViewById(R.id.toolbar);
-        toolbar.setTitle("Dialog title");
+        toolbar.setTitle("Select Available Seats");
         final ActionBar actionBar = ((AppCompatActivity) getActivity()).getSupportActionBar();
         if (actionBar != null) {
             actionBar.setDisplayHomeAsUpEnabled(true);

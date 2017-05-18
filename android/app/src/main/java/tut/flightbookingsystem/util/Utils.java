@@ -4,12 +4,12 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.support.v7.app.AlertDialog;
+import android.util.Log;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 
 import com.android.volley.VolleyError;
 
-import java.io.UnsupportedEncodingException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Arrays;
@@ -92,21 +92,28 @@ public class Utils {
     }
 
 
-    public static String getVolleymessage(final VolleyError error) {
+    public static void logVolleyMessage(final VolleyError error,
+                                           final String TAG) {
+        Log.e(TAG, error.getMessage() != null ? error.getMessage() : error.toString());
+    }
+
+    public static String getVolleyMessage(final VolleyError error) {
         String body = "";
         //get status code here
-        if (error.networkResponse != null) {
-           final String statusCode = String.valueOf(error.networkResponse.statusCode);
-            //get response body and parse with appropriate encoding
-            if (error.networkResponse.data != null) {
-                try {
-                    body = new String(error.networkResponse.data, "UTF-8");
-                } catch (final UnsupportedEncodingException e) {
-                    e.printStackTrace();
-                }
-            }
-        }else{
+        if (error.getMessage() != null) {
             body = error.getMessage();
+            //  if (error.networkResponse != null) {
+            //           final String statusCode = String.valueOf(error.networkResponse.statusCode);
+            //            //get response body and parse with appropriate encoding
+            //            if (error.networkResponse.data != null) {
+            //                try {
+            //                    body = new String(error.networkResponse.data, "UTF-8");
+            //                } catch (final UnsupportedEncodingException e) {
+            //                    e.printStackTrace();
+            //                }
+            //            }
+        } else {
+            body = error.toString();
         }
 
         return body;

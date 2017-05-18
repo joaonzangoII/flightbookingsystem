@@ -9,9 +9,10 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ProgressBar;
 
+import tut.flightbookingsystem.base.AuthBaseActivity;
 import tut.flightbookingsystem.manager.RequestManager;
 
-public class SplashScreenActivity extends AppCompatActivity {
+public class SplashScreenActivity extends AuthBaseActivity {
     private Button btnLogin;
     private Button btnRegister;
     private ProgressBar progressBar;
@@ -21,10 +22,10 @@ public class SplashScreenActivity extends AppCompatActivity {
         public boolean handleMessage(Message message) {
             final Bundle data = message.getData();
             final SessionManager session = new SessionManager(SplashScreenActivity.this);
+            progressBar.setVisibility(View.GONE);
+            btnLogin.setVisibility(View.VISIBLE);
+            btnRegister.setVisibility(View.VISIBLE);
             if (data.getBoolean(Constant.DONE_LOADING)) {
-                progressBar.setVisibility(View.GONE);
-                btnLogin.setVisibility(View.VISIBLE);
-                btnRegister.setVisibility(View.VISIBLE);
             }
 
             return false;
@@ -44,13 +45,8 @@ public class SplashScreenActivity extends AppCompatActivity {
         progressBar.setVisibility(View.VISIBLE);
         btnLogin.setVisibility(View.GONE);
         btnRegister.setVisibility(View.GONE);
-
         // REQUEST INITIAL DATA
-        RequestManager.getCountries(session, requestHandler);
-        RequestManager.getTravelclasses(session, requestHandler);
-        RequestManager.getAirports(session, requestHandler);
-        RequestManager.getFoods(session, requestHandler);
-        RequestManager.getDrinks(session, requestHandler);
+        RequestManager.getInitialData(session, requestHandler);
         viewMain(session);
         btnLogin.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -74,7 +70,7 @@ public class SplashScreenActivity extends AppCompatActivity {
 
     private void viewMain(final boolean isLoggedIn) {
         if (isLoggedIn) {
-            final Intent intent = new Intent(SplashScreenActivity.this, NavigationDrawerActivity.class);
+            final Intent intent = new Intent(SplashScreenActivity.this, MainActivity.class);
             finish();
             startActivity(intent);
         }

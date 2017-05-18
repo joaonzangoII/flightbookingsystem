@@ -1,10 +1,10 @@
 package tut.flightbookingsystem;
 
-import android.content.Context;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
+import android.os.Handler;
+import android.os.Message;
 import android.support.v7.widget.CardView;
-import android.view.LayoutInflater;
+import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -14,12 +14,36 @@ import com.google.gson.reflect.TypeToken;
 
 import java.lang.reflect.Type;
 
+import tut.flightbookingsystem.base.BaseActivity;
 import tut.flightbookingsystem.model.Booking;
 import tut.flightbookingsystem.model.FlightSeat;
 import tut.flightbookingsystem.model.Meal;
 import tut.flightbookingsystem.model.Passenger;
+import tut.flightbookingsystem.util.LocalDate;
 
-public class MyBookingsDetailActivity extends AppCompatActivity {
+public class MyBookingsDetailActivity extends BaseActivity {
+
+    final Handler requestHandler = new Handler(new Handler.Callback() {
+        @Override
+        public boolean handleMessage(Message message) {
+            final Bundle data = message.getData();
+            final boolean error = data.getBoolean(Constant.ERROR);
+            if (!data.getBoolean(Constant.ERROR)) {
+                if (data.getBoolean(Constant.IS_BOOKING)) {
+
+                    final Gson gson = new GsonBuilder().create();
+                    final Type type = new TypeToken<Booking>() {
+                    }.getType();
+                    final Booking mBooking = gson.fromJson(data.getString(Constant.BOOKING), type);
+                    ((TextView) findViewById(R.id.total))
+                            .setText(String.format("R%1$s", mBooking.total));
+                } else {
+                    //passengersAdapter.setFlightSeats(session.getFlightSeats());
+                }
+            }
+            return false;
+        }
+    });
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,8 +61,13 @@ public class MyBookingsDetailActivity extends AppCompatActivity {
         if (mBooking != null) {
             setTitle(mBooking.booking_number);
 
+            ((TextView) findViewById(R.id.status))
+                    .setText(String.format("%1$s", mBooking.status));
+
+            ((TextView) findViewById(R.id.booking_number))
+                    .setText(String.format("%1$s", mBooking.booking_number));
             ((TextView) findViewById(R.id.booking_date))
-                    .setText(String.format("%1$s", mBooking.created_at));
+                    .setText(String.format("%1$s", LocalDate.formatDate(mBooking.created_at)));
             ((TextView) findViewById(R.id.total))
                     .setText(String.format("R%1$s", mBooking.total));
             ((TextView) findViewById(R.id.flight))
@@ -46,13 +75,15 @@ public class MyBookingsDetailActivity extends AppCompatActivity {
             ((TextView) findViewById(R.id.flight_date))
                     .setText(String.format("Date: %1$s", mBooking.departure_flight.schedule.date));
             ((TextView) findViewById(R.id.origin_airport))
-                    .setText(String.format("From: %1$s", mBooking.departure_flight.schedule.origin_airport.name));
+                    .setText(String.format("From: %1$s(%2$s)", mBooking.departure_flight.schedule.origin_airport.name,
+                            mBooking.departure_flight.schedule.origin_airport.iata_airport_code));
             ((TextView) findViewById(R.id.destination_airport))
-                    .setText(String.format("To: %1$s", mBooking.departure_flight.schedule.destination_airport.name));
+                    .setText(String.format("To:%1$s(%2$s)", mBooking.departure_flight.schedule.destination_airport.name,
+                            mBooking.departure_flight.schedule.destination_airport.iata_airport_code));
             ((TextView) findViewById(R.id.departure_time))
-                    .setText(String.format("Departure Time: %1$s", mBooking.departure_flight.schedule.departure_time));
+                    .setText(String.format("%1$s", LocalDate.formatDate(mBooking.departure_flight.schedule.departure_time)));
             ((TextView) findViewById(R.id.arrival_time))
-                    .setText(String.format("Arrival Time: %1$s", mBooking.departure_flight.schedule.arrival_time));
+                    .setText(String.format("%1$s", LocalDate.formatDate(mBooking.departure_flight.schedule.arrival_time)));
             ((TextView) findViewById(R.id.duration))
                     .setText(String.format("Duration: %1$s", mBooking.departure_flight.schedule.duration));
 
@@ -61,7 +92,7 @@ public class MyBookingsDetailActivity extends AppCompatActivity {
             passengerLayout.removeAllViewsInLayout();
             passengerLayout.removeAllViews();
             for (Passenger passenger : mBooking.passengers) {
-                  passengerLayout.addView(setupPassenger(passenger));
+                passengerLayout.addView(setupPassenger(passenger));
             }
         }
     }
@@ -78,8 +109,6 @@ public class MyBookingsDetailActivity extends AppCompatActivity {
 
         firstName.setText(String.format("First Name: %1$s", passenger.first_name));
         lastName.setText(String.format("Last Name: %1$s", passenger.last_name));
-        //name.setText(String.format("Name: %1$s", passenger.name));
-
         final FlightSeat flight_seat = passenger.flight_seat;
         if (flight_seat != null) {
             seatNumber.setText(String.format("Seat Number: %1$s", passenger.flight_seat.number));
@@ -94,17 +123,19 @@ public class MyBookingsDetailActivity extends AppCompatActivity {
         if (meal != null) {
             if (meal.food != null) {
                 if (meal.food.food_type != null) {
-                    foodType.setText(String.format("Food Type:  %1$s", passenger.meal.food.food_type.name));
-                }else{
+                    foodType.setText(String.format("Food Type:  %1$s", meal.food.food_type.name));
+                } else {
                     foodType.setText("No Meal Added yet");
                 }
             }
         }
 
+        cardview.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                addEditMeal(passenger, requestHandler);
+            }
+        });
         return cardview;
-    }
-
-    public LayoutInflater getInflater() {
-        return (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
     }
 }

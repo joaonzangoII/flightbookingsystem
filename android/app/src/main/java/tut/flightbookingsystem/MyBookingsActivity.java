@@ -78,7 +78,7 @@ public class MyBookingsActivity extends BaseActivity {
         progressBar = (ProgressBar) findViewById(R.id.progress_bar);
         setTitle("My Bookings");
         session = new SessionManager(this);
-        RequestManager.getMyBookings(session, requestHandler);
+        RequestManager.getMyBookings(session, MyBookingsActivity.this, requestHandler);
 
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         myBookingsAdapter = new MyBookingsAdapter();

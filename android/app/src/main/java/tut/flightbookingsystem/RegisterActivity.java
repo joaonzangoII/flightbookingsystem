@@ -14,10 +14,11 @@ import android.widget.Toast;
 import java.util.List;
 
 import tut.flightbookingsystem.adapter.CountrySpinnerAdapter;
+import tut.flightbookingsystem.base.AuthBaseActivity;
 import tut.flightbookingsystem.manager.RequestManager;
 import tut.flightbookingsystem.model.Country;
 
-public class RegisterActivity extends AppCompatActivity {
+public class RegisterActivity extends AuthBaseActivity {
     // private String [] countries = {"South Africa", "Botswana", "Lesotho", "Swaziland", "Mozambique", "Zimbabwe"};
 
     final Handler requestHandler = new Handler(new Handler.Callback() {
@@ -79,7 +80,7 @@ public class RegisterActivity extends AppCompatActivity {
     private void viewMainOrLogin(final boolean isLoggedIn) {
         final Intent intent;
         if (isLoggedIn) {
-            intent = new Intent(RegisterActivity.this, NavigationDrawerActivity.class);
+            intent = new Intent(RegisterActivity.this, MainActivity.class);
             finish();
             startActivity(intent);
         } else {
