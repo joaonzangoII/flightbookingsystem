@@ -19,12 +19,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 import tut.flightbookingsystem.adapter.DrinksAdapter;
+import tut.flightbookingsystem.base.BaseActivity;
 import tut.flightbookingsystem.listener.RecyclerClickListener;
 import tut.flightbookingsystem.manager.RequestManager;
 import tut.flightbookingsystem.model.Drink;
 import tut.flightbookingsystem.views.SupportSwipeRefreshLayout;
 
-public class DrinksActivity extends AppCompatActivity {
+public class DrinksActivity extends BaseActivity {
     private DrinksAdapter drinksAdapter;
     private List<Drink> drinksList = new ArrayList<>();
     private ProgressBar progressBar;

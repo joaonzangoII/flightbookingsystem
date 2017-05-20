@@ -21,7 +21,7 @@
             android:title="Drinks" />
 
         <item
-            android:id="@+id/logout"
+            android:id="@+id/action_logout"
             android:title="Logout" />
     </group>
 </menu>

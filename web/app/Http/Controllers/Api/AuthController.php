@@ -8,6 +8,7 @@ use App\Passenger;
 use App\Meal;
 use Auth;
 use App\User;
+use App\UserType;
 use App\Flight;
 use App\AircraftSeat;
 use App\FlightSeat;
@@ -51,6 +52,17 @@ class AuthController extends Controller
                 ->where('email', '=',  $email)
                 // ->where('password', '=', bcrypt($password))
                 ->first();
+    $user_type_admin = UserType::where('name', 'Administrator')->first();
+    if($user->user_type_id == $user_type_admin->id){
+      return response()->json([
+        'code' => '500',
+        'erro' => true,
+        'messages' => [
+          'email' => ['Only non Admin users can use the mobile app']
+        ]
+      ]);
+    }
+
     return response()->json([
       'code' => '200',
       'erro' => false,

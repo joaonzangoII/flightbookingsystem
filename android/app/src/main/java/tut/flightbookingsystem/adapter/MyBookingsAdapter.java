@@ -59,10 +59,14 @@ public class MyBookingsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
             vH.txt_destination_airport.setText(String.format("To:%1$s(%2$s)",
                     mBooking.departure_flight.schedule.destination_airport.name,
                     mBooking.departure_flight.schedule.destination_airport.iata_airport_code));
-            vH.txt_departure_time.setText(String.format("%1$s",
+            vH.txt_departure_date.setText(String.format("%1$s",
                     LocalDate.formatDate(mBooking.departure_flight.schedule.departure_time)));
-            vH.txt_arrival_time.setText(String.format("%1$s",
+            vH.txt_departure_time.setText(String.format("%1$s",
+                    LocalDate.getTime(mBooking.departure_flight.schedule.departure_time)));
+            vH.txt_arrival_date.setText(String.format("%1$s",
                     LocalDate.formatDate(mBooking.departure_flight.schedule.arrival_time)));
+            vH.txt_arrival_time.setText(String.format("%1$s",
+                    LocalDate.getTime(mBooking.departure_flight.schedule.arrival_time)));
             vH.txt_duration.setText(String.format("Duration: %1$s", mBooking.departure_flight.schedule.duration));
             vH.itemView.setOnClickListener(new RecyclerClickListener(position, onItemClickCallback));
         }
@@ -90,7 +94,9 @@ public class MyBookingsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
         public TextView txt_flight_date;
         public TextView txt_origin_airport;
         public TextView txt_destination_airport;
+        public TextView txt_departure_date;
         public TextView txt_departure_time;
+        public TextView txt_arrival_date;
         public TextView txt_arrival_time;
         public TextView txt_duration;
 
@@ -104,7 +110,9 @@ public class MyBookingsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
             txt_flight_date = (TextView) itemView.findViewById(R.id.flight_date);
             txt_origin_airport = (TextView) itemView.findViewById(R.id.origin_airport);
             txt_destination_airport = (TextView) itemView.findViewById(R.id.destination_airport);
+            txt_departure_date = (TextView) itemView.findViewById(R.id.departure_date);
             txt_departure_time = (TextView) itemView.findViewById(R.id.departure_time);
+            txt_arrival_date = (TextView) itemView.findViewById(R.id.arrival_date);
             txt_arrival_time = (TextView) itemView.findViewById(R.id.arrival_time);
             txt_duration = (TextView) itemView.findViewById(R.id.duration);
         }

@@ -168,7 +168,7 @@ public class FindFlightActivity extends BaseActivity {
             case android.R.id.home:
                 finish();
                 break;
-            case R.id.logout:
+            case R.id.action_logout:
                 logout();
                 break;
             default:

@@ -20,6 +20,7 @@ import tut.flightbookingsystem.model.Booking;
 import tut.flightbookingsystem.model.FlightSeat;
 import tut.flightbookingsystem.model.Meal;
 import tut.flightbookingsystem.model.Passenger;
+import tut.flightbookingsystem.util.LocalDate;
 
 public class BookingConfirmationActivity extends BaseActivity {
     private Booking mBooking;
@@ -46,10 +47,14 @@ public class BookingConfirmationActivity extends BaseActivity {
                 .setText(String.format("From: %1$s", mBooking.departure_flight.schedule.origin_airport.name));
         ((TextView) findViewById(R.id.destination_airport))
                 .setText(String.format("To: %1$s", mBooking.departure_flight.schedule.destination_airport.name));
-        ((TextView) findViewById(R.id.departure_time))
-                .setText(String.format("Departure Time: %1$s", mBooking.departure_flight.schedule.departure_time));
-        ((TextView) findViewById(R.id.arrival_time))
-                .setText(String.format("Arrival Time: %1$s", mBooking.departure_flight.schedule.arrival_time));
+        ((TextView) findViewById(R.id.departure_date)).setText(String.format("%1$s",
+                LocalDate.formatDate(mBooking.departure_flight.schedule.departure_time)));
+        ((TextView) findViewById(R.id.departure_time)).setText(String.format("%1$s",
+                LocalDate.getTime(mBooking.departure_flight.schedule.departure_time)));
+        ((TextView) findViewById(R.id.arrival_date)).setText(String.format("%1$s",
+                LocalDate.formatDate(mBooking.departure_flight.schedule.arrival_time)));
+        ((TextView) findViewById(R.id.arrival_time)).setText(String.format("%1$s",
+                LocalDate.getTime(mBooking.departure_flight.schedule.arrival_time)));
         ((TextView) findViewById(R.id.duration))
                 .setText(String.format("Duration: %1$s", mBooking.departure_flight.schedule.duration));
         final LinearLayout passengerLayout = (LinearLayout) findViewById(R.id.passengerLayout);
@@ -75,16 +80,18 @@ public class BookingConfirmationActivity extends BaseActivity {
     public CardView setupPassenger(final Passenger passenger) {
         final CardView cardview = (CardView) getInflater()
                 .inflate(R.layout.passenger_confirmation_layout, null)
-                .findViewById(R.id.layout);
+                .findViewById(R.id.information_layout);
         final TextView firstName = (TextView) cardview.findViewById(R.id.first_name);
         final TextView lastName = (TextView) cardview.findViewById(R.id.last_name);
         final TextView travelClass = (TextView) cardview.findViewById(R.id.travel_class);
         final TextView seatNumber = (TextView) cardview.findViewById(R.id.seat_number);
         final TextView foodType = (TextView) cardview.findViewById(R.id.food_type);
-
+        final AppCompatButton btnAddMeal = (AppCompatButton) cardview.findViewById(R.id.btn_add_meal);
+        final AppCompatButton btnDeleteMeal = (AppCompatButton) cardview.findViewById(R.id.btn_delete_meal);
+        btnAddMeal.setVisibility(View.GONE);
+        btnDeleteMeal.setVisibility(View.GONE);
         firstName.setText(String.format("First Name: %1$s", passenger.first_name));
         lastName.setText(String.format("Last Name: %1$s", passenger.last_name));
-        //name.setText(String.format("Name: %1$s", passenger.name));
 
         final FlightSeat flight_seat = passenger.flight_seat;
         if (flight_seat != null) {

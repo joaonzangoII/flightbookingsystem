@@ -21,12 +21,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 import tut.flightbookingsystem.adapter.FoodsAdapter;
+import tut.flightbookingsystem.base.BaseActivity;
 import tut.flightbookingsystem.listener.RecyclerClickListener;
 import tut.flightbookingsystem.manager.RequestManager;
 import tut.flightbookingsystem.model.Food;
 import tut.flightbookingsystem.views.SupportSwipeRefreshLayout;
 
-public class FoodsActivity extends AppCompatActivity implements FoodItemDetail.OnFragmentInteractionListener {
+public class FoodsActivity extends BaseActivity implements FoodItemDetail.OnFragmentInteractionListener {
     private FoodsAdapter foodsAdapter;
     private List<Food> foodsList = new ArrayList<>();
     private ProgressBar progressBar;

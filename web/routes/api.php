@@ -255,5 +255,6 @@ Route::name('timetable')->post('/flights-timetable', function(Request $request){
 Route::name('login')->post('/login', 'Api\AuthController@login');
 Route::name('register')->post('/register', 'Api\AuthController@register');
 Route::name('booking')->post('/make-booking', 'Api\FlightsController@store_booking');
-Route::name('booking.update')->post('/update-booking', 'Api\FlightsController@update_booking');
+Route::name('booking.update.meal')->post('/update-meal', 'Api\FlightsController@update_meal');
+Route::name('booking.delete.meal')->post('/delete-meal', 'Api\FlightsController@delete_meal');
 Route::name('sms')->get('/sms/send/{to}', 'Api\DefaultController@send_sms');

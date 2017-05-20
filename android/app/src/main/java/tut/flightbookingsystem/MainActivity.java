@@ -100,6 +100,8 @@ public class MainActivity extends BaseActivity
         final RecyclerView recyclerView = (RecyclerView) findViewById(R.id.my_recycler_view);
         session = new SessionManager(this);
         RequestManager.getMyBookings(session, MainActivity.this, requestHandler);
+        RequestManager.getInitialData(session, requestHandler);
+
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 

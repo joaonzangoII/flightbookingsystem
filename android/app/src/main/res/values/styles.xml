@@ -22,6 +22,11 @@
         <item name="colorButtonNormal">@color/colorPrimaryDark</item>
     </style>
 
+    <style name="MyRedButton" parent="Base.Widget.AppCompat.Button">
+        <item name="colorControlHighlight">@color/Red</item>
+        <item name="colorButtonNormal">@color/DarkRed</item>
+    </style>
+
     <style name="TextAppearance.FloatLabel" parent="android:TextAppearance.Small">
         <item name="android:textColor">@drawable/colors_float_label</item>
         <item name="android:textSize">11sp</item>

@@ -27,6 +27,7 @@ import tut.flightbookingsystem.model.AbstractItem;
 import tut.flightbookingsystem.model.Passenger;
 import tut.flightbookingsystem.model.PassengerHeader;
 import tut.flightbookingsystem.model.Schedule;
+import tut.flightbookingsystem.util.LocalDate;
 
 public class BookingActivity extends BaseActivity implements OnSeatSelected {
     private SessionManager session;
@@ -46,7 +47,7 @@ public class BookingActivity extends BaseActivity implements OnSeatSelected {
                     goToActivity(BookingConfirmationActivity.class, args);
                     finish();
                 } else {
-                    //passengersAdapter.setFlightSeats(session.getFlightSeats());
+
                 }
             }
             return false;
@@ -71,7 +72,7 @@ public class BookingActivity extends BaseActivity implements OnSeatSelected {
                             if (button.getId() == R.id.add_meal) {
                                 addMeal(passenger);
                             } else {
-                                //selectSeat(passenger);
+
                             }
                         }
 
@@ -101,10 +102,14 @@ public class BookingActivity extends BaseActivity implements OnSeatSelected {
                 .setText(String.format("From: %1$s", schedule.origin_airport.name));
         ((TextView) findViewById(R.id.destination_airport))
                 .setText(String.format("To: %1$s", schedule.destination_airport.name));
-        ((TextView) findViewById(R.id.departure_time))
-                .setText(String.format("Departure Time: %1$s", schedule.departure_time));
-        ((TextView) findViewById(R.id.arrival_time))
-                .setText(String.format("Arrival Time: %1$s", schedule.arrival_time));
+        ((TextView) findViewById(R.id.departure_date)).setText(String.format("%1$s",
+                LocalDate.formatDate(schedule.departure_time)));
+        ((TextView) findViewById(R.id.departure_time)).setText(String.format("%1$s",
+                LocalDate.getTime(schedule.departure_time)));
+        ((TextView) findViewById(R.id.arrival_date)).setText(String.format("%1$s",
+                LocalDate.formatDate(schedule.arrival_time)));
+        ((TextView) findViewById(R.id.arrival_time)).setText(String.format("%1$s",
+                LocalDate.getTime(schedule.arrival_time)));
         ((TextView) findViewById(R.id.duration))
                 .setText(String.format("Duration: %1$s", schedule.duration));
 
@@ -175,76 +180,6 @@ public class BookingActivity extends BaseActivity implements OnSeatSelected {
             }
         });
     }
-
-    //    public void addMeal(final Passenger passenger) {
-    //        // final AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this, R.style.cust_dialog);
-    //        final AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
-    //        final View dialogView = getInflater().inflate(R.layout.add_meal_layout, null);
-    //
-    //        final List<Food> foods = session.getFoods();
-    //        final List<Drink> drinks = session.getDrinks();
-    //
-    //        final FoodSpinnerAdapter adapterFoods = new FoodSpinnerAdapter
-    //                (this, R.layout.spinners_item_layout, foods);
-    //        final DrinkSpinnerAdapter drinksAdapter = new DrinkSpinnerAdapter
-    //                (this, R.layout.spinners_item_layout, drinks);
-    //
-    //
-    //        final Spinner foodsSpinner = (Spinner) dialogView.findViewById(R.id.foodSpinner);
-    //        foodsSpinner.setAdapter(adapterFoods);
-    //        foodsSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-    //            @Override
-    //            public void onItemSelected(AdapterView<?> adapterView,
-    //                                       View view,
-    //                                       int i,
-    //                                       long l) {
-    //                selected_food_id = i;
-    //            }
-    //
-    //            @Override
-    //            public void onNothingSelected(AdapterView<?> adapterView) {
-    //
-    //            }
-    //        });
-    //
-    //        final Spinner drinksSpinner = (Spinner) dialogView.findViewById(R.id.drinksSpinner);
-    //        drinksSpinner.setAdapter(drinksAdapter);
-    //        drinksSpinner.setAdapter(drinksAdapter);
-    //        drinksSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-    //            @Override
-    //            public void onItemSelected(AdapterView<?> adapterView,
-    //                                       View view,
-    //                                       int i,
-    //                                       long l) {
-    //                selected_drink_id = i;
-    //            }
-    //
-    //            @Override
-    //            public void onNothingSelected(AdapterView<?> adapterView) {
-    //
-    //            }
-    //        });
-    //
-    //        alertDialogBuilder.setTitle("Select Meal Choice");
-    //        alertDialogBuilder.setView(dialogView);
-    //        alertDialogBuilder.setPositiveButton("YES", new DialogInterface.OnClickListener() {
-    //            @Override
-    //            public void onClick(DialogInterface dialogInterface, int i) {
-    //                final Meal meal = new Meal();
-    //                meal.drink_id = drinksSpinner.getSelectedItemId();
-    //                meal.food_id = foodsSpinner.getSelectedItemId();
-    //                passenger.meal = meal;
-    //            }
-    //        });
-    //
-    //        alertDialogBuilder.setNegativeButton("NO", new DialogInterface.OnClickListener() {
-    //            @Override
-    //            public void onClick(DialogInterface dialogInterface, int i) {
-    //
-    //            }
-    //        });
-    //        alertDialogBuilder.create().show();
-    //    }
 
     @Override
     public void onSeatSelected(final AbstractItem count) {

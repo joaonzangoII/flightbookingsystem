@@ -104,7 +104,6 @@ public class RequestManager {
         }) {
             @Override
             protected Map<String, String> getParams() {
-                // Posting parameters to login url
                 Map<String, String> params = new HashMap<>();
                 params.put("first_name", first_name);
                 params.put("middle_name", middle_name);
@@ -189,7 +188,6 @@ public class RequestManager {
         }) {
             @Override
             protected Map<String, String> getParams() {
-                // Posting parameters to login url
                 Map<String, String> params = new HashMap<>();
                 params.put("email", email);
                 params.put("password", password);
@@ -240,7 +238,6 @@ public class RequestManager {
         }) {
             @Override
             protected Map<String, String> getParams() {
-                // Posting parameters to login url
                 Map<String, String> params = new HashMap<>();
                 params.put("origin_airport_id", String.valueOf(origin_airport_id));
                 params.put("destination_airport_id", String.valueOf(destination_airport_id));
@@ -293,7 +290,6 @@ public class RequestManager {
         }) {
             @Override
             protected Map<String, String> getParams() {
-                // Posting parameters to login url
                 Map<String, String> params = new HashMap<>();
                 params.put("origin_airport_id", String.valueOf(origin_airport_id));
                 params.put("destination_airport_id", String.valueOf(destination_airport_id));
@@ -364,7 +360,6 @@ public class RequestManager {
         }) {
             @Override
             protected Map<String, String> getParams() {
-                // Posting parameters to login url
                 Map<String, String> params = new HashMap<>();
                 params.put("user_id", String.valueOf(user_id));
                 params.put("departure_flight_id", String.valueOf(departure_flight_id));
@@ -379,15 +374,15 @@ public class RequestManager {
         MyApplication.getInstance().addToRequestQueue(stringRequest, tag_string_req);
     }
 
-    public static void updateBooking(final SessionManager session,
+    public static void updateMeal(final SessionManager session,
                                      final Context context,
                                      final long user_id,
                                      final String passenger,
                                      final Handler requestHandler) {
         final Message msg = requestHandler.obtainMessage();
         final Bundle bundle = new Bundle();
-        final String url = session.getServerUrl() + RouteManager.UPDATE_BOOKINGS;
-        final String tag_string_req = "req_update_bookings";
+        final String url = session.getServerUrl() + RouteManager.UPDATE_MEAL;
+        final String tag_string_req = "req_update_meal";
         setLoading(context, "Updating Passenger Meal..", true);
         final StringRequest stringRequest = new StringRequest(
                 Request.Method.POST,
@@ -438,7 +433,76 @@ public class RequestManager {
         }) {
             @Override
             protected Map<String, String> getParams() {
-                // Posting parameters to login url
+                Map<String, String> params = new HashMap<>();
+                params.put("user_id", String.valueOf(user_id));
+                params.put("passenger", passenger);
+                return params;
+            }
+
+        };
+        // Adding request to request queue
+        MyApplication.getInstance().addToRequestQueue(stringRequest, tag_string_req);
+    }
+
+    public static void deleteMeal(final SessionManager session,
+                                  final Context context,
+                                  final long user_id,
+                                  final String passenger,
+                                  final Handler requestHandler) {
+        final Message msg = requestHandler.obtainMessage();
+        final Bundle bundle = new Bundle();
+        final String url = session.getServerUrl() + RouteManager.DELETE_MEAL;
+        final String tag_string_req = "req_delete_meal";
+        setLoading(context, "Deleting Passenger Meal..", true);
+        final StringRequest stringRequest = new StringRequest(
+                Request.Method.POST,
+                url,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        Log.e(tag_string_req, response);
+                        try {
+                            final JSONObject jObj = new JSONObject(response);
+                            final boolean error = jObj.getBoolean("erro");
+                            if (!error) {
+                                bundle.putString(Constant.BOOKING,
+                                        jObj.getJSONObject("booking").toString());
+                                bundle.putBoolean(Constant.ERROR, false);
+                                bundle.putBoolean(Constant.IS_BOOKING, true);
+                                msg.setData(bundle);
+                                requestHandler.sendMessage(msg);
+                                setLoading(context, false);
+                            } else {
+                                setLoading(context, false);
+                                bundle.putBoolean(Constant.ERROR, true);
+                                requestHandler.sendMessage(msg);
+                                final String errorMsg = jObj.getString("messages");
+                                Toast.makeText(getApplicationContext(),
+                                        errorMsg,
+                                        Toast.LENGTH_LONG).show();
+                            }
+                        } catch (final JSONException error) {
+                            error.printStackTrace();
+                            Toast.makeText(getApplicationContext(),
+                                    error.getMessage(),
+                                    Toast.LENGTH_LONG).show();
+                        }
+                        setLoading(context, false);
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(final VolleyError error) {
+                Utils.logVolleyMessage(error, "Update Booking");
+                Toast.makeText(getApplicationContext(),
+                        Utils.getVolleyMessage(error),
+                        Toast.LENGTH_LONG).show();
+                setLoading(context, false);
+                bundle.putBoolean(Constant.ERROR, true);
+                requestHandler.sendMessage(msg);
+            }
+        }) {
+            @Override
+            protected Map<String, String> getParams() {
                 Map<String, String> params = new HashMap<>();
                 params.put("user_id", String.valueOf(user_id));
                 params.put("passenger", passenger);

@@ -167,7 +167,7 @@ class FlightsController extends Controller
     return $b_number;
   }
 
-  public function update_booking(Request $request)
+  public function update_meal(Request $request)
   {
       $user_id = $request->input('user_id');
       $passengerIn = json_decode($request->input('passenger'));
@@ -206,10 +206,45 @@ class FlightsController extends Controller
         }
       }
 
-       return response()->json([
-          'code' => '200',
-          'erro' => false,
-          'booking' => $booking
-       ]);
+      return response()->json([
+        'code' => '200',
+        'erro' => false,
+        'booking' => $booking
+      ]);
+  }
+
+  public function delete_meal(Request $request)
+  {
+      $user_id = $request->input('user_id');
+      $passengerIn = json_decode($request->input('passenger'));
+      $passenger = Passenger::with('meal', 'meal.food', 'meal.drink')
+                            ->find($passengerIn->id);
+
+      $booking = Booking::with('passengers', 'passengers.booking', 'passengers.meal', 'passengers.meal.drink',
+                        'passengers.meal.food', 'passengers.flight_seat',
+                        'passengers.meal.food.food_type', 'passengers.meal.drink',
+                        'passengers.flight_seat.travel_class', 'aircraft',
+                        'departure_flight', 'departure_flight.aircraft', 'departure_flight.schedule',
+                        'return_flight', 'return_flight.aircraft', 'return_flight.schedule')
+                  ->where('id', $passenger->booking_id)
+                  ->first();
+
+      foreach($booking->passengers as $key=>$pass){
+        if($passengerIn->id == $pass->id){
+          $meal= Meal::where('passenger_id', $pass->id)->first();
+          $meal->delete();
+          $seat_price = FlightSeatPrice::where('flight_seat_id', $pass->flight_seat_id)
+                                          ->first();
+          $total = $booking->total - ($seat_price->price * 0.1);
+          $booking->update(["total"=> $total]);
+          $pass->save();
+        }
+      }
+
+      return response()->json([
+        'code' => '200',
+        'erro' => false,
+        'booking' => $booking
+      ]);
   }
 }

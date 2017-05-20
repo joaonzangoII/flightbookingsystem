@@ -11,7 +11,6 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.AppCompatEditText;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -21,7 +20,6 @@ import android.widget.AdapterView;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.Spinner;
-import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -32,7 +30,6 @@ import java.util.List;
 import java.util.Locale;
 
 import tut.flightbookingsystem.Constant;
-import tut.flightbookingsystem.QueryResultsActivity;
 import tut.flightbookingsystem.R;
 import tut.flightbookingsystem.SessionManager;
 import tut.flightbookingsystem.SettingsActivity;
@@ -91,6 +88,9 @@ public class BaseActivity extends AppCompatActivity implements View.OnClickListe
                 finish();
                 startActivity(intent);
                 break;
+            case R.id.action_logout:
+                logout();
+                break;
         }
         return true;
     }
@@ -130,19 +130,6 @@ public class BaseActivity extends AppCompatActivity implements View.OnClickListe
         startActivity(intent);
     }
 
-    public void logout() {
-        Toast.makeText(this, "A sua sessão vai ser terminada em 5 seconds", Toast.LENGTH_SHORT).show();
-        new Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                session.setLogin(false);
-                session.setLoggedinUser(null);
-                session.logout();
-                goToActivity(SplashScreenActivity.class);
-            }
-        }, 5000);
-    }
-
     private Runnable mShowImeRunnable = new Runnable() {
         @Override
         public void run() {
@@ -179,10 +166,19 @@ public class BaseActivity extends AppCompatActivity implements View.OnClickListe
 
     }
 
-    public AlertDialog.Builder createDialog(final Passenger passenger) {
+    public AlertDialog.Builder createDialog(final Passenger passenger,
+                                            final boolean isMeal) {
         final AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
-        final View dialogView = getInflater().inflate(R.layout.add_meal_layout, null);
         final List<Food> foods = session.getFoods();
+        final View dialogView = getInflater().inflate(R.layout.add_meal_layout, null);
+        if (isMeal) {
+            alertDialogBuilder.setMessage("");
+            dialogView.setVisibility(View.VISIBLE);
+        } else {
+            dialogView.setVisibility(View.GONE);
+            alertDialogBuilder.setMessage("Are you sure you want to delete the user meal?");
+        }
+
         final List<Drink> drinks = session.getDrinks();
         final FoodSpinnerAdapter adapterFoods = new FoodSpinnerAdapter
                 (this, R.layout.spinners_item_layout, foods);
@@ -224,7 +220,7 @@ public class BaseActivity extends AppCompatActivity implements View.OnClickListe
             }
         });
 
-        if(passenger.meal !=null){
+        if (passenger.meal != null) {
             drinksSpinner.setSelection(drinksAdapter.getById(passenger.meal.drink_id));
             foodsSpinner.setSelection(adapterFoods.getById(passenger.meal.food_id));
         }
@@ -235,7 +231,7 @@ public class BaseActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     public void addMeal(final Passenger passenger) {
-        final AlertDialog.Builder alertDialogBuilder = createDialog(passenger);
+        final AlertDialog.Builder alertDialogBuilder = createDialog(passenger, true);
         alertDialogBuilder.setPositiveButton("YES", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
@@ -248,8 +244,33 @@ public class BaseActivity extends AppCompatActivity implements View.OnClickListe
 
         alertDialogBuilder.setNegativeButton("NO", new DialogInterface.OnClickListener() {
             @Override
-            public void onClick(DialogInterface dialogInterface, int i) {
+            public void onClick(final DialogInterface dialogInterface,
+                                final int i) {
+            }
+        });
+        alertDialogBuilder.create().show();
+    }
 
+    public void deleteMeal(final Passenger passenger,
+                           final Handler requestHandler) {
+        final AlertDialog.Builder alertDialogBuilder = createDialog(passenger, false);
+        alertDialogBuilder.setPositiveButton("YES", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                final Gson gson = new GsonBuilder().create();
+                RequestManager.deleteMeal(session,
+                        BaseActivity.this,
+                        passenger.booking.user_id,
+                        gson.toJson(passenger),
+                        requestHandler);
+            }
+        });
+
+        alertDialogBuilder.setNegativeButton("NO", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(final DialogInterface dialogInterface,
+                                final int i) {
+                dialogInterface.dismiss();
             }
         });
         alertDialogBuilder.create().show();
@@ -257,7 +278,7 @@ public class BaseActivity extends AppCompatActivity implements View.OnClickListe
 
     public void addEditMeal(final Passenger passenger,
                             final Handler requestHandler) {
-        final AlertDialog.Builder alertDialogBuilder = createDialog(passenger);
+        final AlertDialog.Builder alertDialogBuilder = createDialog(passenger, true);
         alertDialogBuilder.setPositiveButton("YES", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
@@ -266,22 +287,18 @@ public class BaseActivity extends AppCompatActivity implements View.OnClickListe
                 meal.food_id = foodsSpinner.getSelectedItemId();
                 passenger.meal = meal;
                 final Gson gson = new GsonBuilder().create();
-                RequestManager.updateBooking(session,
+                RequestManager.updateMeal(session,
                         BaseActivity.this,
                         passenger.booking.user_id,
                         gson.toJson(passenger),
                         requestHandler);
-                Log.e(TAG,  gson.toJson(passenger));
-                Toast.makeText(BaseActivity.this,
-                        "Passender ID" + passenger.id,
-                        Toast.LENGTH_SHORT).show();
             }
         });
 
         alertDialogBuilder.setNegativeButton("NO", new DialogInterface.OnClickListener() {
             @Override
-            public void onClick(DialogInterface dialogInterface, int i) {
-
+            public void onClick(final DialogInterface dialogInterface,
+                                final int i) {
             }
         });
         alertDialogBuilder.create().show();
@@ -290,4 +307,30 @@ public class BaseActivity extends AppCompatActivity implements View.OnClickListe
     public LayoutInflater getInflater() {
         return (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
     }
+
+    public void logout() {
+        final AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
+        alertDialogBuilder.setMessage("Are you sure you want to logout?");
+        alertDialogBuilder.setTitle("Signing Out...");
+        alertDialogBuilder.setPositiveButton("YES", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                session.setLogin(false);
+                session.setLoggedinUser(null);
+                session.logout();
+                goToActivity(SplashScreenActivity.class);
+
+            }
+        });
+
+        alertDialogBuilder.setNegativeButton("NO", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(final DialogInterface dialogInterface,
+                                final int i) {
+                dialogInterface.dismiss();
+            }
+        });
+        alertDialogBuilder.create().show();
+    }
+
 }
