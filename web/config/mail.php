@@ -17,7 +17,6 @@ return [
     */
 
     'driver' => env('MAIL_DRIVER', 'smtp'),
-
     /*
     |--------------------------------------------------------------------------
     | SMTP Host Address
@@ -54,7 +53,6 @@ return [
     | used globally for all e-mails that are sent by your application.
     |
     */
-
     'from' => [
         'address' => env('MAIL_FROM_ADDRESS', 'hello@example.com'),
         'name' => env('MAIL_FROM_NAME', 'Example'),
@@ -70,9 +68,7 @@ return [
     | transport layer security protocol should provide great security.
     |
     */
-
     'encryption' => env('MAIL_ENCRYPTION', 'tls'),
-
     /*
     |--------------------------------------------------------------------------
     | SMTP Server Username
@@ -83,9 +79,7 @@ return [
     | connection. You may also set the "password" value below this one.
     |
     */
-
     'username' => env('MAIL_USERNAME'),
-
     'password' => env('MAIL_PASSWORD'),
 
     /*
@@ -114,7 +108,6 @@ return [
 
     'markdown' => [
         'theme' => 'default',
-
         'paths' => [
             resource_path('views/vendor/mail'),
         ],

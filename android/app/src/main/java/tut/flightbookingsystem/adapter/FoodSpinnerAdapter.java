@@ -39,7 +39,7 @@ public class FoodSpinnerAdapter extends BaseAdapter {
 
     @Override
     public long getItemId(int i) {
-        return foods.get(i).id;
+        return foods==null? 0 : foods.get(i).id;
     }
 
     @Override

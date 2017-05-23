@@ -6,9 +6,15 @@ use Illuminate\Http\Request;
 
 class SchedulesController extends Controller
 {
-   public function index()
+    public function __construct()
     {
-        $schedules = Schedule::latest()->get();
+        $this->middleware('auth');
+    }
+    public function index()
+    {
+        $schedules = Schedule::with('origin_airport', 'destination_airport')
+                             ->latest()
+                             ->paginate(10);
         return view('schedules.index', compact('schedules'));
     }
 

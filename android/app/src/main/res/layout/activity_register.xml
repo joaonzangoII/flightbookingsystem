@@ -155,11 +155,13 @@
 
             </tut.flightbookingsystem.views.FloatingLabel>
 
-
             <Spinner
                 android:id="@+id/country_id"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
+                android:layout_height="@dimen/spinner_height"
+                android:layout_margin="5dp"
+                android:background="@drawable/border"
+                android:hint="@string/prompt_departure" />
 
             <android.support.v7.widget.AppCompatButton
                 android:id="@+id/email_register_button"

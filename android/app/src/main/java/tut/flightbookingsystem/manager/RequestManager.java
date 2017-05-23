@@ -375,10 +375,10 @@ public class RequestManager {
     }
 
     public static void updateMeal(final SessionManager session,
-                                     final Context context,
-                                     final long user_id,
-                                     final String passenger,
-                                     final Handler requestHandler) {
+                                  final Context context,
+                                  final long user_id,
+                                  final String passenger,
+                                  final Handler requestHandler) {
         final Message msg = requestHandler.obtainMessage();
         final Bundle bundle = new Bundle();
         final String url = session.getServerUrl() + RouteManager.UPDATE_MEAL;
@@ -518,7 +518,11 @@ public class RequestManager {
                                       final Handler requestHandler) {
         final Message msg = requestHandler.obtainMessage();
         final Bundle bundle = new Bundle();
-        final String url = session.getServerUrl() + RouteManager.GET_INITIAL_DATA;
+        final String extraParams = session.getLoggedInUser() == null ?
+                "" :
+                "/" + session.getLoggedInUser().id;
+        final String url = session.getServerUrl() + RouteManager.GET_INITIAL_DATA + extraParams;
+
         final String tag_string_req = "req_get_initial_data";
         final StringRequest stringRequest = new StringRequest(
                 Request.Method.GET,
@@ -529,12 +533,14 @@ public class RequestManager {
                         Log.e(tag_string_req, response);
                         try {
                             final JSONObject jObj = new JSONObject(response);
+                            session.setMyBookings(jObj.getJSONArray("myBookings").toString());
                             session.setCountries(jObj.getJSONArray("countries").toString());
                             session.setTravelClasses(jObj.getJSONArray("travelClasses").toString());
                             session.setAirports(jObj.getJSONArray("airports").toString());
                             session.setFoods(jObj.getJSONArray("foods").toString());
                             session.setDrinks(jObj.getJSONArray("drinks").toString());
                             bundle.putBoolean(Constant.ERROR, false);
+                            bundle.putString(Constant.MY_BOOKINGS, jObj.getJSONArray("myBookings").toString());
                             bundle.putBoolean(Constant.DONE_LOADING, true);
                             msg.setData(bundle);
                             requestHandler.sendMessage(msg);
@@ -560,6 +566,7 @@ public class RequestManager {
                 Toast.makeText(getApplicationContext(),
                         Utils.getVolleyMessage(error),
                         Toast.LENGTH_LONG).show();
+                session.setMyBookings("[]");
                 session.setCountries("[]");
                 session.setTravelClasses("[]");
                 session.setAirports("[]");

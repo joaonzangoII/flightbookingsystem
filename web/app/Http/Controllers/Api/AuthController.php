@@ -79,7 +79,7 @@ class AuthController extends Controller
         'last_name' => 'required|string',
         'id_number' => 'required|string|size:13|unique:users|correct',
         'phone' => 'required|string',
-        'email' => 'required|string|unique:users',
+        'email' => 'required|email|string|unique:users',
         'password' => 'required|string|strength',
         'country_id' => 'required|string',
     ]);

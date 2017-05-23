@@ -39,20 +39,12 @@ public class ScheduleAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         final MyScheduleHolder vH = (MyScheduleHolder) holder;
         final Schedule schedule = getItem(position);
         if (schedule != null) {
-            //            vH.txt_flight.setText(String.format("Flight: %1$s", schedule.flight.aircraft.name));
-            //            vH.txt_flight_date.setText(String.format("Date: %1$s", schedule.date));
-            //
-            //            vH.txt_origin_airport.setText(String.format("From: %1$s", schedule.origin_airport.name));
-            //            vH.txt_destination_airport.setText(String.format("To: %1$s", schedule.destination_airport.name));
-            //            vH.txt_departure_time.setText(String.format("Departure Time: %1$s", schedule.departure_time));
-            //            vH.txt_arrival_time.setText(String.format("Arrival Time: %1$s", schedule.arrival_time));
-            //            vH.txt_duration.setText(String.format("Duration: %1$s", schedule.duration));
-
             if (schedule.flight != null) {
                 if (schedule.flight.aircraft != null) {
                     vH.txt_flight.setText(String.format("%1$s", schedule.flight.aircraft.name));
                 }
             }
+
             vH.txt_origin_iata_airport_code.setText(schedule.origin_airport.iata_airport_code);
             vH.txt_departure_date.setText(Utils.getDate(schedule.departure_time));
             vH.txt_departure_hour.setText(Utils.getTime(schedule.departure_time));

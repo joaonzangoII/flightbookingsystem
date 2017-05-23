@@ -47,6 +47,7 @@ public class SplashScreenActivity extends AuthBaseActivity {
         btnRegister.setVisibility(View.GONE);
         // REQUEST INITIAL DATA
         RequestManager.getInitialData(session, requestHandler);
+
         viewMain(session);
         btnLogin.setOnClickListener(new View.OnClickListener() {
             @Override

@@ -7,10 +7,12 @@
       <div class="pull-left image">
         <img src="/admin/dist/img/user2-160x160.jpg" class="img-circle" alt="User Image">
       </div>
-      <div class="pull-left info">
-        <p>{{Auth::user()->name}}</p>
-        <a href="#"><i class="fa fa-circle text-success"></i> Online</a>
-      </div>
+      @if(Auth::guard()->check())
+        <div class="pull-left info">
+          <p>{{Auth::user()->name}}</p>
+          <a href="#"><i class="fa fa-circle text-success"></i> Online</a>
+        </div>
+      @endif
     </div>
     <!-- search form -->
     <form action="#" method="get" class="sidebar-form">

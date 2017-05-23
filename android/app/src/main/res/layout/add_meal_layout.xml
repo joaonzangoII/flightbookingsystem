@@ -21,8 +21,11 @@
         <Spinner
             android:id="@+id/foodSpinner"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="@dimen/spinner_height"
+            android:background="@drawable/border"
             android:hint="Food" />
+
+
     </LinearLayout>
 
 
@@ -43,7 +46,8 @@
         <Spinner
             android:id="@+id/drinksSpinner"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="@dimen/spinner_height"
+            android:background="@drawable/border"
             android:hint="Drinks" />
     </LinearLayout>
 

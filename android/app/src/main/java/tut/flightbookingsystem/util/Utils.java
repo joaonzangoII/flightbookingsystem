@@ -13,10 +13,19 @@ import com.android.volley.VolleyError;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Arrays;
+import java.util.Locale;
 
 import tut.flightbookingsystem.R;
 
 public class Utils {
+    public static String stringFormat(final String var) {
+        return String.format(Locale.getDefault(), "%1$s", var);
+    }
+
+    public static String intFormat(final int var) {
+        return String.format(Locale.getDefault(), "%1$d", var);
+    }
+
     public static void showKeyboard(final Context context,
                                     final View view) {
         InputMethodManager imm = (InputMethodManager) context.getSystemService(Context.INPUT_METHOD_SERVICE);
@@ -93,7 +102,7 @@ public class Utils {
 
 
     public static void logVolleyMessage(final VolleyError error,
-                                           final String TAG) {
+                                        final String TAG) {
         Log.e(TAG, error.getMessage() != null ? error.getMessage() : error.toString());
     }
 

@@ -42,19 +42,30 @@ Route::name('routes')->get('/routes', function(Request $request){
   return $routes;
 });
 
-Route::name('initial.data')->get('/initial-data', function(Request $request){
+Route::name('initial.data')->get('/initial-data/{user?}', function(Request $request,
+                                                                   String $user=""){
   $countries = Country::latest()->get();
   $travelClasses = TravelClass::latest()->get();
   $airports = Airport::latest()->get();
   $foods = Food::latest()->get();
   $drinks = Drink::latest()->get();
+  $bookings = Booking::with('passengers', 'passengers.booking', 'passengers.meal', 'passengers.meal.drink',
+                          'passengers.meal.food', 'passengers.flight_seat',
+                          'passengers.meal.food.food_type', 'passengers.meal.drink',
+                          'passengers.flight_seat.travel_class', 'aircraft',
+                          'departure_flight', 'departure_flight.aircraft', 'departure_flight.schedule',
+                          'return_flight', 'return_flight.aircraft', 'return_flight.schedule')
+                          ->where('user_id', $user)
+                          ->latest()
+                          ->get();
+
   return response()->json([
        'countries' => $countries,
        'travelClasses' => $travelClasses,
        'airports' => $airports,
        'foods' => $foods,
        'drinks' => $drinks,
-
+       'myBookings' => $bookings,
   ]);
 });
 

@@ -62,8 +62,8 @@ public class HomeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     }
 
     class MyViewHolder extends RecyclerView.ViewHolder {
-        public TextView txt_value;
-        public TextView txt_description;
+        private TextView txt_value;
+        private TextView txt_description;
 
         public MyViewHolder(final View itemView) {
             super(itemView);
