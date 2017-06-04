@@ -35,7 +35,7 @@
        @yield('content')
     </div>
     <!-- jQuery 2.2.3 -->
-    <script src="/admin/plugins/jQuery/jquery-2.2.3.min.js"></script>
+    <script src="/admin/plugins/jquery/jquery.min.js"></script>
     <!-- Bootstrap 3.3.7 -->
     <script src="/admin/bootstrap/js/bootstrap.min.js"></script>
     <!-- iCheck -->
