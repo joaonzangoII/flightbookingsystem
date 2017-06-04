@@ -12,7 +12,6 @@ class CountriesTableSeeder extends Seeder
     public function run()
     {
         Country::truncate();
-
         Country::create([
           'name' => 'South Africa',
           'iata_country_code' => 'ZA'

@@ -18,9 +18,14 @@ class User extends Authenticatable
     protected $appends =['name'];
 
     protected $fillable = [
-        'first_name', 'middle_name', 'last_name',
-        'id_number', 'phone', 'email', 'password',
-        'country_id', 'user_type_id'
+        'firstnames',
+        'surname',
+        'id_number',
+        'phone',
+        'email',
+        'password',
+        'country_id',
+        'user_type_id'
     ];
 
     /**
@@ -33,14 +38,33 @@ class User extends Authenticatable
     ];
 
     public function getNameAttribute()  {
-      return $this->first_name . ' ' . $this->last_name;
+      return $this->firstnames . ' ' . $this->surname;
     }
 
     public function bookings(){
       return $this->hasMany('App\Booking');
     }
 
+    public function user_type(){
+      return $this->hasOne('App\UserType', 'id', 'user_type_id');
+    }
+
     public function country(){
       return $this->belongsTo('App\Country');
+    }
+
+    public function isAdmin()
+    {
+      $user_type_admin = \App\UserType::where('name', 'Administrator')
+                                      ->first();
+      return $this->user_type_id == $user_type_admin->id;
+    }
+
+    public function getShowLinkAttribute(){
+      return route("backoffice.users.show", $this->id);
+    }
+
+    public function getEditLinkAttribute(){
+      return route("backoffice.users.edit", $this->id);
     }
 }

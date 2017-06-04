@@ -81,17 +81,18 @@ public class BookingConfirmationActivity extends BaseActivity {
         final CardView cardview = (CardView) getInflater()
                 .inflate(R.layout.passenger_confirmation_layout, null)
                 .findViewById(R.id.information_layout);
-        final TextView firstName = (TextView) cardview.findViewById(R.id.first_name);
-        final TextView lastName = (TextView) cardview.findViewById(R.id.last_name);
+        final TextView firstnames = (TextView) cardview.findViewById(R.id.firstnames);
+        final TextView surname = (TextView) cardview.findViewById(R.id.surname);
         final TextView travelClass = (TextView) cardview.findViewById(R.id.travel_class);
         final TextView seatNumber = (TextView) cardview.findViewById(R.id.seat_number);
         final TextView foodType = (TextView) cardview.findViewById(R.id.food_type);
+        final TextView food_and_drink = (TextView) cardview.findViewById(R.id.food_and_drink);
         final AppCompatButton btnAddMeal = (AppCompatButton) cardview.findViewById(R.id.btn_add_meal);
         final AppCompatButton btnDeleteMeal = (AppCompatButton) cardview.findViewById(R.id.btn_delete_meal);
         btnAddMeal.setVisibility(View.GONE);
         btnDeleteMeal.setVisibility(View.GONE);
-        firstName.setText(String.format("First Name: %1$s", passenger.first_name));
-        lastName.setText(String.format("Last Name: %1$s", passenger.last_name));
+        firstnames.setText(String.format("First Names: %1$s", passenger.firstnames));
+        surname.setText(String.format("Surname: %1$s", passenger.surname));
 
         final FlightSeat flight_seat = passenger.flight_seat;
         if (flight_seat != null) {
@@ -106,6 +107,7 @@ public class BookingConfirmationActivity extends BaseActivity {
         final Meal meal = passenger.meal;
         if (meal != null) {
             if (meal.food != null) {
+                food_and_drink.setText(String.format("Meal:  %1$s", passenger.food_and_drink));
                 if (meal.food.food_type != null) {
                     foodType.setText(String.format("Food Type:  %1$s", passenger.meal.food.food_type.name));
                 }

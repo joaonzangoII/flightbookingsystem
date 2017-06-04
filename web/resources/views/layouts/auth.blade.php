@@ -13,7 +13,7 @@
   <!-- Ionicons -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/ionicons/2.0.1/css/ionicons.min.css">
   <!-- Theme style -->
-  <link rel="stylesheet" href="/admin/dist/css/AdminLTE.min.css">
+  <link rel="stylesheet" href="/admin/css/AdminLTE.min.css">
   <!-- iCheck -->
   <link rel="stylesheet" href="/admin/plugins/iCheck/square/blue.css">
   <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
@@ -31,7 +31,7 @@
 </head>
 <body class="{{isset($bodyClass) ? $bodyClass : 'hold-transition skin-blue sidebar-mini'}}">
    <div id="app">
-       @include('includes.auth_navbar')
+       @include('shared._auth_navbar')
        @yield('content')
     </div>
     <!-- jQuery 2.2.3 -->

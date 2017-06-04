@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<database name="flight_booking_system" type="MySQL - 5.7.18-0ubuntu0.16.10.1">
+<database name="flight_booking_system" type="MySQL - 5.7.18-0ubuntu0.17.04.1">
    <tables>
-      <table name="aircraft_manufacturers" numRows="1" remarks="" type="TABLE">
+      <table name="aircraft_manufacturers" numRows="0" remarks="" type="TABLE">
          <column autoUpdated="true" digits="0" id="0" name="id" nullable="false" remarks="" size="10" type="INT UNSIGNED">
             <child column="aircraft_manufaturer_id" foreignKey="aircrafts_aircraft_manufaturer_id_foreign" implied="false" onDeleteCascade="true" table="aircrafts"/>
          </column>
@@ -15,7 +15,6 @@
       </table>
       <table name="aircraft_seats" numRows="1456" remarks="" type="TABLE">
          <column autoUpdated="true" digits="0" id="0" name="id" nullable="false" remarks="" size="10" type="INT UNSIGNED">
-            <child column="flight_seat_id" foreignKey="flight_seat_prices_flight_seat_id_foreign" implied="false" onDeleteCascade="true" table="flight_seat_prices"/>
             <child column="aircraft_seat_id" foreignKey="flight_seats_aircraft_seat_id_foreign" implied="false" onDeleteCascade="true" table="flight_seats"/>
          </column>
          <column autoUpdated="false" digits="0" id="1" name="number" nullable="false" remarks="" size="255" type="VARCHAR"/>
@@ -82,27 +81,40 @@
             <column ascending="true" name="country_id"/>
          </index>
       </table>
+      <table name="booking_sequences" numRows="3" remarks="" type="TABLE">
+         <column autoUpdated="true" digits="0" id="0" name="id" nullable="false" remarks="" size="10" type="INT UNSIGNED"/>
+         <column autoUpdated="false" defaultValue="CURRENT_TIMESTAMP" digits="0" id="1" name="date" nullable="false" remarks="" size="19" type="TIMESTAMP"/>
+         <column autoUpdated="false" digits="0" id="2" name="created_at" nullable="true" remarks="" size="19" type="TIMESTAMP"/>
+         <column autoUpdated="false" digits="0" id="3" name="updated_at" nullable="true" remarks="" size="19" type="TIMESTAMP"/>
+         <primaryKey column="id" sequenceNumberInPK="1"/>
+         <index name="PRIMARY" unique="true">
+            <column ascending="true" name="id"/>
+         </index>
+      </table>
       <table name="bookings" numRows="3" remarks="" type="TABLE">
          <column autoUpdated="true" digits="0" id="0" name="id" nullable="false" remarks="" size="10" type="INT UNSIGNED">
             <child column="booking_id" foreignKey="passengers_booking_id_foreign" implied="false" onDeleteCascade="true" table="passengers"/>
+            <child column="booking_id" foreignKey="tickets_booking_id_foreign" implied="false" onDeleteCascade="true" table="tickets"/>
          </column>
-         <column autoUpdated="false" defaultValue="0.00" digits="2" id="1" name="subtotal" nullable="false" remarks="" size="8" type="DECIMAL"/>
-         <column autoUpdated="false" defaultValue="0.00" digits="2" id="2" name="total" nullable="false" remarks="" size="8" type="DECIMAL"/>
-         <column autoUpdated="false" defaultValue="1" digits="0" id="3" name="return" nullable="false" remarks="" size="0" type="BIT"/>
-         <column autoUpdated="false" digits="0" id="4" name="user_id" nullable="false" remarks="" size="10" type="INT UNSIGNED">
+         <column autoUpdated="false" digits="0" id="1" name="booking_number" nullable="false" remarks="" size="255" type="VARCHAR"/>
+         <column autoUpdated="false" defaultValue="0.00" digits="2" id="2" name="subtotal" nullable="false" remarks="" size="8" type="DECIMAL"/>
+         <column autoUpdated="false" defaultValue="0.00" digits="2" id="3" name="total" nullable="false" remarks="" size="8" type="DECIMAL"/>
+         <column autoUpdated="false" defaultValue="1" digits="0" id="4" name="return" nullable="false" remarks="" size="0" type="BIT"/>
+         <column autoUpdated="false" defaultValue="booked" digits="0" id="5" name="status" nullable="false" remarks="" size="7" type="ENUM"/>
+         <column autoUpdated="false" digits="0" id="6" name="user_id" nullable="false" remarks="" size="10" type="INT UNSIGNED">
             <parent column="id" foreignKey="bookings_user_id_foreign" implied="false" onDeleteCascade="true" table="users"/>
          </column>
-         <column autoUpdated="false" digits="0" id="5" name="departure_flight_id" nullable="false" remarks="" size="10" type="INT UNSIGNED">
+         <column autoUpdated="false" digits="0" id="7" name="departure_flight_id" nullable="false" remarks="" size="10" type="INT UNSIGNED">
             <parent column="id" foreignKey="bookings_departure_flight_id_foreign" implied="false" onDeleteCascade="true" table="flights"/>
          </column>
-         <column autoUpdated="false" digits="0" id="6" name="return_flight_id" nullable="false" remarks="" size="10" type="INT UNSIGNED">
+         <column autoUpdated="false" digits="0" id="8" name="return_flight_id" nullable="false" remarks="" size="10" type="INT UNSIGNED">
             <parent column="id" foreignKey="bookings_return_flight_id_foreign" implied="false" onDeleteCascade="true" table="flights"/>
          </column>
-         <column autoUpdated="false" digits="0" id="7" name="aircraft_id" nullable="false" remarks="" size="10" type="INT UNSIGNED">
+         <column autoUpdated="false" digits="0" id="9" name="aircraft_id" nullable="false" remarks="" size="10" type="INT UNSIGNED">
             <parent column="id" foreignKey="bookings_aircraft_id_foreign" implied="false" onDeleteCascade="true" table="aircrafts"/>
          </column>
-         <column autoUpdated="false" digits="0" id="8" name="created_at" nullable="true" remarks="" size="19" type="TIMESTAMP"/>
-         <column autoUpdated="false" digits="0" id="9" name="updated_at" nullable="true" remarks="" size="19" type="TIMESTAMP"/>
+         <column autoUpdated="false" digits="0" id="10" name="created_at" nullable="true" remarks="" size="19" type="TIMESTAMP"/>
+         <column autoUpdated="false" digits="0" id="11" name="updated_at" nullable="true" remarks="" size="19" type="TIMESTAMP"/>
          <primaryKey column="id" sequenceNumberInPK="1"/>
          <index name="PRIMARY" unique="true">
             <column ascending="true" name="id"/>
@@ -120,7 +132,7 @@
             <column ascending="true" name="user_id"/>
          </index>
       </table>
-      <table name="countries" numRows="1" remarks="" type="TABLE">
+      <table name="countries" numRows="0" remarks="" type="TABLE">
          <column autoUpdated="true" digits="0" id="0" name="id" nullable="false" remarks="" size="10" type="INT UNSIGNED">
             <child column="country_id" foreignKey="airports_country_id_foreign" implied="false" onDeleteCascade="true" table="airports"/>
             <child column="country_id" foreignKey="users_country_id_foreign" implied="false" onDeleteCascade="true" table="users"/>
@@ -140,14 +152,15 @@
          </column>
          <column autoUpdated="false" digits="0" id="1" name="name" nullable="false" remarks="" size="255" type="VARCHAR"/>
          <column autoUpdated="false" digits="0" id="2" name="image" nullable="false" remarks="" size="255" type="VARCHAR"/>
-         <column autoUpdated="false" digits="0" id="3" name="created_at" nullable="true" remarks="" size="19" type="TIMESTAMP"/>
-         <column autoUpdated="false" digits="0" id="4" name="updated_at" nullable="true" remarks="" size="19" type="TIMESTAMP"/>
+         <column autoUpdated="false" digits="0" id="3" name="description" nullable="true" remarks="" size="65535" type="TEXT"/>
+         <column autoUpdated="false" digits="0" id="4" name="created_at" nullable="true" remarks="" size="19" type="TIMESTAMP"/>
+         <column autoUpdated="false" digits="0" id="5" name="updated_at" nullable="true" remarks="" size="19" type="TIMESTAMP"/>
          <primaryKey column="id" sequenceNumberInPK="1"/>
          <index name="PRIMARY" unique="true">
             <column ascending="true" name="id"/>
          </index>
       </table>
-      <table name="flight_seat_prices" numRows="1456" remarks="" type="TABLE">
+      <table name="flight_seat_prices" numRows="1932" remarks="" type="TABLE">
          <column autoUpdated="true" digits="0" id="0" name="id" nullable="false" remarks="" size="10" type="INT UNSIGNED"/>
          <column autoUpdated="false" defaultValue="500.00" digits="2" id="1" name="price" nullable="false" remarks="" size="8" type="DECIMAL"/>
          <column autoUpdated="false" digits="0" id="2" name="flight_id" nullable="false" remarks="" size="10" type="INT UNSIGNED">
@@ -157,7 +170,7 @@
             <parent column="id" foreignKey="flight_seat_prices_aircraft_id_foreign" implied="false" onDeleteCascade="true" table="aircrafts"/>
          </column>
          <column autoUpdated="false" digits="0" id="4" name="flight_seat_id" nullable="false" remarks="" size="10" type="INT UNSIGNED">
-            <parent column="id" foreignKey="flight_seat_prices_flight_seat_id_foreign" implied="false" onDeleteCascade="true" table="aircraft_seats"/>
+            <parent column="id" foreignKey="flight_seat_prices_flight_seat_id_foreign" implied="false" onDeleteCascade="true" table="flight_seats"/>
          </column>
          <column autoUpdated="false" digits="0" id="5" name="created_at" nullable="true" remarks="" size="19" type="TIMESTAMP"/>
          <column autoUpdated="false" digits="0" id="6" name="updated_at" nullable="true" remarks="" size="19" type="TIMESTAMP"/>
@@ -175,8 +188,9 @@
             <column ascending="true" name="flight_seat_id"/>
          </index>
       </table>
-      <table name="flight_seats" numRows="1456" remarks="" type="TABLE">
+      <table name="flight_seats" numRows="1932" remarks="" type="TABLE">
          <column autoUpdated="true" digits="0" id="0" name="id" nullable="false" remarks="" size="10" type="INT UNSIGNED">
+            <child column="flight_seat_id" foreignKey="flight_seat_prices_flight_seat_id_foreign" implied="false" onDeleteCascade="true" table="flight_seat_prices"/>
             <child column="flight_seat_id" foreignKey="passengers_flight_seat_id_foreign" implied="false" onDeleteCascade="true" table="passengers"/>
          </column>
          <column autoUpdated="false" digits="0" id="1" name="number" nullable="false" remarks="" size="255" type="VARCHAR"/>
@@ -224,7 +238,7 @@
             <column ascending="true" name="id"/>
          </index>
       </table>
-      <table name="flights" numRows="7" remarks="" type="TABLE">
+      <table name="flights" numRows="10" remarks="" type="TABLE">
          <column autoUpdated="true" digits="0" id="0" name="id" nullable="false" remarks="" size="10" type="INT UNSIGNED">
             <child column="departure_flight_id" foreignKey="bookings_departure_flight_id_foreign" implied="false" onDeleteCascade="true" table="bookings"/>
             <child column="return_flight_id" foreignKey="bookings_return_flight_id_foreign" implied="false" onDeleteCascade="true" table="bookings"/>
@@ -283,7 +297,7 @@
             <column ascending="true" name="food_type_id"/>
          </index>
       </table>
-      <table name="meals" numRows="2" remarks="" type="TABLE">
+      <table name="meals" numRows="3" remarks="" type="TABLE">
          <column autoUpdated="true" digits="0" id="0" name="id" nullable="false" remarks="" size="10" type="INT UNSIGNED"/>
          <column autoUpdated="false" digits="0" id="1" name="passenger_id" nullable="false" remarks="" size="10" type="INT UNSIGNED">
             <parent column="id" foreignKey="meals_passenger_id_foreign" implied="false" onDeleteCascade="true" table="passengers"/>
@@ -310,7 +324,7 @@
             <column ascending="true" name="passenger_id"/>
          </index>
       </table>
-      <table name="migrations" numRows="20" remarks="" type="TABLE">
+      <table name="migrations" numRows="23" remarks="" type="TABLE">
          <column autoUpdated="true" digits="0" id="0" name="id" nullable="false" remarks="" size="10" type="INT UNSIGNED"/>
          <column autoUpdated="false" digits="0" id="1" name="migration" nullable="false" remarks="" size="255" type="VARCHAR"/>
          <column autoUpdated="false" digits="0" id="2" name="batch" nullable="false" remarks="" size="10" type="INT"/>
@@ -319,24 +333,41 @@
             <column ascending="true" name="id"/>
          </index>
       </table>
-      <table name="passengers" numRows="3" remarks="" type="TABLE">
+      <table name="notifications" numRows="0" remarks="" type="TABLE">
+         <column autoUpdated="false" digits="0" id="0" name="id" nullable="false" remarks="" size="36" type="CHAR"/>
+         <column autoUpdated="false" digits="0" id="1" name="type" nullable="false" remarks="" size="255" type="VARCHAR"/>
+         <column autoUpdated="false" digits="0" id="2" name="notifiable_id" nullable="false" remarks="" size="10" type="INT UNSIGNED"/>
+         <column autoUpdated="false" digits="0" id="3" name="notifiable_type" nullable="false" remarks="" size="255" type="VARCHAR"/>
+         <column autoUpdated="false" digits="0" id="4" name="data" nullable="false" remarks="" size="65535" type="TEXT"/>
+         <column autoUpdated="false" digits="0" id="5" name="read_at" nullable="true" remarks="" size="19" type="TIMESTAMP"/>
+         <column autoUpdated="false" digits="0" id="6" name="created_at" nullable="true" remarks="" size="19" type="TIMESTAMP"/>
+         <column autoUpdated="false" digits="0" id="7" name="updated_at" nullable="true" remarks="" size="19" type="TIMESTAMP"/>
+         <primaryKey column="id" sequenceNumberInPK="1"/>
+         <index name="PRIMARY" unique="true">
+            <column ascending="true" name="id"/>
+         </index>
+         <index name="notifications_notifiable_id_notifiable_type_index" unique="false">
+            <column ascending="true" name="notifiable_id"/>
+            <column ascending="true" name="notifiable_type"/>
+         </index>
+      </table>
+      <table name="passengers" numRows="4" remarks="" type="TABLE">
          <column autoUpdated="true" digits="0" id="0" name="id" nullable="false" remarks="" size="10" type="INT UNSIGNED">
             <child column="passenger_id" foreignKey="meals_passenger_id_foreign" implied="false" onDeleteCascade="true" table="meals"/>
          </column>
-         <column autoUpdated="false" digits="0" id="1" name="first_name" nullable="false" remarks="" size="255" type="VARCHAR"/>
-         <column autoUpdated="false" digits="0" id="2" name="middle_name" nullable="true" remarks="" size="255" type="VARCHAR"/>
-         <column autoUpdated="false" digits="0" id="3" name="last_name" nullable="false" remarks="" size="255" type="VARCHAR"/>
-         <column autoUpdated="false" digits="0" id="4" name="id_number" nullable="false" remarks="" size="255" type="VARCHAR"/>
-         <column autoUpdated="false" digits="0" id="5" name="date_of_birth" nullable="false" remarks="" size="255" type="VARCHAR"/>
-         <column autoUpdated="false" digits="0" id="6" name="gender" nullable="false" remarks="" size="255" type="VARCHAR"/>
-         <column autoUpdated="false" digits="0" id="7" name="booking_id" nullable="false" remarks="" size="10" type="INT UNSIGNED">
+         <column autoUpdated="false" digits="0" id="1" name="firstnames" nullable="false" remarks="" size="255" type="VARCHAR"/>
+         <column autoUpdated="false" digits="0" id="2" name="surname" nullable="false" remarks="" size="255" type="VARCHAR"/>
+         <column autoUpdated="false" digits="0" id="3" name="id_number" nullable="false" remarks="" size="255" type="VARCHAR"/>
+         <column autoUpdated="false" digits="0" id="4" name="date_of_birth" nullable="false" remarks="" size="255" type="VARCHAR"/>
+         <column autoUpdated="false" digits="0" id="5" name="gender" nullable="false" remarks="" size="255" type="VARCHAR"/>
+         <column autoUpdated="false" digits="0" id="6" name="booking_id" nullable="false" remarks="" size="10" type="INT UNSIGNED">
             <parent column="id" foreignKey="passengers_booking_id_foreign" implied="false" onDeleteCascade="true" table="bookings"/>
          </column>
-         <column autoUpdated="false" digits="0" id="8" name="flight_seat_id" nullable="false" remarks="" size="10" type="INT UNSIGNED">
+         <column autoUpdated="false" digits="0" id="7" name="flight_seat_id" nullable="false" remarks="" size="10" type="INT UNSIGNED">
             <parent column="id" foreignKey="passengers_flight_seat_id_foreign" implied="false" onDeleteCascade="true" table="flight_seats"/>
          </column>
-         <column autoUpdated="false" digits="0" id="9" name="created_at" nullable="true" remarks="" size="19" type="TIMESTAMP"/>
-         <column autoUpdated="false" digits="0" id="10" name="updated_at" nullable="true" remarks="" size="19" type="TIMESTAMP"/>
+         <column autoUpdated="false" digits="0" id="8" name="created_at" nullable="true" remarks="" size="19" type="TIMESTAMP"/>
+         <column autoUpdated="false" digits="0" id="9" name="updated_at" nullable="true" remarks="" size="19" type="TIMESTAMP"/>
          <primaryKey column="id" sequenceNumberInPK="1"/>
          <index name="PRIMARY" unique="true">
             <column ascending="true" name="id"/>
@@ -356,11 +387,11 @@
             <column ascending="true" name="email"/>
          </index>
       </table>
-      <table name="schedules" numRows="7" remarks="" type="TABLE">
+      <table name="schedules" numRows="10" remarks="" type="TABLE">
          <column autoUpdated="true" digits="0" id="0" name="id" nullable="false" remarks="" size="10" type="INT UNSIGNED"/>
          <column autoUpdated="false" defaultValue="CURRENT_TIMESTAMP" digits="0" id="1" name="departure_time" nullable="false" remarks="" size="19" type="TIMESTAMP"/>
          <column autoUpdated="false" defaultValue="CURRENT_TIMESTAMP" digits="0" id="2" name="arrival_time" nullable="false" remarks="" size="19" type="TIMESTAMP"/>
-         <column autoUpdated="false" defaultValue="2017-05-05" digits="0" id="3" name="date" nullable="false" remarks="" size="10" type="DATE"/>
+         <column autoUpdated="false" defaultValue="2017-06-04" digits="0" id="3" name="date" nullable="false" remarks="" size="10" type="DATE"/>
          <column autoUpdated="false" digits="0" id="4" name="origin_airport_id" nullable="false" remarks="" size="10" type="INT UNSIGNED">
             <parent column="id" foreignKey="schedules_origin_airport_id_foreign" implied="false" onDeleteCascade="true" table="airports"/>
          </column>
@@ -384,6 +415,22 @@
          </index>
          <index name="schedules_origin_airport_id_foreign" unique="false">
             <column ascending="true" name="origin_airport_id"/>
+         </index>
+      </table>
+      <table name="tickets" numRows="0" remarks="" type="TABLE">
+         <column autoUpdated="true" digits="0" id="0" name="id" nullable="false" remarks="" size="10" type="INT UNSIGNED"/>
+         <column autoUpdated="false" digits="0" id="1" name="ticket_number" nullable="false" remarks="" size="255" type="VARCHAR"/>
+         <column autoUpdated="false" digits="0" id="2" name="booking_id" nullable="false" remarks="" size="10" type="INT UNSIGNED">
+            <parent column="id" foreignKey="tickets_booking_id_foreign" implied="false" onDeleteCascade="true" table="bookings"/>
+         </column>
+         <column autoUpdated="false" digits="0" id="3" name="created_at" nullable="true" remarks="" size="19" type="TIMESTAMP"/>
+         <column autoUpdated="false" digits="0" id="4" name="updated_at" nullable="true" remarks="" size="19" type="TIMESTAMP"/>
+         <primaryKey column="id" sequenceNumberInPK="1"/>
+         <index name="PRIMARY" unique="true">
+            <column ascending="true" name="id"/>
+         </index>
+         <index name="tickets_booking_id_foreign" unique="false">
+            <column ascending="true" name="booking_id"/>
          </index>
       </table>
       <table name="travel_classes" numRows="3" remarks="" type="TABLE">
@@ -413,26 +460,25 @@
             <column ascending="true" name="id"/>
          </index>
       </table>
-      <table name="users" numRows="1" remarks="" type="TABLE">
+      <table name="users" numRows="4" remarks="" type="TABLE">
          <column autoUpdated="true" digits="0" id="0" name="id" nullable="false" remarks="" size="10" type="INT UNSIGNED">
             <child column="user_id" foreignKey="bookings_user_id_foreign" implied="false" onDeleteCascade="true" table="bookings"/>
          </column>
-         <column autoUpdated="false" digits="0" id="1" name="first_name" nullable="false" remarks="" size="255" type="VARCHAR"/>
-         <column autoUpdated="false" digits="0" id="2" name="middle_name" nullable="true" remarks="" size="255" type="VARCHAR"/>
-         <column autoUpdated="false" digits="0" id="3" name="last_name" nullable="false" remarks="" size="255" type="VARCHAR"/>
-         <column autoUpdated="false" digits="0" id="4" name="id_number" nullable="false" remarks="" size="255" type="VARCHAR"/>
-         <column autoUpdated="false" digits="0" id="5" name="phone" nullable="false" remarks="" size="255" type="VARCHAR"/>
-         <column autoUpdated="false" digits="0" id="6" name="email" nullable="false" remarks="" size="255" type="VARCHAR"/>
-         <column autoUpdated="false" digits="0" id="7" name="password" nullable="false" remarks="" size="255" type="VARCHAR"/>
-         <column autoUpdated="false" digits="0" id="8" name="country_id" nullable="false" remarks="" size="10" type="INT UNSIGNED">
+         <column autoUpdated="false" digits="0" id="1" name="firstnames" nullable="false" remarks="" size="255" type="VARCHAR"/>
+         <column autoUpdated="false" digits="0" id="2" name="surname" nullable="false" remarks="" size="255" type="VARCHAR"/>
+         <column autoUpdated="false" digits="0" id="3" name="id_number" nullable="false" remarks="" size="255" type="VARCHAR"/>
+         <column autoUpdated="false" digits="0" id="4" name="phone" nullable="false" remarks="" size="255" type="VARCHAR"/>
+         <column autoUpdated="false" digits="0" id="5" name="email" nullable="false" remarks="" size="255" type="VARCHAR"/>
+         <column autoUpdated="false" digits="0" id="6" name="password" nullable="false" remarks="" size="255" type="VARCHAR"/>
+         <column autoUpdated="false" digits="0" id="7" name="country_id" nullable="false" remarks="" size="10" type="INT UNSIGNED">
             <parent column="id" foreignKey="users_country_id_foreign" implied="false" onDeleteCascade="true" table="countries"/>
          </column>
-         <column autoUpdated="false" digits="0" id="9" name="user_type_id" nullable="false" remarks="" size="10" type="INT UNSIGNED">
+         <column autoUpdated="false" digits="0" id="8" name="user_type_id" nullable="false" remarks="" size="10" type="INT UNSIGNED">
             <parent column="id" foreignKey="users_user_type_id_foreign" implied="false" onDeleteCascade="true" table="user_types"/>
          </column>
-         <column autoUpdated="false" digits="0" id="10" name="remember_token" nullable="true" remarks="" size="100" type="VARCHAR"/>
-         <column autoUpdated="false" digits="0" id="11" name="created_at" nullable="true" remarks="" size="19" type="TIMESTAMP"/>
-         <column autoUpdated="false" digits="0" id="12" name="updated_at" nullable="true" remarks="" size="19" type="TIMESTAMP"/>
+         <column autoUpdated="false" digits="0" id="9" name="remember_token" nullable="true" remarks="" size="100" type="VARCHAR"/>
+         <column autoUpdated="false" digits="0" id="10" name="created_at" nullable="true" remarks="" size="19" type="TIMESTAMP"/>
+         <column autoUpdated="false" digits="0" id="11" name="updated_at" nullable="true" remarks="" size="19" type="TIMESTAMP"/>
          <primaryKey column="id" sequenceNumberInPK="1"/>
          <index name="PRIMARY" unique="true">
             <column ascending="true" name="id"/>

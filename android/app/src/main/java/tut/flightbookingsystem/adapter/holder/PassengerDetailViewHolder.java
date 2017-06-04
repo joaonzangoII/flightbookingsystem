@@ -34,9 +34,8 @@ import tut.flightbookingsystem.model.Passenger;
 public class PassengerDetailViewHolder extends ChildViewHolder {
     private DatePickerDialog departureDatePickerDialog;
     public TextView txt_title;
-    public AppCompatEditText edt_first_name;
-    public AppCompatEditText edt_middle_name;
-    public AppCompatEditText edt_last_name;
+    public AppCompatEditText edt_firstnames;
+    public AppCompatEditText edt_surname;
     public AppCompatEditText edt_id_number;
     public AppCompatEditText txt_date_of_birth;
     public Button btn_add_meal;
@@ -46,9 +45,8 @@ public class PassengerDetailViewHolder extends ChildViewHolder {
     public PassengerDetailViewHolder(final View itemView) {
         super(itemView);
         txt_title = (TextView) itemView.findViewById(R.id.passengerNumber);
-        edt_first_name = (AppCompatEditText) itemView.findViewById(R.id.first_name);
-        edt_middle_name = (AppCompatEditText) itemView.findViewById(R.id.middle_name);
-        edt_last_name = (AppCompatEditText) itemView.findViewById(R.id.last_name);
+        edt_firstnames = (AppCompatEditText) itemView.findViewById(R.id.firstnames);
+        edt_surname = (AppCompatEditText) itemView.findViewById(R.id.surname);
         edt_id_number = (AppCompatEditText) itemView.findViewById(R.id.id_number);
         txt_date_of_birth = (AppCompatEditText) itemView.findViewById(R.id.date_of_birth);
         txt_date_of_birth.setInputType(InputType.TYPE_NULL);
@@ -60,9 +58,8 @@ public class PassengerDetailViewHolder extends ChildViewHolder {
                      final int position,
                      final RecyclerClickListener.OnItemClickCallback onItemClickCallback) {
         if (passenger != null) {
-            edt_first_name.setText(passenger.last_name);
-            edt_middle_name.setText(passenger.middle_name);
-            edt_last_name.setText(passenger.last_name);
+            edt_firstnames.setText(passenger.firstnames);
+            edt_surname.setText(passenger.surname);
             edt_id_number.setText(passenger.id_number);
             final Calendar c = Calendar.getInstance();
             if (txt_date_of_birth.getText().toString().equals("")) {
@@ -84,9 +81,8 @@ public class PassengerDetailViewHolder extends ChildViewHolder {
             departureDatePickerDialog = datepicker(itemView.getContext(), txt_date_of_birth);
             btn_add_meal.setOnClickListener(new RecyclerClickListener(position, onItemClickCallback));
             itemView.setOnClickListener(new RecyclerClickListener(position, onItemClickCallback));
-            setListenerAndData(edt_first_name, "first_name", passenger);
-            setListenerAndData(edt_middle_name, "middle_name", passenger);
-            setListenerAndData(edt_last_name, "last_name", passenger);
+            setListenerAndData(edt_firstnames, "firstnames", passenger);
+            setListenerAndData(edt_surname, "surname", passenger);
             setListenerAndData(edt_id_number, "id_number", passenger);
             setListenerAndData(txt_date_of_birth, "date_of_birth", passenger);
 
@@ -151,14 +147,11 @@ public class PassengerDetailViewHolder extends ChildViewHolder {
                                       int i1,
                                       int i2) {
                 switch (column) {
-                    case "first_name":
-                        passenger.first_name = edt.getText().toString();
+                    case "firstnames":
+                        passenger.firstnames = edt.getText().toString();
                         break;
-                    case "middle_name":
-                        passenger.middle_name = edt.getText().toString();
-                        break;
-                    case "last_name":
-                        passenger.last_name = edt.getText().toString();
+                    case "surname":
+                        passenger.surname = edt.getText().toString();
                         break;
                     case "id_number":
                         passenger.id_number = edt.getText().toString();

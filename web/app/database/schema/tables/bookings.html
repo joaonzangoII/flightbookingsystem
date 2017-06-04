@@ -116,12 +116,29 @@ src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
     <td class='constraint detail'>passengers_booking_id_foreign<span title='Cascade on delete:
  Deletion of parent deletes child'>&nbsp;C</span></td>
    </tr>
+   <tr class='relative odd' valign='top'>
+    <td class='relatedTable detail' title="tickets.booking_id refs bookings.id via tickets_booking_id_foreign"><a href='tickets.html'>tickets</a><span class='relatedKey'>.booking_id</span>
+    </td>
+    <td class='constraint detail'>tickets_booking_id_foreign<span title='Cascade on delete:
+ Deletion of parent deletes child'>&nbsp;C</span></td>
+   </tr>
   </table>
 </td>
  <td class='detail'> </td>
  <td class='comment detail'></td>
 </tr>
 <tr class='even'>
+ <td class='detail'>booking_number</td>
+ <td class='detail'>varchar</td>
+ <td class='detail' align='right'>255</td>
+ <td class='detail' align='center'></td>
+ <td class='detail' align='center'></td>
+ <td class='detail'></td>
+ <td class='detail'></td>
+ <td class='detail'> </td>
+ <td class='comment detail'></td>
+</tr>
+<tr class='odd'>
  <td class='detail'>subtotal</td>
  <td class='detail'>decimal</td>
  <td class='detail' align='right'>8,2</td>
@@ -132,7 +149,7 @@ src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
  <td class='detail'> </td>
  <td class='comment detail'></td>
 </tr>
-<tr class='odd'>
+<tr class='even'>
  <td class='detail'>total</td>
  <td class='detail'>decimal</td>
  <td class='detail' align='right'>8,2</td>
@@ -143,13 +160,24 @@ src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
  <td class='detail'> </td>
  <td class='comment detail'></td>
 </tr>
-<tr class='even'>
+<tr class='odd'>
  <td class='detail'>return</td>
  <td class='detail'>bit</td>
  <td class='detail' align='right'>0</td>
  <td class='detail' align='center'></td>
  <td class='detail' align='center'></td>
  <td class='detail' align='right'>1</td>
+ <td class='detail'></td>
+ <td class='detail'> </td>
+ <td class='comment detail'></td>
+</tr>
+<tr class='even'>
+ <td class='detail'>status</td>
+ <td class='detail'>enum</td>
+ <td class='detail' align='right'>7</td>
+ <td class='detail' align='center'></td>
+ <td class='detail' align='center'></td>
+ <td class='detail' align='right'>booked</td>
  <td class='detail'></td>
  <td class='detail'> </td>
  <td class='comment detail'></td>
@@ -257,7 +285,7 @@ src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
  <td class='comment detail'></td>
 </tr>
 </table>
-<p title='10 columns'>Table contained 3 rows at Fri May 05 23:49 SAST 2017<p/>
+<p title='12 columns'>Table contained 3 rows at Sun Jun 04 17:48 SAST 2017<p/>
 </td></tr></table>
 <div class='indent'>
 <b>Indexes:</b>
@@ -307,28 +335,30 @@ src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
 <br><form action='get'><b>Close relationships</b><span class='degrees' id='degrees' title='Detail diminishes with increased separation from bookings'>
 &nbsp;within <label for='oneDegree'><input type='radio' name='degrees' id='oneDegree' checked>one</label>  <label for='twoDegrees'><input type='radio' name='degrees' id='twoDegrees'>two degrees</label> of separation</span><b>:</b></form>
 <map id="oneDegreeRelationshipsDiagram" name="oneDegreeRelationshipsDiagram">
-<area shape="rect" id="node1" href="bookings.html" title="bookings" alt="" coords="411,259,675,563">
-<area shape="rect" id="node2" href="aircrafts.html" title="aircrafts" alt="" coords="5,488,184,691">
-<area shape="rect" id="node3" href="flights.html" title="flights" alt="" coords="231,393,363,572">
-<area shape="rect" id="node4" href="users.html" title="users" alt="" coords="228,5,367,376">
-<area shape="rect" id="node5" href="passengers.html" title="passengers" alt="" coords="719,93,851,416">
+<area shape="rect" id="node1" href="bookings.html" title="bookings" alt="" coords="412,256,676,608">
+<area shape="rect" id="node2" href="aircrafts.html" title="aircrafts" alt="" coords="5,533,184,736">
+<area shape="rect" id="node3" href="flights.html" title="flights" alt="" coords="228,439,368,617">
+<area shape="rect" id="node4" href="users.html" title="users" alt="" coords="229,75,367,421">
+<area shape="rect" id="node5" href="passengers.html" title="passengers" alt="" coords="720,5,852,304">
+<area shape="rect" id="node6" href="tickets.html" title="tickets" alt="" coords="726,321,846,500">
 </map>
   <a name='diagram'><img id='oneDegreeImg' src='../diagrams/bookings.1degree.png' usemap='#oneDegreeRelationshipsDiagram' class='diagram' border='0' alt='' align='left'></a>
 <map id="twoDegreesRelationshipsDiagram" name="twoDegreesRelationshipsDiagram">
-<area shape="rect" id="node1" href="aircraft_seats.html" title="aircraft_seats" alt="" coords="447,661,607,744">
-<area shape="rect" id="node2" href="aircrafts.html" title="aircrafts" alt="" coords="224,593,403,796">
-<area shape="rect" id="node3" href="aircraft_manufacturers.html" title="aircraft_manufacturers" alt="" coords="5,665,180,748">
-<area shape="rect" id="node4" href="bookings.html" title="bookings" alt="" coords="651,271,915,575">
-<area shape="rect" id="node5" href="flights.html" title="flights" alt="" coords="461,393,593,572">
-<area shape="rect" id="node6" href="users.html" title="users" alt="" coords="457,5,596,376">
-<area shape="rect" id="node9" href="flight_statuses.html" title="flight_statuses" alt="" coords="253,441,374,524">
-<area shape="rect" id="node13" href="countries.html" title="countries" alt="" coords="257,160,370,243">
-<area shape="rect" id="node14" href="user_types.html" title="user_types" alt="" coords="253,260,373,343">
-<area shape="rect" id="node7" href="flight_seat_prices.html" title="flight_seat_prices" alt="" coords="709,692,857,775">
+<area shape="rect" id="node1" href="aircraft_seats.html" title="aircraft_seats" alt="" coords="447,637,607,720">
+<area shape="rect" id="node2" href="aircrafts.html" title="aircrafts" alt="" coords="224,569,403,772">
+<area shape="rect" id="node3" href="aircraft_manufacturers.html" title="aircraft_manufacturers" alt="" coords="5,641,180,724">
+<area shape="rect" id="node4" href="bookings.html" title="bookings" alt="" coords="651,187,915,539">
+<area shape="rect" id="node5" href="flights.html" title="flights" alt="" coords="457,369,597,548">
+<area shape="rect" id="node6" href="users.html" title="users" alt="" coords="457,5,596,352">
+<area shape="rect" id="node9" href="flight_statuses.html" title="flight_statuses" alt="" coords="253,417,374,500">
+<area shape="rect" id="node14" href="countries.html" title="countries" alt="" coords="253,136,373,219">
+<area shape="rect" id="node15" href="user_types.html" title="user_types" alt="" coords="253,236,373,319">
+<area shape="rect" id="node7" href="flight_seat_prices.html" title="flight_seat_prices" alt="" coords="959,623,1107,705">
 <area shape="rect" id="node8" href="flight_seats.html" title="flight_seats" alt="" coords="703,592,863,675">
-<area shape="rect" id="node10" href="meals.html" title="meals" alt="" coords="1135,253,1255,336">
-<area shape="rect" id="node11" href="passengers.html" title="passengers" alt="" coords="959,253,1091,576">
-<area shape="rect" id="node12" href="schedules.html" title="schedules" alt="" coords="723,171,843,253">
+<area shape="rect" id="node10" href="meals.html" title="meals" alt="" coords="1151,307,1271,389">
+<area shape="rect" id="node11" href="passengers.html" title="passengers" alt="" coords="967,307,1099,605">
+<area shape="rect" id="node12" href="schedules.html" title="schedules" alt="" coords="719,87,847,169">
+<area shape="rect" id="node13" href="tickets.html" title="tickets" alt="" coords="973,111,1093,289">
 </map>
 
   <a name='diagram'><img id='twoDegreesImg' src='../diagrams/bookings.2degrees.png' usemap='#twoDegreesRelationshipsDiagram' class='diagram' border='0' alt='' align='left'></a>

@@ -6,6 +6,14 @@ use Illuminate\Database\Eloquent\Model;
 
 class FlightSeat extends Model
 {
+  protected $fillable=[
+    'aircraft_id',
+    'aircraft_seat_id',
+    'number',
+    'travel_class_id',
+    'flight_id'
+  ];
+
   public function travel_class(){
     return $this->hasOne('App\TravelClass', 'id', 'travel_class_id');
   }

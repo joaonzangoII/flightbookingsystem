@@ -52,9 +52,8 @@ public class RegisterActivity extends AuthBaseActivity {
         btnRegister.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                final String first_name = ((AutoCompleteTextView) findViewById(R.id.first_name)).getText().toString();
-                final String middle_name = ((AutoCompleteTextView) findViewById(R.id.middle_name)).getText().toString();
-                final String last_name = ((AutoCompleteTextView) findViewById(R.id.last_name)).getText().toString();
+                final String firstnames = ((AutoCompleteTextView) findViewById(R.id.firstnames)).getText().toString();
+                final String surname = ((AutoCompleteTextView) findViewById(R.id.surname)).getText().toString();
                 final String id_number = ((AutoCompleteTextView) findViewById(R.id.id_number)).getText().toString();
                 final String phone = ((AutoCompleteTextView) findViewById(R.id.phone)).getText().toString();
                 final String email = ((AutoCompleteTextView) findViewById(R.id.email)).getText().toString();
@@ -63,9 +62,8 @@ public class RegisterActivity extends AuthBaseActivity {
 
                 RequestManager.register(session,
                         RegisterActivity.this,
-                        first_name,
-                        middle_name,
-                        last_name,
+                        firstnames,
+                        surname,
                         id_number,
                         phone,
                         email,

@@ -2,6 +2,7 @@
 
 namespace App\Http\Middleware;
 
+use Config;
 use Closure;
 use Illuminate\Support\Facades\Auth;
 
@@ -18,9 +19,8 @@ class RedirectIfAuthenticated
     public function handle($request, Closure $next, $guard = null)
     {
         if (Auth::guard($guard)->check()) {
-            return redirect('/home');
+            return redirect(Config::get('constants.ADMIN_ROUTE'));
         }
-
         return $next($request);
     }
 }

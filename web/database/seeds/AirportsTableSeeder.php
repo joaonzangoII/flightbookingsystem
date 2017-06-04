@@ -16,7 +16,6 @@ class AirportsTableSeeder extends Seeder
       $country_id = Country::pluck('id')->random();
       Airport::truncate();
       Airport::create([
-        'id' => 1,
         'name' => 'O.R. Tambo International Airport',
         'iata_airport_code' => 'JNB',
         'city' => 'Johannesburg',
@@ -24,7 +23,6 @@ class AirportsTableSeeder extends Seeder
       ]);
 
       Airport::create([
-        'id' => 2,
         'name' => 'Cape Town International Airport',
         'iata_airport_code' => 'CPT',
         'city' => 'Cape Town',
@@ -32,7 +30,6 @@ class AirportsTableSeeder extends Seeder
       ]);
 
       Airport::create([
-        'id' => 3,
         'name' => 'Durban International Airport',
         'iata_airport_code' => 'DUR',
         'city' => 'DURBAN',

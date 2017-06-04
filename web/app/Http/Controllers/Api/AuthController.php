@@ -50,10 +50,9 @@ class AuthController extends Controller
 
     $user = User::with('bookings', 'country')
                 ->where('email', '=',  $email)
-                // ->where('password', '=', bcrypt($password))
                 ->first();
-    $user_type_admin = UserType::where('name', 'Administrator')->first();
-    if($user->user_type_id == $user_type_admin->id){
+
+    if($user->isAdmin()){
       return response()->json([
         'code' => '500',
         'erro' => true,
@@ -74,10 +73,10 @@ class AuthController extends Controller
   {
     $data = $request->all();
     $validator = Validator::make($data , [
-        'first_name'=> 'required|string',
-        // 'middle_name' => 'required|string',
-        'last_name' => 'required|string',
+        'firstnames'=> 'required|string',
+        'surname' => 'required|string',
         'id_number' => 'required|string|size:13|unique:users|correct',
+        // 'id_number' => 'required|string|size:13|unique:users',
         'phone' => 'required|string',
         'email' => 'required|email|string|unique:users',
         'password' => 'required|string|strength',
@@ -94,9 +93,8 @@ class AuthController extends Controller
 
     $user_type = UserType::where('name', 'Customer')->first();
     $user = User::create([
-        'first_name' => $request->input('first_name'),
-        'middle_name' => $request->input('middle_name'),
-        'last_name' => $request->input('last_name'),
+        'firstnames' => $request->input('firstnames'),
+        'surname' => $request->input('surname'),
         'id_number' => $request->input('id_number'),
         'phone' => $request->input('phone'),
         'email' => $request->input('email'),

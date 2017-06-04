@@ -8,12 +8,12 @@ import java.io.Serializable;
 public class Passenger implements Serializable, Parcelable {
     public long id;
     public String name;
-    public String first_name;
-    public String middle_name;
-    public String last_name;
+    public String firstnames;
+    public String surname;
     public String id_number;
     public String date_of_birth;
     public String gender;
+    public String food_and_drink;
     public Meal meal;
     public long booking_id;
     public Booking booking;
@@ -39,10 +39,10 @@ public class Passenger implements Serializable, Parcelable {
                               final int flags) {
         dest.writeLong(id);
         dest.writeString(name);
-        dest.writeString(first_name);
-        dest.writeString(middle_name);
-        dest.writeString(last_name);
+        dest.writeString(firstnames);
+        dest.writeString(surname);
         dest.writeString(gender);
+        dest.writeString(food_and_drink);
         dest.writeString(id_number);
         dest.writeString(date_of_birth);
         dest.writeLong(flight_seat_id);

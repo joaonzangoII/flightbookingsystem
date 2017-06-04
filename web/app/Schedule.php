@@ -6,6 +6,17 @@ use Illuminate\Database\Eloquent\Model;
 
 class Schedule extends Model
 {
+    protected $fillable=[
+      'departure_time',
+      'arrival_time',
+      'origin_airport_id',
+      'destination_airport_id',
+      'date',
+      'flight_id'
+    ];
+
+    protected $dates=['departure_time', 'arrival_time'];
+
     protected $appends = ['origin_airport_name', 'destination_airport_name', 'duration'];
     public function flight(){
       return $this->belongsTo('App\Flight');
@@ -32,13 +43,18 @@ class Schedule extends Model
     }
 
     public function getDurationAttribute($icone){
-      $departure_time=strtotime( $this->departure_time);
-      $arrival_time = strtotime( $this->arrival_time);
+      $departure_time= strtotime( $this->departure_time);
+      $arrival_time =  strtotime( $this->arrival_time);
       $diff = $arrival_time - $departure_time;
-      return ($diff/(60*60)%24) . ' hours';
-
-      // $departure_time= new \DateTime( $this->departure_time, new \DateTimeZone('Africa/Johannesburg'));
-      // $arrival_time = new \DateTime( $this->arrival_time, new \DateTimeZone('Africa/Johannesburg'));
-      // return  $departure_time->diff($arrival_time) ;
+      $years = floor($diff / (365*60*60*24));
+      $months = floor(($diff - $years * 365*60*60*24) / (30*60*60*24));
+      $days = floor(($diff - $years * 365*60*60*24 - $months*30*60*60*24)/ (60*60*24));
+      $hours = floor(($diff/(60*60)%24));
+      if($hours > 0 && $hours < 24){
+        return $hours . ' hours';
+      }else{
+        return $days . ' days';
+      }
+      return printf("%d months, %d days, %d hours\n", $months, $days, $hours);
     }
 }

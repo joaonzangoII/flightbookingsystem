@@ -37,7 +37,6 @@ public class QueryResultsActivity extends BaseActivity {
         public boolean handleMessage(Message message) {
             final Bundle data = message.getData();
             if (!data.getBoolean(Constant.ERROR)) {
-
                 final List<FlightSeat> flighSeatsList = session.getFlightSeats();
                 if (flighSeatsList.size() >= num_people) {
                     final Bundle args = new Bundle();

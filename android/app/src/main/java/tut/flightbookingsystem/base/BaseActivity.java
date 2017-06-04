@@ -119,9 +119,17 @@ public class BaseActivity extends AppCompatActivity implements View.OnClickListe
         view.setText(String.format("%s-%02d-%02d", year, (monthOfYear + 1), dayOfMonth));
     }
 
-    public <T> void goToActivity(final Class<T> clazz) {
+    public <T> void goToActivity(final Class<T> clazz,
+                                 final boolean finish) {
         final Intent intent = new Intent(BaseActivity.this, clazz);
+        if (finish) {
+            finish();
+        }
         startActivity(intent);
+    }
+
+    public <T> void goToActivity(final Class<T> clazz) {
+        goToActivity(clazz, false);
     }
 
     public <T> void goToActivity(final Class<T> clazz, final Bundle bundle) {

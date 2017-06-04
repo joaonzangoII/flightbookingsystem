@@ -14,8 +14,11 @@ flight_seats
 airports
 foods
 passengers
+tickets
 flight_seat_prices
 meals
 schedules
+booking_sequences
 migrations
+notifications
 password_resets

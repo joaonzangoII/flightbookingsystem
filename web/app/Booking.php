@@ -11,6 +11,10 @@ class Booking extends Model
       'status','return_flight_id','aircraft_id', 'subtotal', 'total'
     ];
 
+    public function user(){
+      return $this->hasOne('App\User', 'id', 'user_id');
+    }
+
     public function departure_flight(){
       return $this->hasOne('App\Flight', 'id', 'departure_flight_id');
     }
@@ -25,5 +29,13 @@ class Booking extends Model
 
     public function aircraft(){
       return $this->hasOne('App\Aircraft', 'id', 'aircraft_id');
+    }
+
+    public function getShowLinkAttribute(){
+      return route("backoffice.bookings.show", $this->id);
+    }
+
+    public function getEditLinkAttribute(){
+      return route("backoffice.bookings.edit", $this->id);
     }
 }

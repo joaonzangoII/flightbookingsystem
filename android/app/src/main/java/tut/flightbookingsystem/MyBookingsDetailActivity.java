@@ -41,6 +41,7 @@ public class MyBookingsDetailActivity extends BaseActivity {
                     final Booking mBooking = gson.fromJson(data.getString(Constant.BOOKING), type);
                     passengersList = mBooking.passengers;
                     myBookingsDetailAdapter.itemsChanged(mBooking, mBooking.passengers, position);
+                    goToActivity(MyBookingsActivity.class, true);
                 } else {
                 }
             }

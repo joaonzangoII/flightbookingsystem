@@ -7,6 +7,8 @@ use App\Http\Controllers\Controller;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use App\User;
 use App\UserType;
+use Config;
+use Auth;
 
 class LoginController extends Controller
 {
@@ -28,7 +30,7 @@ class LoginController extends Controller
      *
      * @var string
      */
-    protected $redirectTo = '/home';
+    protected $redirectTo = '';
 
     /**
      * Create a new controller instance.
@@ -37,7 +39,8 @@ class LoginController extends Controller
      */
     public function __construct()
     {
-        $this->middleware('guest')->except('logout');
+      $this->middleware('guest')->except('logout');
+      $this->redirectTo = Config::get('constants.ADMIN_ROUTE');
     }
 
     public function showLoginForm(){
@@ -45,21 +48,5 @@ class LoginController extends Controller
       return view("auth.login", compact('bodyClass'));
     }
 
-    // protected function authenticated(Request $request, $user)
-    // {
-    //     dd($user);
-    //     $user = User::with('bookings', 'country')
-    //                 ->where('email', '=',  $email)
-    //                 ->first();
-    //     $user_type_admin = UserType::where('name', 'Administrator')->first();
-    //     if($user->user_type_id == $user_type_admin->id){
-    //     return response()->json([
-    //         'code' => '500',
-    //         'erro' => true,
-    //         'messages' => [
-    //         'email' => ['Only non Admin users can use the mobile app']
-    //         ]
-    //     ]);
-    //     }
-    // }
+
 }

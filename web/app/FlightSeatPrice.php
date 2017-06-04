@@ -10,9 +10,8 @@ class FlightSeatPrice extends Model
       'price',
       'flight_id',
       'aircraft_id',
-      'aircraft_seat_id'
+      'flight_seat_id'
     ];
-
     public function flight(){
       return $this->hasOne('App\Flight', 'id', 'flight_seat_id');
     }

@@ -32,7 +32,7 @@
 <div class='indent'>
 <table width='100%'>
 <tr><td class='container' valign='bottom'><b>
-28 Foreign Key Constraints:</b>
+29 Foreign Key Constraints:</b>
 </td><td class='container' align='right'>
 <table>
   <tr><td class='container' align='right' valign='top'><a href='http://sourceforge.net' target='_blank'><img src='http://sourceforge.net/sflogo.php?group_id=137197&amp;type=1' alt='SourceForge.net' border='0' height='31' width='88'></a></td></tr>
@@ -144,7 +144,7 @@ src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
   <tr class='even'>
   <td class='detail'>flight_seat_prices_flight_seat_id_foreign</td>
   <td class='detail'><a href='tables/flight_seat_prices.html'>flight_seat_prices</a>.flight_seat_id</td>
-  <td class='detail'><a href='tables/aircraft_seats.html'>aircraft_seats</a>.id</td>
+  <td class='detail'><a href='tables/flight_seats.html'>flight_seats</a>.id</td>
   <td class='detail'><span title='Cascade on delete:
  Deletion of parent deletes child'>Cascade on delete&nbsp;</span></td>
  </tr>
@@ -254,13 +254,20 @@ src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
  Deletion of parent deletes child'>Cascade on delete&nbsp;</span></td>
  </tr>
   <tr class='even'>
+  <td class='detail'>tickets_booking_id_foreign</td>
+  <td class='detail'><a href='tables/tickets.html'>tickets</a>.booking_id</td>
+  <td class='detail'><a href='tables/bookings.html'>bookings</a>.id</td>
+  <td class='detail'><span title='Cascade on delete:
+ Deletion of parent deletes child'>Cascade on delete&nbsp;</span></td>
+ </tr>
+  <tr class='odd'>
   <td class='detail'>users_country_id_foreign</td>
   <td class='detail'><a href='tables/users.html'>users</a>.country_id</td>
   <td class='detail'><a href='tables/countries.html'>countries</a>.id</td>
   <td class='detail'><span title='Cascade on delete:
  Deletion of parent deletes child'>Cascade on delete&nbsp;</span></td>
  </tr>
-  <tr class='odd'>
+  <tr class='even'>
   <td class='detail'>users_user_type_id_foreign</td>
   <td class='detail'><a href='tables/users.html'>users</a>.user_type_id</td>
   <td class='detail'><a href='tables/user_types.html'>user_types</a>.id</td>

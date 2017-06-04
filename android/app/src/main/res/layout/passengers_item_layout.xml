@@ -32,11 +32,11 @@
                     whatever:floatLabelTextAppearance="@style/TextAppearance.FloatLabel">
 
                     <android.support.v7.widget.AppCompatEditText
-                        android:id="@+id/first_name"
+                        android:id="@+id/firstnames"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:background="@drawable/border"
-                        android:hint="@string/prompt_first_name"
+                        android:hint="@string/prompt_firstnames"
                         android:imeOptions="actionNext"
                         android:inputType="textEmailAddress"
                         android:maxLines="1"
@@ -51,11 +51,11 @@
                     whatever:floatLabelTextAppearance="@style/TextAppearance.FloatLabel">
 
                     <android.support.v7.widget.AppCompatEditText
-                        android:id="@+id/middle_name"
+                        android:id="@+id/surname"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:background="@drawable/border"
-                        android:hint="@string/prompt_middle_name"
+                        android:hint="@string/prompt_surname"
                         android:imeOptions="actionNext"
                         android:inputType="textEmailAddress"
                         android:maxLines="1"
@@ -69,25 +69,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
-
-                <tut.flightbookingsystem.views.FloatingLabel
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:padding="5dp"
-                    whatever:floatLabelTextAppearance="@style/TextAppearance.FloatLabel">
-
-                    <android.support.v7.widget.AppCompatEditText
-                        android:id="@+id/last_name"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:background="@drawable/border"
-                        android:hint="@string/prompt_last_name"
-                        android:imeOptions="actionNext"
-                        android:inputType="textEmailAddress"
-                        android:maxLines="1"
-                        android:textSize="@dimen/edit_text_font_size" />
-                </tut.flightbookingsystem.views.FloatingLabel>
 
                 <tut.flightbookingsystem.views.FloatingLabel
                     android:layout_width="match_parent"

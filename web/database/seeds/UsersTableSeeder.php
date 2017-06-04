@@ -21,9 +21,8 @@ class UsersTableSeeder extends Seeder
       $user_type_normal = UserType::where('name', 'Customer')->first();
       $faker = Faker\Factory::create();
       $user = User::create([
-        'first_name' => 'System',
-        'middle_name' => '',
-        'last_name' => 'Admin',
+        'firstnames' => 'System',
+        'surname' => 'Admin',
         'phone' => '27769622448',
         'id_number' => '0000000000000',
         'email' => 'admin@flightbookingsystem.com',
@@ -34,9 +33,8 @@ class UsersTableSeeder extends Seeder
       ]);
 
       $user = User::create([
-        'first_name' => 'Oscar',
-        'middle_name' => '',
-        'last_name' => 'Mahlompopane',
+        'firstnames' => 'Oscar',
+        'surname' => 'Mahlompopane',
         'phone' => '27769622448',
         'id_number' => '1234567890123',
         'email' => 'mahlompopaneo@gmail.com',

@@ -40,11 +40,11 @@
                 whatever:floatLabelTextAppearance="@style/TextAppearance.FloatLabel">
 
                 <AutoCompleteTextView
-                    android:id="@+id/first_name"
+                    android:id="@+id/firstnames"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@drawable/border"
-                    android:hint="@string/prompt_first_name"
+                    android:hint="@string/prompt_firstnames"
                     android:inputType="text"
                     android:maxLines="1" />
 
@@ -57,28 +57,11 @@
                 whatever:floatLabelTextAppearance="@style/TextAppearance.FloatLabel">
 
                 <AutoCompleteTextView
-                    android:id="@+id/middle_name"
+                    android:id="@+id/surname"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@drawable/border"
-                    android:hint="@string/prompt_middle_name"
-                    android:inputType="text"
-                    android:maxLines="1" />
-
-            </tut.flightbookingsystem.views.FloatingLabel>
-
-            <tut.flightbookingsystem.views.FloatingLabel
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:padding="5dp"
-                whatever:floatLabelTextAppearance="@style/TextAppearance.FloatLabel">
-
-                <AutoCompleteTextView
-                    android:id="@+id/last_name"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:background="@drawable/border"
-                    android:hint="@string/prompt_last_name"
+                    android:hint="@string/prompt_surname"
                     android:inputType="text"
                     android:maxLines="1" />
 

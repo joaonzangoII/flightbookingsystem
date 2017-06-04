@@ -14,6 +14,7 @@ class FlightSeatPricesTableSeeder extends Seeder
      */
     public function run()
     {
+      FlightSeat::truncate();
       FlightSeatPrice::truncate();
       $first_travel_class = TravelClass::where('name', 'First')->first();
       $business_travel_class = TravelClass::where('name', 'Business')->first();
@@ -37,7 +38,7 @@ class FlightSeatPricesTableSeeder extends Seeder
           }else{
             $price = 500;
           }
-          
+
           $seat_price = FlightSeatPrice::create([
             'price' => $price,
             'flight_id' => $flight->id,

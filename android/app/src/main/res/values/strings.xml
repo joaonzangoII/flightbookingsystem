@@ -5,9 +5,8 @@
     <string name="prompt_email">Email</string>
     <string name="prompt_password">Password</string>
     <string name="action_sign_in_short">Login</string>
-    <string name="prompt_first_name">First Name</string>
-    <string name="prompt_middle_name">Middle Name</string>
-    <string name="prompt_last_name">Last Name</string>
+    <string name="prompt_firstnames">Firstnames</string>
+    <string name="prompt_surname">Surname</string>
     <string name="prompt_phone">Mobile Number</string>
     <string name="prompt_id_number">ID Number</string>
     <string name="prompt_number_of_people">Passengers #</string>

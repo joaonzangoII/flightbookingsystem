@@ -4,16 +4,7 @@
     <!-- Content Wrapper. Contains page content -->
     <div class="content-wrapper">
       <!-- Content Header (Page header) -->
-      <section class="content-header">
-        <h1>
-          Schedules
-          <small>Control panel</small>
-        </h1>
-        <ol class="breadcrumb">
-          <li><a href="/home"><i class="fa fa-dashboard"></i> Home</a></li>
-          <li class="active">Schedules</li>
-        </ol>
-      </section>
+      @include('shared/_breadcrumbs', ['title' =>'Schedules'])
 
       <!-- Main content -->
       <section class="content">
@@ -29,7 +20,10 @@
                     <th style="width: 10px">#</th>
                     <th>Origin</th>
                     <th>Destination</th>
-                    <th>Ruretion</th>
+                    <th>Departure Date</th>
+                    <th>Arrival Date</th>
+                    <th>Date</th>
+                    <th>Duration</th>
                     <th style="width: 40px">Label</th>
                   </tr>
                 </thead>
@@ -39,13 +33,14 @@
                       <td>{{$schedule->id}}</td>
                       <td>{{$schedule->origin_airport->name}}</td>
                       <td>{{$schedule->destination_airport->name}}</td>
+                      <td>{{$schedule->departure_time}}</td>
+                      <td>{{$schedule->arrival_time}}</td>
+                      <td>{{$schedule->date}}</td>
                       <td>{{$schedule->duration}}</td>
                       <td>
-                        <div class="progress progress-xs">
-                          <div class="progress-bar progress-bar-danger" style="width: 55%"></div>
-                        </div>
+                        {{$schedule->flight->flight_status->name}}
                       </td>
-                      <td><span class="badge bg-red">55%</span></td>
+                      {{-- <td><span class="badge bg-red">55%</span></td> --}}
                     </tr>
                   @endforeach
                 </tbody>

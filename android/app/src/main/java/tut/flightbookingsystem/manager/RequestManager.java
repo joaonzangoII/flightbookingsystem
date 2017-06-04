@@ -31,9 +31,8 @@ public class RequestManager {
 
     public static void register(final SessionManager session,
                                 final Context context,
-                                final String first_name,
-                                final String middle_name,
-                                final String last_name,
+                                final String firstnames,
+                                final String surname,
                                 final String id_number,
                                 final String phone,
                                 final String email,
@@ -105,14 +104,19 @@ public class RequestManager {
             @Override
             protected Map<String, String> getParams() {
                 Map<String, String> params = new HashMap<>();
-                params.put("first_name", first_name);
-                params.put("middle_name", middle_name);
-                params.put("last_name", last_name);
+                params.put("firstnames", firstnames);
+                params.put("surname", surname);
                 params.put("id_number", id_number);
                 params.put("phone", phone);
                 params.put("email", email);
                 params.put("password", password);
                 params.put("country_id", String.valueOf(country_id));
+
+                for (Map.Entry<String, String> entry : params.entrySet()) {
+                    final String key = entry.getKey();
+                    final String value = entry.getValue();
+                    Log.e(TAG, key + " : " +  value);
+                }
                 return params;
             }
 

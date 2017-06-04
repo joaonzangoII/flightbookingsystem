@@ -1,8 +1,11 @@
 password_resets
+notifications
 migrations
+booking_sequences
 schedules
 meals
 flight_seat_prices
+tickets
 passengers
 foods
 airports

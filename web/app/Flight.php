@@ -6,6 +6,8 @@ use Illuminate\Database\Eloquent\Model;
 
 class Flight extends Model
 {
+  protected $fillable=['aircraft_id', 'flight_status_id'];
+  
   public function flight_status(){
     return $this->hasOne('App\FlightStatus', 'id', 'flight_status_id');
   }

@@ -15,9 +15,8 @@ class CreatePassengersTable extends Migration
     {
         Schema::create('passengers', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('first_name');
-            $table->string('middle_name')->nullable();
-            $table->string('last_name');
+            $table->string('firstnames');
+            $table->string('surname');
             $table->string('id_number');
             $table->string('date_of_birth');
             $table->string('gender');

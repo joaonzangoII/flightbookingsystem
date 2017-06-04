@@ -14,6 +14,12 @@ use App\FlightSeat;
 use App\FlightSeatPrice;
 use App\BookingSequence;
 use App\Booking;
+use App\Country;
+use App\TravelClass;
+use App\Airport;
+use App\Food;
+use App\Drink;
+use App\Schedule;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Log;
 use Nexmo\Laravel\Facade\Nexmo;
@@ -28,7 +34,6 @@ class FlightsController extends Controller
     $aircraft_id = $request->input('aircraft_id');
     $passengers_str = $request->input('passengers');
     $passengersList = json_decode($passengers_str);
-
     $user = User::find($user_id);
     foreach ($passengersList as $key => $p) {
       $flight_seat_id = $p->flight_seat_id;
@@ -73,9 +78,8 @@ class FlightsController extends Controller
 
     foreach ($passengersList as $key => $p) {
       $passenger = Passenger::create([
-        'first_name' => $p->first_name,
-        'middle_name' => $p->middle_name,
-        'last_name' => $p->last_name,
+        'firstnames' => $p->firstnames,
+        'surname' => $p->surname,
         'id_number' => $p->id_number,
         'date_of_birth' => $p->date_of_birth,
         'gender' => 'm',
@@ -137,7 +141,7 @@ class FlightsController extends Controller
             'erro' => true,
             'messages' => ['Error sending sms message, your booking nunber is ' . $booking->booking_number]
           ]);
-    } 
+    }
 
     return response()->json([
       'code' => '200',
@@ -246,5 +250,57 @@ class FlightsController extends Controller
         'erro' => false,
         'booking' => $booking
       ]);
+  }
+
+  public function getFlights(Request $request){
+    $flight_departure_date = $request->input('departure_date');
+    $flight_return_date = $request->input('return_date');
+    $flight_origin_airport_id = $request->input('origin_airport_id');
+    $flight_destination_airport_id = $request->input('destination_airport_id');
+
+    $schedules = Schedule::with('flight', 'flight.aircraft', 'flight.aircraft.aircraft_manufacturer')
+                         ->where('origin_airport_id', $flight_origin_airport_id)
+                         ->where('destination_airport_id', $flight_destination_airport_id)
+                         ->where('date', $flight_departure_date)
+                        ->get();
+    return $schedules;
+  }
+
+  public function getFlightsTimetable(Request $request){
+    $flight_origin_airport_id = $request->input('origin_airport_id');
+    $flight_destination_airport_id = $request->input('destination_airport_id');
+    $flight_departure_date = $request->input('departure_date');
+    $schedules = Schedule::with('flight', 'flight.aircraft', 'flight.aircraft.aircraft_manufacturer')
+                         ->where('origin_airport_id', $flight_origin_airport_id)
+                         ->where('destination_airport_id', $flight_destination_airport_id)
+                         ->where('date', $flight_departure_date)
+                         ->get();
+      return $schedules;
+  }
+
+  public function getInitialData(Request $request, User $user= null){
+    $countries = Country::latest()->get();
+    $travelClasses = TravelClass::latest()->get();
+    $airports = Airport::latest()->get();
+    $foods = Food::latest()->get();
+    $drinks = Drink::latest()->get();
+    $bookings = Booking::with('passengers', 'passengers.booking', 'passengers.meal', 'passengers.meal.drink',
+                            'passengers.meal.food', 'passengers.flight_seat',
+                            'passengers.meal.food.food_type', 'passengers.meal.drink',
+                            'passengers.flight_seat.travel_class', 'aircraft',
+                            'departure_flight', 'departure_flight.aircraft', 'departure_flight.schedule',
+                            'return_flight', 'return_flight.aircraft', 'return_flight.schedule')
+                            ->where('user_id', $user->id)
+                            ->latest()
+                            ->get();
+
+    return response()->json([
+         'countries' => $countries,
+         'travelClasses' => $travelClasses,
+         'airports' => $airports,
+         'foods' => $foods,
+         'drinks' => $drinks,
+         'myBookings' => $bookings,
+    ]);
   }
 }

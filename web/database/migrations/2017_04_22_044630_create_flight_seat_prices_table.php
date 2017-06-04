@@ -29,7 +29,7 @@ class CreateFlightSeatPricesTable extends Migration
             $table->integer('flight_seat_id')->unsigned();
             $table->foreign('flight_seat_id')
                   ->references('id')
-                  ->on('aircraft_seats')
+                  ->on('flight_seats')
                   ->onDelete('cascade');
             $table->timestamps();
         });

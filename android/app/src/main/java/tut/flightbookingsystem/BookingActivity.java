@@ -116,9 +116,8 @@ public class BookingActivity extends BaseActivity implements OnSeatSelected {
         for (int x = 0; x < numPeople; x++) {
             final Passenger passenger = new Passenger();
             passenger.id = 0;
-            passenger.first_name = "";
-            passenger.middle_name = "";
-            passenger.last_name = "";
+            passenger.firstnames = "";
+            passenger.surname = "";
             passenger.booking_id = 0;
             passenger.id_number = "";
             passenger.date_of_birth = "";
@@ -154,8 +153,8 @@ public class BookingActivity extends BaseActivity implements OnSeatSelected {
                 Log.e("ITEMS>>", gson.toJson(passengersList));
                 boolean canBook = true;
                 for (final Passenger passenger : passengersList) {
-                    if (passenger.first_name.trim().equals("") ||
-                            passenger.last_name.trim().equals("") ||
+                    if (passenger.firstnames.trim().equals("") ||
+                            passenger.surname.trim().equals("") ||
                             passenger.id_number.trim().equals("") ||
                             passenger.flight_seat_id == 0) {
                         canBook = false;

@@ -17,6 +17,8 @@ class DatabaseSeeder extends Seeder
         Model::unguard();
         DB::statement("SET FOREIGN_KEY_CHECKS = 0;");
         $this->call(CountriesTableSeeder::class);
+        $this->call(UserTypesTableSeeder::class);
+        $this->call(UsersTableSeeder::class);
         $this->call(AirportsTableSeeder::class);
         $this->call(FlightStatusesTableSeeder::class);
         $this->call(TravelClassesTableSeeder::class);
@@ -28,8 +30,6 @@ class DatabaseSeeder extends Seeder
         $this->call(FlightsTableSeeder::class);
         $this->call(SchedulesTableSeeder::class);
         $this->call(FlightSeatPricesTableSeeder::class);
-        $this->call(UserTypesTableSeeder::class);
-        $this->call(UsersTableSeeder::class);
         DB::statement("SET FOREIGN_KEY_CHECKS = 1;");
         Model::reguard();
     }

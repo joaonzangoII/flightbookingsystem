@@ -122,7 +122,7 @@ src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
  <td class='comment detail'></td>
 </tr>
 <tr class='odd'>
- <td class='detail'>first_name</td>
+ <td class='detail'>firstnames</td>
  <td class='detail'>varchar</td>
  <td class='detail' align='right'>255</td>
  <td class='detail' align='center'></td>
@@ -133,28 +133,17 @@ src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
  <td class='comment detail'></td>
 </tr>
 <tr class='even'>
- <td class='detail'>middle_name</td>
+ <td class='detail'>surname</td>
  <td class='detail'>varchar</td>
  <td class='detail' align='right'>255</td>
- <td class='detail' align='center' title='nullable'>&nbsp;&radic;&nbsp;</td>
  <td class='detail' align='center'></td>
- <td class='detail' align='right'>null</td>
+ <td class='detail' align='center'></td>
+ <td class='detail'></td>
  <td class='detail'></td>
  <td class='detail'> </td>
  <td class='comment detail'></td>
 </tr>
 <tr class='odd'>
- <td class='detail'>last_name</td>
- <td class='detail'>varchar</td>
- <td class='detail' align='right'>255</td>
- <td class='detail' align='center'></td>
- <td class='detail' align='center'></td>
- <td class='detail'></td>
- <td class='detail'></td>
- <td class='detail'> </td>
- <td class='comment detail'></td>
-</tr>
-<tr class='even'>
  <td class='indexedColumn' title='Indexed'>id_number</td>
  <td class='detail'>varchar</td>
  <td class='detail' align='right'>255</td>
@@ -165,7 +154,7 @@ src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
  <td class='detail'> </td>
  <td class='comment detail'></td>
 </tr>
-<tr class='odd'>
+<tr class='even'>
  <td class='detail'>phone</td>
  <td class='detail'>varchar</td>
  <td class='detail' align='right'>255</td>
@@ -176,7 +165,7 @@ src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
  <td class='detail'> </td>
  <td class='comment detail'></td>
 </tr>
-<tr class='even'>
+<tr class='odd'>
  <td class='indexedColumn' title='Indexed'>email</td>
  <td class='detail'>varchar</td>
  <td class='detail' align='right'>255</td>
@@ -187,7 +176,7 @@ src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
  <td class='detail'> </td>
  <td class='comment detail'></td>
 </tr>
-<tr class='odd'>
+<tr class='even'>
  <td class='detail'>password</td>
  <td class='detail'>varchar</td>
  <td class='detail' align='right'>255</td>
@@ -198,7 +187,7 @@ src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
  <td class='detail'> </td>
  <td class='comment detail'></td>
 </tr>
-<tr class='even'>
+<tr class='odd'>
  <td class='indexedColumn' title='Indexed'>country_id</td>
  <td class='detail'>int unsigned</td>
  <td class='detail' align='right'>10</td>
@@ -208,7 +197,7 @@ src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
  <td class='detail'></td>
  <td class='detail'>
   <table border='0' width='100%' cellspacing='0' cellpadding='0'>
-   <tr class='relative even' valign='top'>
+   <tr class='relative odd' valign='top'>
     <td class='relatedTable detail' title="users.country_id refs countries.id via users_country_id_foreign"><a href='countries.html'>countries</a><span class='relatedKey'>.id</span>
     </td>
     <td class='constraint detail'>users_country_id_foreign<span title='Cascade on delete:
@@ -218,7 +207,7 @@ src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
  </td>
  <td class='comment detail'></td>
 </tr>
-<tr class='odd'>
+<tr class='even'>
  <td class='indexedColumn' title='Indexed'>user_type_id</td>
  <td class='detail'>int unsigned</td>
  <td class='detail' align='right'>10</td>
@@ -228,7 +217,7 @@ src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
  <td class='detail'></td>
  <td class='detail'>
   <table border='0' width='100%' cellspacing='0' cellpadding='0'>
-   <tr class='relative odd' valign='top'>
+   <tr class='relative even' valign='top'>
     <td class='relatedTable detail' title="users.user_type_id refs user_types.id via users_user_type_id_foreign"><a href='user_types.html'>user_types</a><span class='relatedKey'>.id</span>
     </td>
     <td class='constraint detail'>users_user_type_id_foreign<span title='Cascade on delete:
@@ -238,7 +227,7 @@ src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
  </td>
  <td class='comment detail'></td>
 </tr>
-<tr class='even'>
+<tr class='odd'>
  <td class='detail'>remember_token</td>
  <td class='detail'>varchar</td>
  <td class='detail' align='right'>100</td>
@@ -249,7 +238,7 @@ src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
  <td class='detail'> </td>
  <td class='comment detail'></td>
 </tr>
-<tr class='odd'>
+<tr class='even'>
  <td class='detail'>created_at</td>
  <td class='detail'>timestamp</td>
  <td class='detail' align='right'>19</td>
@@ -260,7 +249,7 @@ src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
  <td class='detail'> </td>
  <td class='comment detail'></td>
 </tr>
-<tr class='even'>
+<tr class='odd'>
  <td class='detail'>updated_at</td>
  <td class='detail'>timestamp</td>
  <td class='detail' align='right'>19</td>
@@ -272,7 +261,7 @@ src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
  <td class='comment detail'></td>
 </tr>
 </table>
-<p title='13 columns'>Table contained 1 rows at Fri May 05 23:49 SAST 2017<p/>
+<p title='12 columns'>Table contained 4 rows at Sun Jun 04 17:48 SAST 2017<p/>
 </td></tr></table>
 <div class='indent'>
 <b>Indexes:</b>
@@ -322,21 +311,22 @@ src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
 <br><form action='get'><b>Close relationships</b><span class='degrees' id='degrees' title='Detail diminishes with increased separation from users'>
 &nbsp;within <label for='oneDegree'><input type='radio' name='degrees' id='oneDegree' checked>one</label>  <label for='twoDegrees'><input type='radio' name='degrees' id='twoDegrees'>two degrees</label> of separation</span><b>:</b></form>
 <map id="oneDegreeRelationshipsDiagram" name="oneDegreeRelationshipsDiagram">
-<area shape="rect" id="node1" href="bookings.html" title="bookings" alt="" coords="493,5,643,304">
-<area shape="rect" id="node2" href="users.html" title="users" alt="" coords="196,99,449,475">
-<area shape="rect" id="node3" href="countries.html" title="countries" alt="" coords="5,207,152,385">
-<area shape="rect" id="node4" href="user_types.html" title="user_types" alt="" coords="19,403,139,581">
+<area shape="rect" id="node1" href="bookings.html" title="bookings" alt="" coords="493,5,643,352">
+<area shape="rect" id="node2" href="users.html" title="users" alt="" coords="196,147,449,499">
+<area shape="rect" id="node3" href="countries.html" title="countries" alt="" coords="5,231,152,409">
+<area shape="rect" id="node4" href="user_types.html" title="user_types" alt="" coords="19,427,139,605">
 </map>
   <a name='diagram'><img id='oneDegreeImg' src='../diagrams/users.1degree.png' usemap='#oneDegreeRelationshipsDiagram' class='diagram' border='0' alt='' align='left'></a>
 <map id="twoDegreesRelationshipsDiagram" name="twoDegreesRelationshipsDiagram">
 <area shape="rect" id="node1" href="airports.html" title="airports" alt="" coords="257,5,389,88">
-<area shape="rect" id="node2" href="countries.html" title="countries" alt="" coords="5,67,152,245">
-<area shape="rect" id="node3" href="bookings.html" title="bookings" alt="" coords="493,367,643,665">
-<area shape="rect" id="node4" href="aircrafts.html" title="aircrafts" alt="" coords="13,543,145,625">
-<area shape="rect" id="node5" href="flights.html" title="flights" alt="" coords="257,499,389,581">
-<area shape="rect" id="node6" href="users.html" title="users" alt="" coords="196,105,449,481">
-<area shape="rect" id="node8" href="user_types.html" title="user_types" alt="" coords="19,324,139,503">
-<area shape="rect" id="node7" href="passengers.html" title="passengers" alt="" coords="687,367,819,449">
+<area shape="rect" id="node2" href="countries.html" title="countries" alt="" coords="5,55,152,233">
+<area shape="rect" id="node3" href="bookings.html" title="bookings" alt="" coords="493,295,643,641">
+<area shape="rect" id="node4" href="aircrafts.html" title="aircrafts" alt="" coords="13,519,145,601">
+<area shape="rect" id="node5" href="flights.html" title="flights" alt="" coords="253,475,393,557">
+<area shape="rect" id="node6" href="users.html" title="users" alt="" coords="196,105,449,457">
+<area shape="rect" id="node9" href="user_types.html" title="user_types" alt="" coords="19,300,139,479">
+<area shape="rect" id="node7" href="passengers.html" title="passengers" alt="" coords="687,245,819,328">
+<area shape="rect" id="node8" href="tickets.html" title="tickets" alt="" coords="693,345,813,428">
 </map>
 
   <a name='diagram'><img id='twoDegreesImg' src='../diagrams/users.2degrees.png' usemap='#twoDegreesRelationshipsDiagram' class='diagram' border='0' alt='' align='left'></a>

@@ -4,6 +4,9 @@ namespace App\Providers;
 
 use Illuminate\Support\Facades\Route;
 use Illuminate\Foundation\Support\Providers\RouteServiceProvider as ServiceProvider;
+use App\User;
+use App\Airport;
+use App\Booking;
 
 class RouteServiceProvider extends ServiceProvider
 {
@@ -23,10 +26,34 @@ class RouteServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        //
+      parent::boot();
+      Route::model('airport', Airport::class);
+      Route::bind('airport', function ($value) {
+        return Airport::with('country')
+                      ->whereId($value)
+                      ->first();
 
-        parent::boot();
-    }
+      });
+
+      Route::model('user', User::class);
+      Route::bind('user', function ($value) {
+        return User::with('user_type', 'country')
+                      ->whereId($value)
+                      ->first();
+      });
+      Route::model('booking', Booking::class);
+      Route::bind('booking', function ($value) {
+        return Booking::with('passengers', 'passengers.booking', 'passengers.meal', 'passengers.meal.drink',
+                              'passengers.meal.food', 'passengers.flight_seat',
+                              'passengers.meal.food.food_type', 'passengers.meal.drink',
+                              'passengers.flight_seat.travel_class', 'aircraft',
+                              'departure_flight', 'departure_flight.aircraft', 'departure_flight.schedule',
+                              'return_flight', 'return_flight.aircraft', 'return_flight.schedule')
+                      ->whereId($value)
+                      ->first();
+
+      });
+   }
 
     /**
      * Define the routes for the application.
@@ -35,11 +62,9 @@ class RouteServiceProvider extends ServiceProvider
      */
     public function map()
     {
+        $this->mapAdminRoutes();
         $this->mapApiRoutes();
-
         $this->mapWebRoutes();
-
-        //
     }
 
     /**
@@ -54,6 +79,22 @@ class RouteServiceProvider extends ServiceProvider
         Route::middleware('web')
              ->namespace($this->namespace)
              ->group(base_path('routes/web.php'));
+    }
+
+    /**
+     * Define the "admin" routes for the application.
+     *
+     * These routes are typically stateless.
+     *
+     * @return void
+     */
+    protected function mapAdminRoutes()
+    {
+        Route::prefix('backoffice')
+             ->middleware(['web'])
+             ->namespace($this->namespace)
+             ->name('backoffice.')
+             ->group(base_path('routes/backoffice.php'));
     }
 
     /**
