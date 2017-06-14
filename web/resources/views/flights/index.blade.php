@@ -30,8 +30,8 @@
                     <tr>
                       <td>{{$flight->id}}</td>
                       <td>{{$flight->aircraft->name}}</td>
-                      <td>{{$flight->schedule->departure_time->format("Y-m-d @ H:m")}}</td>
-                      <td>{{$flight->schedule->arrival_time->format("Y-m-d  @ H:m")}}</td>
+                      <td>{{is_null($flight->schedule) ? "" : $flight->schedule->departure_time->format("Y-m-d @ H:m")}}</td>
+                      <td>{{is_null($flight->schedule) ? "" : $flight->schedule->arrival_time->format("Y-m-d  @ H:m")}}</td>
                       <td>{{$flight->flight_status->name}}</td>
                       <td>{{$flight->created_at->format("Y-m-d")}}</td>
                       <td>

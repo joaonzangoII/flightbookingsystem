@@ -10,7 +10,9 @@ import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
@@ -20,7 +22,6 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 
-import java.lang.reflect.Type;
 import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.Currency;
@@ -30,8 +31,10 @@ import java.util.Locale;
 import tut.flightbookingsystem.adapter.HomeAdapter;
 import tut.flightbookingsystem.base.BaseActivity;
 import tut.flightbookingsystem.manager.RequestManager;
+import tut.flightbookingsystem.manager.SessionManager;
 import tut.flightbookingsystem.model.Booking;
 import tut.flightbookingsystem.model.MainItem;
+import tut.flightbookingsystem.model.Schedule;
 import tut.flightbookingsystem.util.Utils;
 
 public class MainActivity extends BaseActivity
@@ -39,7 +42,13 @@ public class MainActivity extends BaseActivity
     private SessionManager session;
     private HomeAdapter myHomeAdapter;
     private List<Booking> myBookingsList = new ArrayList<>();
-    private List<MainItem> mainItems;
+    private List<MainItem> mainItems = new ArrayList<>();
+    private List<Schedule> mSchedules = new ArrayList<>();
+    public static final int TYPE_LINEAR = 0;
+    public static final int TYPE_GRID = 1;
+    public static final int TYPE_STAGGERED_GRID = 2;
+    private RecyclerView.LayoutManager layoutManager = null;
+
     final Handler requestHandler = new Handler(new Handler.Callback() {
         @Override
         public boolean handleMessage(Message message) {
@@ -47,16 +56,22 @@ public class MainActivity extends BaseActivity
             final boolean error = data.getBoolean(Constant.ERROR);
             if (!error) {
                 final Gson gson = new GsonBuilder().create();
-                final Type type = new TypeToken<List<Booking>>() {
-                }.getType();
-                myBookingsList = gson.fromJson(data.getString(Constant.MY_BOOKINGS), type);
+                myBookingsList = gson.fromJson(data.getString(Constant.MY_BOOKINGS),
+                        new TypeToken<List<Booking>>() {
+                        }.getType());
+
+                mSchedules = gson.fromJson(data.getString(Constant.LATEST_SCHEDULES),
+                        new TypeToken<List<Schedule>>() {
+                        }.getType());
+
                 mainItems = new ArrayList<>();
                 if (myBookingsList != null) {
                     mainItems.add(new MainItem(1, Utils.intFormat(myBookingsList.size()), "Number of Bookings"));
                     mainItems.add(new MainItem(2, Utils.stringFormat(moneySpent(myBookingsList)), "Money Spent"));
                     mainItems.add(new MainItem(3, Utils.intFormat(passengersBooked(myBookingsList)), "Passengers Booked"));
                 }
-                myHomeAdapter.setItems(mainItems);
+
+                myHomeAdapter.setItems(mainItems, mSchedules);
             }
             return false;
         }
@@ -89,49 +104,63 @@ public class MainActivity extends BaseActivity
     protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        final RecyclerView recyclerView = (RecyclerView) findViewById(R.id.my_recycler_view);
         session = new SessionManager(this);
-        RequestManager.getInitialData(session, requestHandler);
+        if (!session.isLoggedIn()) {
+            clearSession();
+        } else {
+            final RecyclerView recyclerView = (RecyclerView)
+                    findViewById(R.id.my_recycler_view);
+            RequestManager.getInitialData(session, requestHandler);
 
-        final Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-        final DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
-                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
-        drawer.setDrawerListener(toggle);
-        toggle.syncState();
+            final Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+            setSupportActionBar(toolbar);
+            final DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+            ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
+                    this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+            drawer.setDrawerListener(toggle);
+            toggle.syncState();
 
-        final NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
-        navigationView.setNavigationItemSelectedListener(this);
+            final NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+            navigationView.setNavigationItemSelectedListener(this);
 
-        final View header = navigationView.getHeaderView(0);
-        /*View view=navigationView.inflateHeaderView(R.layout.nav_header_main);*/
-        ((TextView) header.findViewById(R.id.user_logged_name))
-                .setText(session.getLoggedInUser().name);
-        ((TextView) header.findViewById(R.id.user_logged_email))
-                .setText(session.getLoggedInUser().email);
+            final View header = navigationView.getHeaderView(0);
+            ((TextView) header.findViewById(R.id.user_logged_name))
+                    .setText(session.getLoggedInUser().name);
+            ((TextView) header.findViewById(R.id.user_logged_email))
+                    .setText(session.getLoggedInUser().email);
 
-        final FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                goToActivity(FindFlightActivity.class);
+            final FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+            fab.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    goToActivity(FindFlightActivity.class);
+                }
+            });
+
+            final int mType = MainActivity.TYPE_GRID;
+
+            if (mType == TYPE_LINEAR) {
+                layoutManager = new LinearLayoutManager(this);
+            } else if (mType == TYPE_GRID) {
+                layoutManager = new GridLayoutManager(this, 2);
+            } else if (mType == TYPE_STAGGERED_GRID) {
+                layoutManager = new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL);
             }
-        });
+            recyclerView.setLayoutManager(layoutManager);
+            myHomeAdapter = new HomeAdapter(this, mType);
+            recyclerView.setAdapter(myHomeAdapter);
+            myBookingsList = session.getMyBookings();
 
-        recyclerView.setLayoutManager(new GridLayoutManager(this, 2));
-        myHomeAdapter = new HomeAdapter();
-        recyclerView.setAdapter(myHomeAdapter);
-        myBookingsList = session.getMyBookings();
-        if (myBookingsList != null) {
-            mainItems = new ArrayList<>();
             if (myBookingsList != null) {
-                mainItems.add(new MainItem(1, Utils.intFormat(myBookingsList.size()), "Number of Bookings"));
-                mainItems.add(new MainItem(2, Utils.stringFormat(moneySpent(myBookingsList)), "Money Spent"));
-                mainItems.add(new MainItem(3, Utils.intFormat(passengersBooked(myBookingsList)), "Passengers Booked"));
+                mainItems = new ArrayList<>();
+                if (myBookingsList != null) {
+                    mainItems.add(new MainItem(1, Utils.intFormat(myBookingsList.size()), "Number of Bookings"));
+                    mainItems.add(new MainItem(2, Utils.stringFormat(moneySpent(myBookingsList)), "Money Spent"));
+                    mainItems.add(new MainItem(3, Utils.intFormat(passengersBooked(myBookingsList)), "Passengers Booked"));
+                }
             }
 
-            myHomeAdapter.setItems(mainItems);
+            myHomeAdapter.setItems(mainItems, mSchedules);
         }
     }
 

@@ -3,6 +3,7 @@ package tut.flightbookingsystem;
 public class Constant {
     public static String DATA = "data";
     public static String SCHEDULE = "schedule";
+    public static String LATEST_SCHEDULES = "latest_schedules";
     public static String TRAVEL_CLASS = "travel_class";
     public static String TRAVEL_CLASS_ID = "travel_class_id";
     public static String LOGGEDIN = "isLoggedIn";

@@ -16,6 +16,7 @@ class CreateAircraftsTable extends Migration
         Schema::create('aircrafts', function (Blueprint $table) {
             $table->increments('id');
             $table->string('model');
+            $table->string('image')->nullable();
             $table->integer('number_of_seats');
             $table->integer('aircraft_manufaturer_id')->unsigned();
             $table->foreign('aircraft_manufaturer_id')

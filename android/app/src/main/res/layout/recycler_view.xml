@@ -23,7 +23,7 @@
         android:layout_height="wrap_content"
         android:descendantFocusability="beforeDescendants"
         android:focusableInTouchMode="true">
-        <!--tools:listitem="@layout/row_list_item">-->
     </android.support.v7.widget.RecyclerView>
 
 </RelativeLayout>
+

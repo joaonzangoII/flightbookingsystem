@@ -21,7 +21,6 @@ import java.util.Map;
 
 import tut.flightbookingsystem.Constant;
 import tut.flightbookingsystem.MyApplication;
-import tut.flightbookingsystem.SessionManager;
 import tut.flightbookingsystem.model.User;
 import tut.flightbookingsystem.util.Utils;
 
@@ -537,6 +536,7 @@ public class RequestManager {
                         Log.e(tag_string_req, response);
                         try {
                             final JSONObject jObj = new JSONObject(response);
+                            session.setLatestSchedules(jObj.getJSONArray("schedules").toString());
                             session.setMyBookings(jObj.getJSONArray("myBookings").toString());
                             session.setCountries(jObj.getJSONArray("countries").toString());
                             session.setTravelClasses(jObj.getJSONArray("travelClasses").toString());
@@ -545,6 +545,7 @@ public class RequestManager {
                             session.setDrinks(jObj.getJSONArray("drinks").toString());
                             bundle.putBoolean(Constant.ERROR, false);
                             bundle.putString(Constant.MY_BOOKINGS, jObj.getJSONArray("myBookings").toString());
+                            bundle.putString(Constant.LATEST_SCHEDULES, jObj.getJSONArray("schedules").toString());
                             bundle.putBoolean(Constant.DONE_LOADING, true);
                             msg.setData(bundle);
                             requestHandler.sendMessage(msg);
@@ -570,6 +571,7 @@ public class RequestManager {
                 Toast.makeText(getApplicationContext(),
                         Utils.getVolleyMessage(error),
                         Toast.LENGTH_LONG).show();
+                session.setLatestSchedules("[]");
                 session.setMyBookings("[]");
                 session.setCountries("[]");
                 session.setTravelClasses("[]");

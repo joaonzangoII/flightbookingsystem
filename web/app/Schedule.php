@@ -1,6 +1,7 @@
 <?php
 
 namespace App;
+use carbon\carbon;
 
 use Illuminate\Database\Eloquent\Model;
 
@@ -42,14 +43,24 @@ class Schedule extends Model
       return $this->destination_airport->name;
     }
 
+    /**
+    * Scope a query to only include active users.
+    *
+    * @param \Illuminate\Database\Eloquent\Builder $query
+    * @return \Illuminate\Database\Eloquent\Builder
+    */
+    public function scopeBookable($query)
+    {
+      return $query->where('departure_time',">=", Carbon::now());
+    }
+
     public function getDurationAttribute($icone){
-      $departure_time= strtotime( $this->departure_time);
-      $arrival_time =  strtotime( $this->arrival_time);
-      $diff = $arrival_time - $departure_time;
-      $years = floor($diff / (365*60*60*24));
-      $months = floor(($diff - $years * 365*60*60*24) / (30*60*60*24));
-      $days = floor(($diff - $years * 365*60*60*24 - $months*30*60*60*24)/ (60*60*24));
-      $hours = floor(($diff/(60*60)%24));
+      $departure_time=  $this->departure_time;
+      $arrival_time =   $this->arrival_time;
+      $years  =  $arrival_time->diffInYears($departure_time);
+      $months = $arrival_time->diffInMonths($departure_time);
+      $days   =   $arrival_time->diffInDays($departure_time);
+      $hours  =  $arrival_time->diffInHours($departure_time);
       if($hours > 0 && $hours < 24){
         return $hours . ' hours';
       }else{

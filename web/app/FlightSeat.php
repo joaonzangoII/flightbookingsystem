@@ -14,6 +14,10 @@ class FlightSeat extends Model
     'flight_id'
   ];
 
+  public function flight(){
+    return $this->hasOne('App\Flight', 'id', 'flight_seat_id');
+  }
+
   public function travel_class(){
     return $this->hasOne('App\TravelClass', 'id', 'travel_class_id');
   }

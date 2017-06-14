@@ -22,6 +22,7 @@ import tut.flightbookingsystem.adapter.MyBookingsAdapter;
 import tut.flightbookingsystem.base.BaseActivity;
 import tut.flightbookingsystem.listener.RecyclerClickListener;
 import tut.flightbookingsystem.manager.RequestManager;
+import tut.flightbookingsystem.manager.SessionManager;
 import tut.flightbookingsystem.model.Booking;
 
 public class MyBookingsActivity extends BaseActivity {

@@ -262,7 +262,8 @@ class FlightsController extends Controller
                          ->where('origin_airport_id', $flight_origin_airport_id)
                          ->where('destination_airport_id', $flight_destination_airport_id)
                          ->where('date', $flight_departure_date)
-                        ->get();
+                         ->bookable()
+                         ->get();
     return $schedules;
   }
 
@@ -274,6 +275,7 @@ class FlightsController extends Controller
                          ->where('origin_airport_id', $flight_origin_airport_id)
                          ->where('destination_airport_id', $flight_destination_airport_id)
                          ->where('date', $flight_departure_date)
+                         ->bookable()
                          ->get();
       return $schedules;
   }
@@ -282,8 +284,8 @@ class FlightsController extends Controller
     $countries = Country::latest()->get();
     $travelClasses = TravelClass::latest()->get();
     $airports = Airport::latest()->get();
-    $foods = Food::latest()->get();
-    $drinks = Drink::latest()->get();
+    $foods =    Food::latest()->get();
+    $drinks =   Drink::latest()->get();
     $bookings = Booking::with('passengers', 'passengers.booking', 'passengers.meal', 'passengers.meal.drink',
                             'passengers.meal.food', 'passengers.flight_seat',
                             'passengers.meal.food.food_type', 'passengers.meal.drink',
@@ -293,6 +295,13 @@ class FlightsController extends Controller
                             ->where('user_id', $user->id)
                             ->latest()
                             ->get();
+    $schedules = Schedule::with('flight', 'flight.flight_seat_prices',
+                                'flight.flight_seat_prices.flight_seat', 'flight.flight_seat_prices.flight_seat.travel_class',
+                                'flight.aircraft', 'flight.aircraft.aircraft_manufacturer')
+                         ->bookable()
+                         ->latest()
+                         ->get()
+                         ->take(4);
 
     return response()->json([
          'countries' => $countries,
@@ -301,6 +310,7 @@ class FlightsController extends Controller
          'foods' => $foods,
          'drinks' => $drinks,
          'myBookings' => $bookings,
+         'schedules' => $schedules,
     ]);
   }
 }

@@ -27,6 +27,7 @@ import tut.flightbookingsystem.adapter.PeopleAdapter;
 import tut.flightbookingsystem.adapter.TravelClassSpinnerAdapter;
 import tut.flightbookingsystem.base.BaseActivity;
 import tut.flightbookingsystem.manager.RequestManager;
+import tut.flightbookingsystem.manager.SessionManager;
 import tut.flightbookingsystem.model.Airport;
 import tut.flightbookingsystem.model.Schedule;
 import tut.flightbookingsystem.model.TravelClass;
@@ -183,6 +184,8 @@ public class FindFlightActivity extends BaseActivity {
         returnDate.setOnClickListener(this);
         departureDatePickerDialog = datepicker(departureDate);
         returnDatePickerDialog = datepicker(returnDate);
+        departureDatePickerDialog.getDatePicker().setMinDate(System.currentTimeMillis() - 1000);
+        returnDatePickerDialog.getDatePicker().setMinDate(System.currentTimeMillis() - 1000);
     }
 
     @Override

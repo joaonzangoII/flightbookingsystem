@@ -1,4 +1,4 @@
-package tut.flightbookingsystem;
+package tut.flightbookingsystem.manager;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
@@ -11,7 +11,6 @@ import com.google.gson.reflect.TypeToken;
 import java.lang.reflect.Type;
 import java.util.List;
 
-import tut.flightbookingsystem.model.AircraftSeat;
 import tut.flightbookingsystem.model.Airport;
 import tut.flightbookingsystem.model.Booking;
 import tut.flightbookingsystem.model.Country;
@@ -44,6 +43,7 @@ public class SessionManager {
     private static final String KEY_SCHEDULE = "schedule";
     private static final String KEY_MY_BOOKINGS = "my_bookings";
     private static final String FLIGHT_SEATS = "flight_seats";
+    private static final String KEY_LATEST_SCHEDULES = "latest_schedules";
 
     @SuppressLint("CommitPrefEdits")
     public SessionManager(Context context) {
@@ -146,6 +146,18 @@ public class SessionManager {
         final Type type = new TypeToken<List<Country>>() {
         }.getType();
         return gson.fromJson(pref.getString(KEY_COUNTRIES, "[]"), type);
+    }
+
+    public void setLatestSchedules(final String latestSchedules) {
+        editor.putString(KEY_LATEST_SCHEDULES, latestSchedules);
+        editor.apply();  // commit changes
+    }
+
+    public List<Schedule> getLatestSchedules() {
+        final Gson gson = new GsonBuilder().create();
+        final Type type = new TypeToken<List<Booking>>() {
+        }.getType();
+        return gson.fromJson(pref.getString(KEY_LATEST_SCHEDULES, "[]"), type);
     }
 
     public void setMyBookings(final String myBookings) {

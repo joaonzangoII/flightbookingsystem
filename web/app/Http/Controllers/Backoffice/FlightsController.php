@@ -17,8 +17,9 @@ class FlightsController extends Controller
 
     public function index()
     {
-      $flights = Flight::latest()
-                        ->paginate(10);
+      $flights = Flight::with("aircraft", "schedule", "flight_status")
+                       ->latest()
+                       ->paginate(10);
       return view('flights.index', compact('flights'));
     }
 

@@ -8,6 +8,7 @@ import android.text.TextUtils;
 import android.view.MenuItem;
 
 import tut.flightbookingsystem.base.AppCompatPreferenceActivity;
+import tut.flightbookingsystem.manager.SessionManager;
 
 
 public class SettingsActivity extends AppCompatPreferenceActivity {

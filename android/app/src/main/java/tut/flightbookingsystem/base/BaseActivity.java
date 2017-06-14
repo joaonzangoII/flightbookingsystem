@@ -30,10 +30,10 @@ import java.util.List;
 import java.util.Locale;
 
 import tut.flightbookingsystem.Constant;
+import tut.flightbookingsystem.LoginActivity;
 import tut.flightbookingsystem.R;
-import tut.flightbookingsystem.SessionManager;
+import tut.flightbookingsystem.manager.SessionManager;
 import tut.flightbookingsystem.SettingsActivity;
-import tut.flightbookingsystem.SplashScreenActivity;
 import tut.flightbookingsystem.adapter.DrinkSpinnerAdapter;
 import tut.flightbookingsystem.adapter.FoodSpinnerAdapter;
 import tut.flightbookingsystem.manager.RequestManager;
@@ -323,10 +323,7 @@ public class BaseActivity extends AppCompatActivity implements View.OnClickListe
         alertDialogBuilder.setPositiveButton("YES", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
-                session.setLogin(false);
-                session.setLoggedinUser(null);
-                session.logout();
-                goToActivity(SplashScreenActivity.class);
+                clearSession();
 
             }
         });
@@ -338,7 +335,16 @@ public class BaseActivity extends AppCompatActivity implements View.OnClickListe
                 dialogInterface.dismiss();
             }
         });
+
         alertDialogBuilder.create().show();
+    }
+
+
+    public void clearSession() {
+        session.setLogin(false);
+        session.setLoggedinUser(null);
+        session.logout();
+        goToActivity(LoginActivity.class, true);
     }
 
 }

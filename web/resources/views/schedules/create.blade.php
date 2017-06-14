@@ -19,24 +19,21 @@
               <form role="form" action="{{route('backoffice.schedules.store')}}" method="POST">
                 {{csrf_field()}}
                 <div class="box-body">
-                  <div class="form-group">
-                    <label>Departure Time:</label>
-                    <div class="input-group date">
-                      <div class="input-group-addon">
-                        <i class="fa fa-calendar"></i>
-                      </div>
-                      <input id="departure_time" name="departure_time" type="text" class="form-control pull-right datepicker">
-                    </div>
-                    <!-- /.input group -->
-                  </div>
-                  <div class="form-group">
-                    <label>Arrival Time:</label>
-                    <div class="input-group date">
-                      <div class="input-group-addon">
-                        <i class="fa fa-calendar"></i>
-                      </div>
-                      <input id="arrival_time" name="arrival_time" type="text" class="form-control pull-right datepicker">
-                    </div>
+                  <label>Flight Times:</label>
+                  <div class="input-group" id="datepicker">
+                    <input size="16"
+                           type="text"
+                           value="2012-06-15 14:45"
+                           readonly
+                           class="form_datetime input-sm form-control"
+                           placeholder="From date" name="departure_time">
+                    <span class="input-group-addon">to</span>
+                    <input size="16"
+                           type="text"
+                           value="2012-06-15 14:45"
+                           readonly
+                           class="form_datetime input-sm form-control"
+                           placeholder="From date" name="arrival_time">
                   </div>
                   <!-- select -->
                   <div class="form-group">
@@ -116,17 +113,20 @@
 @section("scripts")
   <script type="text/javascript">
     var format = "YYYY-MM-DD H:mm:ss";
-      //Date picker
-    $('#departure_time').datetimepicker({
-      inline: true,
-      sideBySide: true,
-      format: format
-    });
-
-    $('#arrival_time').datetimepicker({
-      inline: true,
-      sideBySide: true,
-      format: format
-    });
+    $(".form_datetime").val(moment().format(format));
+    $(".form_datetime").datetimepicker({format: 'yyyy-mm-dd hh:ii:ss'});
+    // $('#departure_time').datetimepicker({
+    //   inline: true,
+    //   sideBySide: true,
+    //   format: format,
+    //   opens: "right"
+    // });
+    //
+    // $('#arrival_time').datetimepicker({
+    //   inline: true,
+    //   sideBySide: true,
+    //   format: format,
+    //   opens: "right"
+    // });
   </script>
 @endsection

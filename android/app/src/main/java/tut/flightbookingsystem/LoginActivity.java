@@ -4,13 +4,13 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 
 import tut.flightbookingsystem.base.AuthBaseActivity;
 import tut.flightbookingsystem.manager.RequestManager;
+import tut.flightbookingsystem.manager.SessionManager;
 
 public class LoginActivity extends AuthBaseActivity {
 
@@ -30,7 +30,7 @@ public class LoginActivity extends AuthBaseActivity {
         setContentView(R.layout.activity_login);
         final SessionManager session = new SessionManager(this);
         final Button btnLogin = (Button) findViewById(R.id.email_sign_in_button);
-        //viewMain(session);
+        RequestManager.getInitialData(session, requestHandler);
         btnLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

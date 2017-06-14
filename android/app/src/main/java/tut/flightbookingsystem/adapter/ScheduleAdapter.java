@@ -82,12 +82,6 @@ public class ScheduleAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         public TextView txt_destination_iata_airport_code;
         public TextView txt_arrival_date;
         public TextView txt_arrival_hour;
-        //        public TextView txt_flight_date;
-        //        public TextView txt_origin_airport;
-        //        public TextView txt_destination_airport;
-        //        public TextView txt_departure_time;
-        //        public TextView txt_arrival_time;
-        //        public TextView txt_duration;
 
         public MyScheduleHolder(View itemView) {
             super(itemView);
@@ -99,13 +93,6 @@ public class ScheduleAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             txt_destination_iata_airport_code = (TextView) itemView.findViewById(R.id.destination_iata_airport_code);
             txt_arrival_date = (TextView) itemView.findViewById(R.id.arrival_date);
             txt_arrival_hour = (TextView) itemView.findViewById(R.id.arrival_hour);
-            //            txt_flight_date = (TextView) itemView.findViewById(R.id.flight_date);
-            //            txt_origin_airport = (TextView) itemView.findViewById(R.id.origin_airport);
-            //            txt_destination_airport = (TextView) itemView.findViewById(R.id.destination_airport);
-            //            txt_departure_time = (TextView) itemView.findViewById(R.id.departure_time);
-            //            txt_arrival_time = (TextView) itemView.findViewById(R.id.arrival_time);
-            //            txt_duration = (TextView) itemView.findViewById(R.id.duration);
-
         }
     }
 }

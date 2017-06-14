@@ -25,6 +25,7 @@ import java.util.List;
 import tut.flightbookingsystem.adapter.AirplaneFlightSeatAdapter;
 import tut.flightbookingsystem.listener.MyDialogListener;
 import tut.flightbookingsystem.listener.OnSeatSelected;
+import tut.flightbookingsystem.manager.SessionManager;
 import tut.flightbookingsystem.model.AbstractItem;
 import tut.flightbookingsystem.model.CenterItem;
 import tut.flightbookingsystem.model.EdgeItem;

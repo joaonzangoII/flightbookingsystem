@@ -12,8 +12,8 @@ import java.util.Calendar;
 
 public class DateDisplayPicker extends AppCompatEditText
         implements DatePickerDialog.OnDateSetListener {
-
     private Context _context;
+    private long minDate;
 
     public DateDisplayPicker(final Context context,
                              final AttributeSet attrs,
@@ -36,7 +36,6 @@ public class DateDisplayPicker extends AppCompatEditText
                 c.get(Calendar.MONTH),
                 c.get(Calendar.DAY_OF_MONTH));
     }
-
 
     public DateDisplayPicker(final Context context) {
         super(context);
@@ -74,11 +73,20 @@ public class DateDisplayPicker extends AppCompatEditText
                           final int monthOfYear,
                           final int dayOfMonth) {
         setDate(year, monthOfYear, dayOfMonth);
+        view.setMinDate(getMinDate());
     }
 
     private void setDate(final int year,
                          final int monthOfYear,
                          final int dayOfMonth) {
         setText(String.format("%s-%02d-%02d", year, (monthOfYear + 1), dayOfMonth));
+    }
+
+    private void setMinDate(long minDate){
+        this.minDate = minDate;
+    }
+
+    private long getMinDate(){
+        return minDate;
     }
 }

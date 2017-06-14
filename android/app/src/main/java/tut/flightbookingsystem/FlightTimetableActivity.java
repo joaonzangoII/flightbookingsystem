@@ -22,6 +22,7 @@ import java.util.List;
 import tut.flightbookingsystem.adapter.AirportsAdapter;
 import tut.flightbookingsystem.base.BaseActivity;
 import tut.flightbookingsystem.manager.RequestManager;
+import tut.flightbookingsystem.manager.SessionManager;
 import tut.flightbookingsystem.model.Airport;
 import tut.flightbookingsystem.model.Schedule;
 import tut.flightbookingsystem.util.Utils;
@@ -115,21 +116,6 @@ public class FlightTimetableActivity extends BaseActivity {
 
         setDateTimeField();
 
-        //        swipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.swipe_refresh_layout);
-        //        swipeRefreshLayout.setOnRefreshListener(this);
-        //
-        //        /**
-        //         * Showing Swipe Refresh animation on activity create
-        //         * As animation won't start on onCreate, post runnable is used
-        //         */
-        //        swipeRefreshLayout.post(new Runnable() {
-        //                                    @Override
-        //                                    public void run() {
-        //                                        swipeRefreshLayout.setRefreshing(true);
-        //                                        RequestManager.getAirports(session, requestHandler);
-        //                                    }
-        //                                }
-        //        );
     }
 
     @Override
@@ -142,6 +128,7 @@ public class FlightTimetableActivity extends BaseActivity {
     private void setDateTimeField() {
         departureDate.setOnClickListener(this);
         departureDatePickerDialog = datepicker(departureDate);
+        departureDatePickerDialog.getDatePicker().setMinDate(System.currentTimeMillis() - 1000);
     }
 
     @Override
