@@ -36,7 +36,7 @@
 
         <activity
             android:name=".SplashScreenActivity"
-            android:theme="@style/AppTheme.NoActionBar"/>
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".FindFlightActivity"
             android:parentActivityName=".MainActivity" />
@@ -76,6 +76,9 @@
             android:name=".MyBookingsDetailActivity"
             android:parentActivityName=".MyBookingsActivity" />
         <activity android:name=".SettingsActivity" />
+        <activity
+            android:name=".PassengerDetailActivity"
+            android:parentActivityName=".MyBookingsDetailActivity" />
     </application>
 
 </manifest>

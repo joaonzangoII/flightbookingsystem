@@ -18,7 +18,9 @@ import android.widget.TextView;
 import java.util.ArrayList;
 import java.util.List;
 
+import tut.flightbookingsystem.MainActivity;
 import tut.flightbookingsystem.R;
+import tut.flightbookingsystem.base.BaseActivity;
 import tut.flightbookingsystem.manager.SessionManager;
 import tut.flightbookingsystem.model.Schedule;
 
@@ -147,7 +149,7 @@ public class MainCarouselPagerAdapter extends BaseLoopPagerAdapter {
         view.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(final View v) {
-                //CategoriaPageActivity.goToServico(servicoModel);
+                //BaseActivity.goToSchedule(schedule);
             }
         });
     }

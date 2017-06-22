@@ -8,7 +8,7 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Messages\NexmoMessage;
 
-class FlightBooked extends Notification
+class UserBookedFlight extends Notification
 {
     use Queueable;
     var $booking;
@@ -42,17 +42,22 @@ class FlightBooked extends Notification
     public function toMail($notifiable)
     {
         return (new MailMessage)
-                    ->line('A new booking with Reference ' .
-                            $this->booking->booking_number .
-                             ' was made on the system' )
-                    ->action('/')
-                    ->line(env("APP_NAME"));
+                    ->line('Your booking Reference is '
+                    . $this->booking->booking_number
+                    . ' you booked for '
+                    . $this->booking->passengers()->count() . ' passengers'
+                    )
+                    ->line('Thank you for using our application, Please call again!');
     }
 
     public function toNexmo($notifiable)
     {
         return (new NexmoMessage)
-                    ->content('Your booking Referrence is ' . $this->booking->booking_number)
+                    ->content('Your booking Reference is '
+                    . $this->booking->booking_number
+                    . ' you booked for '
+                    . $this->booking->passengers()->count() . ' passengers'
+                    )
                     ->unicode();
     }
 

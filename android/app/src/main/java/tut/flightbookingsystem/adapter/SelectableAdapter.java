@@ -5,9 +5,6 @@ import android.util.SparseBooleanArray;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
-
-import tut.flightbookingsystem.model.AbstractItem;
 
 public abstract class SelectableAdapter<VH extends RecyclerView.ViewHolder> extends RecyclerView.Adapter<VH> {
     @SuppressWarnings("unused")
@@ -16,11 +13,12 @@ public abstract class SelectableAdapter<VH extends RecyclerView.ViewHolder> exte
     private SparseBooleanArray selectedItems;
 
     public SelectableAdapter() {
-        selectedItems = new SparseBooleanArray ();
+        selectedItems = new SparseBooleanArray();
     }
 
     /**
      * Indicates if the item at position position is selected
+     *
      * @param position Position of the item to check
      * @return true if the item is selected, false otherwise
      */
@@ -30,6 +28,7 @@ public abstract class SelectableAdapter<VH extends RecyclerView.ViewHolder> exte
 
     /**
      * Toggle the selection status of the item at a given position
+     *
      * @param position Position of the item to toggle the selection status for
      */
     public void toggleSelection(int position) {
@@ -38,6 +37,16 @@ public abstract class SelectableAdapter<VH extends RecyclerView.ViewHolder> exte
         } else {
             selectedItems.put(position, true);
         }
+        notifyItemChanged(position);
+    }
+
+    public void setIsSelected(int position) {
+        selectedItems.put(position, true);
+        notifyItemChanged(position);
+    }
+
+    public void setIsNotSelected(int position) {
+        selectedItems.put(position, false);
         notifyItemChanged(position);
     }
 
@@ -54,6 +63,7 @@ public abstract class SelectableAdapter<VH extends RecyclerView.ViewHolder> exte
 
     /**
      * Count the selected items
+     *
      * @return Selected items count
      */
     public int getSelectedItemCount() {
@@ -62,6 +72,7 @@ public abstract class SelectableAdapter<VH extends RecyclerView.ViewHolder> exte
 
     /**
      * Indicates the list of selected items
+     *
      * @return List of selected items ids
      */
     public List<Integer> getSelectedItems() {

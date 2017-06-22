@@ -67,4 +67,14 @@ class User extends Authenticatable
     public function getEditLinkAttribute(){
       return route("backoffice.users.edit", $this->id);
     }
+
+    public function routeNotificationForNexmo()
+    {
+      return $this->phone;
+    }
+
+    public function routeNotificationForMail()
+    {
+      $this->email;
+    }
 }

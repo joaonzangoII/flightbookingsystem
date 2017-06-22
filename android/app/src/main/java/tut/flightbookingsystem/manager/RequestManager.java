@@ -114,7 +114,7 @@ public class RequestManager {
                 for (Map.Entry<String, String> entry : params.entrySet()) {
                     final String key = entry.getKey();
                     final String value = entry.getValue();
-                    Log.e(TAG, key + " : " +  value);
+                    Log.e(TAG, key + " : " + value);
                 }
                 return params;
             }
@@ -377,16 +377,24 @@ public class RequestManager {
         MyApplication.getInstance().addToRequestQueue(stringRequest, tag_string_req);
     }
 
-    public static void updateMeal(final SessionManager session,
-                                  final Context context,
-                                  final long user_id,
-                                  final String passenger,
-                                  final Handler requestHandler) {
+    public static void addOrUpdateTask(final SessionManager session,
+                                        final Context context,
+                                        final long passenger_id,
+                                        final long task_id,
+                                        final String task,
+                                        final String action,
+                                        final Handler requestHandler) {
         final Message msg = requestHandler.obtainMessage();
         final Bundle bundle = new Bundle();
-        final String url = session.getServerUrl() + RouteManager.UPDATE_MEAL;
-        final String tag_string_req = "req_update_meal";
-        setLoading(context, "Updating Passenger Meal..", true);
+        String url = session.getServerUrl();
+        if (task.equals("drink")) {
+            url = url + RouteManager.ADD_UPDATE_DRINK;
+        } else {
+            url = url + RouteManager.ADD_UPDATE_FOOD;
+        }
+
+        final String tag_string_req = "req_add_update_" + task;
+        setLoading(context, "Updating Passenger " + task, true);
         final StringRequest stringRequest = new StringRequest(
                 Request.Method.POST,
                 url,
@@ -437,82 +445,14 @@ public class RequestManager {
             @Override
             protected Map<String, String> getParams() {
                 Map<String, String> params = new HashMap<>();
-                params.put("user_id", String.valueOf(user_id));
-                params.put("passenger", passenger);
+                params.put("passenger_id", String.valueOf(passenger_id));
+                params.put("task_id", String.valueOf(task_id));
+                params.put("action", action);
                 return params;
             }
 
         };
-        // Adding request to request queue
-        MyApplication.getInstance().addToRequestQueue(stringRequest, tag_string_req);
-    }
 
-    public static void deleteMeal(final SessionManager session,
-                                  final Context context,
-                                  final long user_id,
-                                  final String passenger,
-                                  final Handler requestHandler) {
-        final Message msg = requestHandler.obtainMessage();
-        final Bundle bundle = new Bundle();
-        final String url = session.getServerUrl() + RouteManager.DELETE_MEAL;
-        final String tag_string_req = "req_delete_meal";
-        setLoading(context, "Deleting Passenger Meal..", true);
-        final StringRequest stringRequest = new StringRequest(
-                Request.Method.POST,
-                url,
-                new Response.Listener<String>() {
-                    @Override
-                    public void onResponse(String response) {
-                        Log.e(tag_string_req, response);
-                        try {
-                            final JSONObject jObj = new JSONObject(response);
-                            final boolean error = jObj.getBoolean("erro");
-                            if (!error) {
-                                bundle.putString(Constant.BOOKING,
-                                        jObj.getJSONObject("booking").toString());
-                                bundle.putBoolean(Constant.ERROR, false);
-                                bundle.putBoolean(Constant.IS_BOOKING, true);
-                                msg.setData(bundle);
-                                requestHandler.sendMessage(msg);
-                                setLoading(context, false);
-                            } else {
-                                setLoading(context, false);
-                                bundle.putBoolean(Constant.ERROR, true);
-                                requestHandler.sendMessage(msg);
-                                final String errorMsg = jObj.getString("messages");
-                                Toast.makeText(getApplicationContext(),
-                                        errorMsg,
-                                        Toast.LENGTH_LONG).show();
-                            }
-                        } catch (final JSONException error) {
-                            error.printStackTrace();
-                            Toast.makeText(getApplicationContext(),
-                                    error.getMessage(),
-                                    Toast.LENGTH_LONG).show();
-                        }
-                        setLoading(context, false);
-                    }
-                }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(final VolleyError error) {
-                Utils.logVolleyMessage(error, "Update Booking");
-                Toast.makeText(getApplicationContext(),
-                        Utils.getVolleyMessage(error),
-                        Toast.LENGTH_LONG).show();
-                setLoading(context, false);
-                bundle.putBoolean(Constant.ERROR, true);
-                requestHandler.sendMessage(msg);
-            }
-        }) {
-            @Override
-            protected Map<String, String> getParams() {
-                Map<String, String> params = new HashMap<>();
-                params.put("user_id", String.valueOf(user_id));
-                params.put("passenger", passenger);
-                return params;
-            }
-
-        };
         // Adding request to request queue
         MyApplication.getInstance().addToRequestQueue(stringRequest, tag_string_req);
     }

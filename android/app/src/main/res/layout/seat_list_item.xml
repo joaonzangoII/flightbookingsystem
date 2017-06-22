@@ -24,6 +24,15 @@
             android:scaleType="fitXY"
             android:src="@drawable/green"
             android:visibility="invisible" />
+
+        <ImageView
+            android:id="@+id/img_seat_taken"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:background="@drawable/img_border"
+            android:scaleType="fitXY"
+            android:src="@drawable/red"
+            android:visibility="invisible" />
     </RelativeLayout>
 
     <TextView

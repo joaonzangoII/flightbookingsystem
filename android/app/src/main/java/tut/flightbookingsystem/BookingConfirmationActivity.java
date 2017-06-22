@@ -3,6 +3,7 @@ package tut.flightbookingsystem;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v7.widget.AppCompatButton;
+import android.support.v7.widget.AppCompatImageButton;
 import android.support.v7.widget.CardView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,7 +19,8 @@ import java.lang.reflect.Type;
 import tut.flightbookingsystem.base.BaseActivity;
 import tut.flightbookingsystem.model.Booking;
 import tut.flightbookingsystem.model.FlightSeat;
-import tut.flightbookingsystem.model.Meal;
+import tut.flightbookingsystem.model.Food;
+import tut.flightbookingsystem.model.MealFood;
 import tut.flightbookingsystem.model.Passenger;
 import tut.flightbookingsystem.util.LocalDate;
 
@@ -57,6 +59,8 @@ public class BookingConfirmationActivity extends BaseActivity {
                 LocalDate.getTime(mBooking.departure_flight.schedule.arrival_time)));
         ((TextView) findViewById(R.id.duration))
                 .setText(String.format("Duration: %1$s", mBooking.departure_flight.schedule.duration));
+        ((TextView) findViewById(R.id.status))
+                .setText(String.format("", mBooking.status));
         final LinearLayout passengerLayout = (LinearLayout) findViewById(R.id.passengerLayout);
         final TextView textView = (TextView) findViewById(R.id.json);
         textView.setText(args.getString(Constant.BOOKING));
@@ -86,9 +90,9 @@ public class BookingConfirmationActivity extends BaseActivity {
         final TextView travelClass = (TextView) cardview.findViewById(R.id.travel_class);
         final TextView seatNumber = (TextView) cardview.findViewById(R.id.seat_number);
         final TextView foodType = (TextView) cardview.findViewById(R.id.food_type);
-        final TextView food_and_drink = (TextView) cardview.findViewById(R.id.food_and_drink);
-        final AppCompatButton btnAddMeal = (AppCompatButton) cardview.findViewById(R.id.btn_add_meal);
-        final AppCompatButton btnDeleteMeal = (AppCompatButton) cardview.findViewById(R.id.btn_delete_meal);
+        final TextView foodAndDrink = (TextView) cardview.findViewById(R.id.food_and_drink);
+        final AppCompatImageButton btnAddMeal = (AppCompatImageButton) cardview.findViewById(R.id.btn_add_meal);
+        final AppCompatImageButton btnDeleteMeal = (AppCompatImageButton) cardview.findViewById(R.id.btn_delete_meal);
         btnAddMeal.setVisibility(View.GONE);
         btnDeleteMeal.setVisibility(View.GONE);
         firstnames.setText(String.format("First Names: %1$s", passenger.firstnames));
@@ -104,12 +108,15 @@ public class BookingConfirmationActivity extends BaseActivity {
             }
         }
 
-        final Meal meal = passenger.meal;
-        if (meal != null) {
-            if (meal.food != null) {
-                food_and_drink.setText(String.format("Meal:  %1$s", passenger.food_and_drink));
-                if (meal.food.food_type != null) {
-                    foodType.setText(String.format("Food Type:  %1$s", passenger.meal.food.food_type.name));
+        final MealFood mealFood = passenger.food;
+        foodAndDrink.setText(String.format("Meal:  %1$s", passenger.food_and_drink));
+        foodAndDrink.setVisibility(View.VISIBLE);
+
+        if (mealFood != null) {
+            final Food food = mealFood.food;
+            if (food != null) {
+                if (food.food_type != null) {
+                    foodType.setText(String.format("Food Type:  %1$s", food.food_type.name));
                 }
             }
         }

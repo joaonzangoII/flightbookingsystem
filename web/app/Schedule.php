@@ -36,11 +36,15 @@ class Schedule extends Model
     }
 
     public function getOriginAirportNameAttribute($icone){
-      return $this->origin_airport->name;
+      return  !is_null($this->origin_airport)
+      ? $this->origin_airport->name
+      : null;
     }
 
     public function getDestinationAirportNameAttribute($icone){
-      return $this->destination_airport->name;
+      return  !is_null($this->destination_airport)
+      ? $this->destination_airport->name
+      : null;
     }
 
     /**

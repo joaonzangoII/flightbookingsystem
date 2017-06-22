@@ -6,7 +6,6 @@ import android.os.Message;
 import android.support.v7.widget.AppCompatButton;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -34,8 +33,8 @@ public class BookingActivity extends BaseActivity implements OnSeatSelected {
     private SessionManager session;
     private RecyclerView recyclerView;
     private PassengersAdapter passengersAdapter;
-    private List<Passenger> passengersList = new ArrayList<>();
     private Schedule schedule;
+    private List<Passenger> passengersList = new ArrayList<>();
 
     final Handler requestHandler = new Handler(new Handler.Callback() {
         @Override
@@ -46,6 +45,7 @@ public class BookingActivity extends BaseActivity implements OnSeatSelected {
                     final Bundle args = new Bundle();
                     args.putString(Constant.BOOKING, data.getString(Constant.BOOKING));
                     goToActivity(BookingConfirmationActivity.class, args);
+                    session.setBookingPassengers("[]");
                     finish();
                 } else {
 
@@ -70,11 +70,6 @@ public class BookingActivity extends BaseActivity implements OnSeatSelected {
                         final Button button = ((Button) view);
                         if (position >= 0) {
                             final Passenger passenger = passengersList.get(position);
-                            if (button.getId() == R.id.add_meal) {
-                                addMeal(passenger);
-                            } else {
-
-                            }
                         }
 
                     }
@@ -116,21 +111,25 @@ public class BookingActivity extends BaseActivity implements OnSeatSelected {
 
         for (int x = 0; x < numPeople; x++) {
             final Passenger passenger = new Passenger();
-            passenger.id = 0;
+            passenger.id = x;
             passenger.firstnames = "";
             passenger.surname = "";
-            passenger.booking_id = 0;
             passenger.id_number = "";
             passenger.date_of_birth = "";
+            passenger.gender   = "";
+            passenger.drink_id = null;
+            passenger.food_id  = null;
             passenger.flight_seat_id = 0;
-            passenger.gender = "";
-            passenger.meal = null;
-            passengersList.add(passenger);
+            passenger.booking_id = 0;
+            session.addorUpdateToBookingPassengers(passenger);
+            //passengersList.add(passenger);
         }
 
+        passengersList = session.getBookingPassengers();
         final List<PassengerHeader> passengerHeadersList = new ArrayList<>();
+
         for (Passenger passenger : passengersList) {
-            List<Passenger> p = new ArrayList<>();
+            final List<Passenger> p = new ArrayList<>();
             p.add(passenger);
             passengerHeadersList.add(new PassengerHeader("", p));
         }
@@ -148,10 +147,6 @@ public class BookingActivity extends BaseActivity implements OnSeatSelected {
         btnBook.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Log.e("USER>FLIGHT>AIRCRAFT", session.getLoggedInUser().id + ">" +
-                        schedule.flight_id + ">" +
-                        schedule.flight.aircraft_id);
-                Log.e("ITEMS>>", gson.toJson(passengersList));
                 boolean canBook = true;
                 for (final Passenger passenger : passengersList) {
                     if (passenger.firstnames.trim().equals("") ||

@@ -11,8 +11,7 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="horizontal">
+        android:layout_height="wrap_content">
 
         <ImageView
             android:id="@+id/image"
@@ -22,7 +21,7 @@
 
         <RelativeLayout
             android:layout_width="wrap_content"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:layout_toEndOf="@id/image"
             android:layout_toRightOf="@id/image"
             android:orientation="vertical">
@@ -54,47 +53,82 @@
                 android:layout_below="@+id/travel_class"
                 android:text="" />
 
-            <TextView
-                android:id="@+id/food_type"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/seat_number"
-                android:text="" />
-
-            <TextView
-                android:id="@+id/food_and_drink"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/food_type"
-                android:text="" />
-
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/food_and_drink"
+                android:layout_below="@id/seat_number"
                 android:gravity="end"
-                android:orientation="horizontal">
+                android:orientation="vertical">
 
-                <android.support.v7.widget.AppCompatButton
-                    android:id="@+id/btn_delete_meal"
-                    style="@style/MyRedButton"
-                    android:layout_width="wrap_content"
+                <TextView
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="right"
-                    android:drawablePadding="6dp"
-                    android:text="Delete Meal"
-                    android:textColor="@color/White"
+                    android:text="Meal"
                     android:textStyle="bold" />
 
-                <android.support.v7.widget.AppCompatButton
-                    android:id="@+id/btn_add_meal"
-                    android:layout_width="wrap_content"
+                <TextView
+                    android:id="@+id/food_and_drink"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="right"
-                    android:drawablePadding="6dp"
-                    android:text="Add Meal"
-                    android:textColor="@color/White"
-                    android:textStyle="bold" />
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginStart="10dp"
+                    android:text=""
+                    android:visibility="gone" />
+
+
+                <TextView
+                    android:id="@+id/drink"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginStart="10dp"
+                    android:text="None"
+                    android:visibility="visible" />
+
+                <TextView
+                    android:id="@+id/food"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginStart="10dp"
+                    android:text="None"
+                    android:visibility="visible" />
+
+            <TextView
+                    android:id="@+id/food_type"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginStart="10dp"
+                    android:text="None"
+                    android:visibility="visible" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginStart="10dp"
+                    android:orientation="horizontal"
+                    android:visibility="gone">
+
+                    <android.support.v7.widget.AppCompatImageButton
+                        android:id="@+id/btn_delete_meal"
+                        android:layout_width="50dp"
+                        android:layout_height="50dp"
+                        android:scaleType="fitCenter"
+                        android:src="@drawable/delete"
+                        android:textColor="@color/White"
+                        android:textStyle="bold" />
+
+                    <android.support.v7.widget.AppCompatImageButton
+                        android:id="@+id/btn_add_meal"
+                        android:layout_width="50dp"
+                        android:layout_height="50dp"
+                        android:scaleType="fitCenter"
+                        android:src="@drawable/add"
+                        android:textColor="@color/White"
+                        android:textStyle="bold" />
+                </LinearLayout>
             </LinearLayout>
         </RelativeLayout>
     </RelativeLayout>

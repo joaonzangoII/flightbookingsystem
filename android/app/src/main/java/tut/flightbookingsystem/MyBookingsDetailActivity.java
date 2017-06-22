@@ -61,23 +61,26 @@ public class MyBookingsDetailActivity extends BaseActivity {
                 public void onItemClicked(final View view,
                                           final int p) {
                     position = p - 1;
-
                     final Passenger passenger = passengersList.get(position);
                     switch (view.getId()) {
-                        case R.id.btn_delete_meal:
-                            if (passenger.meal != null) {
-                                if (passenger.meal.food != null) {
-                                    deleteMeal(passenger, requestHandler);
-                                }
+                        case R.id.btn_delete_drink:
+                            if (passenger.drink != null) {
+                                addOrUpdateDrink(passenger, "delete", requestHandler);
+
                             } else {
                                 Toast.makeText(MyBookingsDetailActivity.this,
-                                        "You cannot delete an empty meal",
+                                        "You have not added a drink yet",
                                         Toast.LENGTH_SHORT).show();
                                 ((AppCompatButton) view).setVisibility(View.GONE);
                             }
                             break;
-                        case R.id.btn_add_meal:
-                            addEditMeal(passenger, requestHandler);
+                        default:
+                            final Gson gson = new GsonBuilder().create();
+                            final Bundle bundle = new Bundle();
+                            session.setPassenger(gson.toJson(passenger));
+                            //bundle.putSerializable("PASSENGER", passenger);
+                            bundle.putParcelable("PASSENGER", passenger);
+                            goToActivity(PassengerDetailActivity.class, bundle);
                             break;
                     }
                 }

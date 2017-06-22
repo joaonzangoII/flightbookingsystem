@@ -18,12 +18,14 @@ import tut.flightbookingsystem.R;
 import tut.flightbookingsystem.adapter.holder.PassengerDetailViewHolder;
 import tut.flightbookingsystem.adapter.holder.PassengerHeaderViewHolder;
 import tut.flightbookingsystem.listener.RecyclerClickListener;
+import tut.flightbookingsystem.manager.SessionManager;
 import tut.flightbookingsystem.model.FlightSeat;
 import tut.flightbookingsystem.model.Passenger;
 import tut.flightbookingsystem.model.PassengerHeader;
 
 public class PassengersAdapter extends ExpandableRecyclerViewAdapter<PassengerHeaderViewHolder,
         PassengerDetailViewHolder> {
+    private SessionManager session;
     private RecyclerClickListener.OnItemClickCallback onItemClickCallback;
     private List<Passenger> items = Collections.emptyList();
     private List<FlightSeat> flightSeatsItems = Collections.emptyList();
@@ -43,6 +45,7 @@ public class PassengersAdapter extends ExpandableRecyclerViewAdapter<PassengerHe
     public PassengersAdapter(final Context context,
                              final @NonNull List<PassengerHeader> groups) {
         super(groups);
+        session = new SessionManager(context);
         mInflater = LayoutInflater.from(context);
     }
 
@@ -83,7 +86,7 @@ public class PassengersAdapter extends ExpandableRecyclerViewAdapter<PassengerHe
                                       final int parentPosition,
                                       final ExpandableGroup group,
                                       final int childPosition) {
-        passengerDetailViewHolder.bind(getClildItems(group, childPosition), childPosition, onItemClickCallback);
+        passengerDetailViewHolder.bind(session, getClildItems(group, childPosition), childPosition, onItemClickCallback);
     }
 
     public Passenger getClildItems(final ExpandableGroup group,

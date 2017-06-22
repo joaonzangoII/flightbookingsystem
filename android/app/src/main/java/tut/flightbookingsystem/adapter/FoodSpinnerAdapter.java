@@ -4,7 +4,7 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.BaseAdapter;
+import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
 import java.util.Collections;
@@ -12,7 +12,7 @@ import java.util.List;
 
 import tut.flightbookingsystem.model.Food;
 
-public class FoodSpinnerAdapter extends BaseAdapter {
+public class FoodSpinnerAdapter extends ArrayAdapter<Food> {
     private final int mLayoutResourceId;
     public List<Food> foods = Collections.emptyList();
     public Context context;
@@ -21,6 +21,7 @@ public class FoodSpinnerAdapter extends BaseAdapter {
     public FoodSpinnerAdapter(Context context,
                               int resource,
                               List<Food> foods) {
+        super(context, resource, foods);
         this.context = context;
         this.mLayoutResourceId = resource;
         this.foods = foods;
@@ -29,7 +30,8 @@ public class FoodSpinnerAdapter extends BaseAdapter {
 
     @Override
     public int getCount() {
-        return foods == null ? 0 : foods.size();
+        final int count = super.getCount();
+        return count > 0 ? count - 1 : count;
     }
 
     @Override
@@ -39,7 +41,16 @@ public class FoodSpinnerAdapter extends BaseAdapter {
 
     @Override
     public long getItemId(int i) {
-        return foods==null? 0 : foods.get(i).id;
+        return 0;
+        /*if (foods == null) {
+            return 0;
+        }
+
+        if (foods.get(i) == null) {
+            return 0;
+        } else {
+            return foods.get(i).id;
+        }*/
     }
 
     @Override
@@ -55,7 +66,7 @@ public class FoodSpinnerAdapter extends BaseAdapter {
 
     public int getById(final long id) {
         for (int x = 0; x < foods.size(); x++) {
-            if(foods.get(x).id == id) {
+            if (foods.get(x).id == id) {
                 return x;
             }
         }

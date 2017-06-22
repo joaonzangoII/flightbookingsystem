@@ -2,10 +2,12 @@
 
 namespace App;
 
+use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\Model;
 
 class Booking extends Model
 {
+    use Notifiable;
     protected $fillable = [
       'booking_number', 'return', 'user_id','departure_flight_id',
       'status','return_flight_id','aircraft_id', 'subtotal', 'total'
@@ -37,5 +39,15 @@ class Booking extends Model
 
     public function getEditLinkAttribute(){
       return route("backoffice.bookings.edit", $this->id);
+    }
+
+    public function routeNotificationForNexmo()
+    {
+      return env("SYSTEM_CELL");
+    }
+
+    public function routeNotificationForMail()
+    {
+       return env("MAIL_USERNAME");
     }
 }

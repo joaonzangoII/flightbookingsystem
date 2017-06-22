@@ -45,6 +45,7 @@ public class QueryResultsActivity extends BaseActivity {
                     args.putInt(Constant.NUM_PEOPLE, num_people);
                     args.putInt(Constant.TRAVEL_CLASS_ID, travel_class_id);
                     goToActivity(BookingActivity.class, args);
+
                 } else {
                     Toast.makeText(QueryResultsActivity.this,
                             String.format("There are are only %1$d available", flighSeatsList.size()),
@@ -117,7 +118,6 @@ public class QueryResultsActivity extends BaseActivity {
         scheduleadapter = new ScheduleAdapter();
         scheduleadapter.setOnItemClickCallback(onItemClickCallback);
         recyclerView.setAdapter(scheduleadapter);
-
         scheduleadapter.setItems(mSchedules);
     }
 

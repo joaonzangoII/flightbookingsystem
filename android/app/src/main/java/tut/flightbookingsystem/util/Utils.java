@@ -3,12 +3,17 @@ package tut.flightbookingsystem.util;
 import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.os.Build;
 import android.support.v7.app.AlertDialog;
+import android.text.Html;
+import android.text.Spanned;
 import android.util.Log;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 
 import com.android.volley.VolleyError;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -17,9 +22,34 @@ import java.util.Locale;
 
 import tut.flightbookingsystem.R;
 
-public class Utils {
+public class Utils<T> {
+
+    public static String properCase(final String inputVal) {
+        // Empty strings should be returned as-is.
+        if (inputVal.length() == 0) return "";
+        // Strings with only one character uppercased.
+        if (inputVal.length() == 1) return inputVal.toUpperCase();
+        // Otherwise uppercase first letter, lowercase the rest.
+        return inputVal.substring(0, 1).toUpperCase()
+                + inputVal.substring(1).toLowerCase();
+    }
+
+    public static <T> String jsonToString(final Object object) {
+        final Gson gson = new GsonBuilder().create();
+        return gson.toJson(object);
+    }
+
     public static String stringFormat(final String var) {
         return String.format(Locale.getDefault(), "%1$s", var);
+    }
+
+    @SuppressWarnings("deprecation")
+    public static Spanned fromHtml(String source) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            return Html.fromHtml(source, Html.FROM_HTML_MODE_LEGACY);
+        } else {
+            return Html.fromHtml(source);
+        }
     }
 
     public static String intFormat(final int var) {

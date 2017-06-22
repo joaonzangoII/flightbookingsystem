@@ -4,10 +4,11 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Meal extends Model
+class MealFood extends Model
 {
+
   protected $fillable=[
-    'passenger_id', 'drink_id', 'food_id'
+    'passenger_id', 'food_id', 'meal_id'
   ];
 
   public function passenger(){
@@ -16,9 +17,5 @@ class Meal extends Model
 
   public function food(){
     return $this->hasOne('App\Food', 'id', 'food_id');
-  }
-
-  public function drink(){
-    return $this->hasOne('App\Drink', 'id', 'drink_id');
   }
 }

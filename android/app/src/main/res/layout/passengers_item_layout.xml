@@ -128,13 +128,6 @@
                     android:textSize="16sp"
                     android:textStyle="bold" />
 
-                <!--<Spinner-->
-                <!--android:id="@+id/select_seat_id"-->
-                <!--android:layout_width="match_parent"-->
-                <!--android:layout_height="@dimen/spinner_height"-->
-                <!--android:background="@drawable/border"-->
-                <!--android:hint="Select Seat" />-->
-
                 <android.support.v7.widget.AppCompatEditText
                     android:id="@+id/select_seat_id"
                     android:layout_width="match_parent"
@@ -144,34 +137,48 @@
                     android:textSize="@dimen/edit_text_font_size" />
             </LinearLayout>
 
-            <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                xmlns:whatever="http://schemas.android.com/apk/res-auto"
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="end"
-                android:gravity="end"
-                android:orientation="horizontal">
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:padding="5dp">
 
-                <android.support.v7.widget.AppCompatButton
-                    android:id="@+id/select_seat"
-                    android:layout_width="wrap_content"
+                <TextView
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="right"
-                    android:drawablePadding="6dp"
-                    android:text="Select Seat"
-                    android:textColor="@color/White"
-                    android:textStyle="bold"
-                    android:visibility="gone" />
-
-                <android.support.v7.widget.AppCompatButton
-                    android:id="@+id/add_meal"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="right"
-                    android:drawablePadding="6dp"
-                    android:text="Add Meal"
-                    android:textColor="@color/White"
+                    android:text="Food"
+                    android:textColor="@color/Black"
+                    android:textSize="16sp"
                     android:textStyle="bold" />
+
+                <android.support.v7.widget.AppCompatSpinner
+                    android:id="@+id/food_id"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/spinner_height"
+                    android:background="@drawable/border"
+                    android:hint="@string/prompt_food" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:padding="5dp">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Drink"
+                    android:textColor="@color/Black"
+                    android:textSize="16sp"
+                    android:textStyle="bold" />
+
+                <android.support.v7.widget.AppCompatSpinner
+                    android:id="@+id/drink_id"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/spinner_height"
+                    android:background="@drawable/border"
+                    android:hint="@string/prompt_drink" />
             </LinearLayout>
         </LinearLayout>
     </android.support.v7.widget.CardView>

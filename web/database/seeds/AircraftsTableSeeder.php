@@ -23,7 +23,7 @@ class AircraftsTableSeeder extends Seeder
       $aircrafts = [
         [
           'model' => 'A340-600',
-          'number_of_seats' => 317,
+          'number_of_seats' => 150,
           'aircraft_manufaturer_id' => $airport_manufacturer,
         ],
         [
@@ -33,27 +33,27 @@ class AircraftsTableSeeder extends Seeder
         ],
         [
           'model' => 'A340-300',
-          'number_of_seats' => 253,
+          'number_of_seats' => 100,
           'aircraft_manufaturer_id' => $airport_manufacturer,
         ],
         [
           'model' => 'A330-300',
-          'number_of_seats' => 249,
+          'number_of_seats' => 90,
           'aircraft_manufaturer_id' => $airport_manufacturer,
         ],
         [
           'model' => 'A330-200',
-          'number_of_seats' => 222,
+          'number_of_seats' => 85,
           'aircraft_manufaturer_id' => $airport_manufacturer,
         ],
         [
           'model' => 'A320-200',
-          'number_of_seats' => 138,
+          'number_of_seats' => 90,
           'aircraft_manufaturer_id' => $airport_manufacturer,
         ],
         [
           'model' => 'B737-800',
-          'number_of_seats' => 157,
+          'number_of_seats' => 110,
           'aircraft_manufaturer_id' => $airport_manufacturer,
         ]
       ];

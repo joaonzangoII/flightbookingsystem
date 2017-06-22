@@ -4,13 +4,12 @@ import android.app.Dialog;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v4.app.DialogFragment;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.app.AppCompatDialogFragment;
 import android.support.v7.widget.AppCompatButton;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -31,11 +30,13 @@ import tut.flightbookingsystem.model.CenterItem;
 import tut.flightbookingsystem.model.EdgeItem;
 import tut.flightbookingsystem.model.EmptyItem;
 import tut.flightbookingsystem.model.FlightSeat;
+import tut.flightbookingsystem.model.Passenger;
 
-public class PassengerSeatsDialogFragment extends DialogFragment implements OnSeatSelected {
+public class PassengerSeatsDialogFragment extends AppCompatDialogFragment
+        implements OnSeatSelected {
     private MyDialogListener myDialogListener;
     private AirplaneFlightSeatAdapter adapter;
-    private List<FlightSeat> flightSeatsList = new ArrayList<>();
+
 
     /**
      * The system calls this to get the DialogFragment's layout, regardless
@@ -52,15 +53,15 @@ public class PassengerSeatsDialogFragment extends DialogFragment implements OnSe
     public void onViewCreated(final View view,
                               final @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        final Toolbar toolbar = (Toolbar) view.findViewById(R.id.toolbar);
-        toolbar.setTitle("Select Available Seats");
         final ActionBar actionBar = ((AppCompatActivity) getActivity()).getSupportActionBar();
+        final SessionManager session = new SessionManager(getActivity());
         if (actionBar != null) {
             actionBar.setDisplayHomeAsUpEnabled(true);
-            actionBar.setHomeAsUpIndicator(android.R.drawable.ic_menu_close_clear_cancel);
+            actionBar.setHomeButtonEnabled(true);
+            getDialog().setTitle("Select Available Seats");
         }
 
-        setupView(getContext(), view);
+        setupView(getContext(), session, view);
     }
 
     /**
@@ -68,10 +69,6 @@ public class PassengerSeatsDialogFragment extends DialogFragment implements OnSe
      */
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
-        // The only reason you might override this method when using onCreateView() is
-        // to modify any dialog characteristics. For example, the dialog includes a
-        // title by default, but your custom layout might not need it. So here you can
-        // remove the dialog title, but you must call the superclass to get the Dialog.
         final Dialog dialog = super.onCreateDialog(savedInstanceState);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         return dialog;
@@ -87,13 +84,7 @@ public class PassengerSeatsDialogFragment extends DialogFragment implements OnSe
     @Override
     public boolean onOptionsItemSelected(final MenuItem item) {
         int id = item.getItemId();
-
-        //        if (id == R.id.action_save) {
-        //            // handle confirmation button click here
-        //            return true;
-        //        } else
         if (id == android.R.id.home) {
-            // handle close button click here
             dismiss();
             return true;
         }
@@ -103,11 +94,12 @@ public class PassengerSeatsDialogFragment extends DialogFragment implements OnSe
 
 
     private void setupView(final Context context,
+                           final SessionManager session,
                            final View itemView) {
+        List<FlightSeat> flightSeatsList = session.getFlightSeats();
+        final Passenger passenger = session.getPassenger();
         int COLUMNS = 0;
         int addMore = 0;
-        final SessionManager session = new SessionManager(context);
-        flightSeatsList = session.getFlightSeats();
         String classNName = "First";
         if (flightSeatsList != null &&
                 flightSeatsList.size() > 0) {
@@ -119,55 +111,67 @@ public class PassengerSeatsDialogFragment extends DialogFragment implements OnSe
             } else {
                 COLUMNS = 10;
             }
-
             /*if (COLUMNS == 2) {
                 addMore = 1;
             } else {
                 addMore = 2;
             }*/
-
             COLUMNS = COLUMNS + addMore;
             final List<AbstractItem> items = new ArrayList<>();
             for (int i = 0; i < flightSeatsList.size(); i++) {
                 final int remainder = i % COLUMNS;
+                AbstractItem item;
+                final long id = flightSeatsList.get(i).id;
+                final String seatNumber = String.valueOf(flightSeatsList.get(i).number);
+                boolean isAvailable = flightSeatsList.get(i).available;
+
+                for(Passenger p :session.getBookingPassengers()) {
+                    if (p.flight_seat_id == id) {
+                        isAvailable= false;
+                    }
+                }
+
                 if (COLUMNS == 2) {
                     if (remainder == 0) {
-                        items.add(new EdgeItem(flightSeatsList.get(i).id, String.valueOf(flightSeatsList.get(i).number)));
-                        //items.add(new EmptyItem(flightSeatsList.get(i).id, String.valueOf(flightSeatsList.get(i).number)));
+                        item = new EdgeItem(id, seatNumber, !isAvailable);
+                        //item = new EmptyItem(id, seatNumber, !isAvailable);
                     } else if (remainder == 1) {
-                        items.add(new EdgeItem(flightSeatsList.get(i).id, String.valueOf(flightSeatsList.get(i).number)));
+                        item = new EdgeItem(id, seatNumber, !isAvailable);
                     } else {
-                        items.add(new EmptyItem(flightSeatsList.get(i).id, String.valueOf(flightSeatsList.get(i).number)));
+                        item = new EmptyItem(id, seatNumber, !isAvailable);
                     }
+                    items.add(item);
                 } else if (COLUMNS == 7) {
                     if (remainder == 0 || remainder == 1 || remainder == 5 || remainder == 6) {
-                        items.add(new EdgeItem(flightSeatsList.get(i).id, String.valueOf(flightSeatsList.get(i).number)));
+                        item = new EdgeItem(id, seatNumber, !isAvailable);
                     } else if (remainder == 2) {
-                        //items.add(new EmptyItem(flightSeatsList.get(i).id, String.valueOf(flightSeatsList.get(i).number)));
-                        items.add(new CenterItem(flightSeatsList.get(i).id, String.valueOf(flightSeatsList.get(i).number)));
+                        //item = new EmptyItem(id, seatNumber, !isAvailable);
+                        item = new CenterItem(id, seatNumber, !isAvailable);
                     } else if (remainder == 3) {
-                        items.add(new CenterItem(flightSeatsList.get(i).id, String.valueOf(flightSeatsList.get(i).number)));
+                        item = new CenterItem(id, seatNumber, !isAvailable);
                     } else if (remainder == 4) {
-                        items.add(new CenterItem(flightSeatsList.get(i).id, String.valueOf(flightSeatsList.get(i).number)));
-                        // items.add(new EmptyItem(flightSeatsList.get(i).id, String.valueOf(flightSeatsList.get(i).number)));
+                        item = new CenterItem(id, seatNumber, !isAvailable);
+                        //item = new EmptyItem(id, seatNumber, !isAvailable);
                     } else {
-                        items.add(new EmptyItem(flightSeatsList.get(i).id, String.valueOf(flightSeatsList.get(i).number)));
+                        item = new EmptyItem(id, seatNumber, !isAvailable);
                     }
+                    items.add(item);
                 } else {
                     if (remainder == 0 || remainder == 1 || remainder == 2 ||
                             remainder == 7 || remainder == 8 || remainder == 9) {
-                        items.add(new EdgeItem(flightSeatsList.get(i).id, String.valueOf(flightSeatsList.get(i).number)));
+                        item = new EdgeItem(id, seatNumber, !isAvailable);
                     } else if (remainder == 3) {
-                        //items.add(new EmptyItem(flightSeatsList.get(i).id, String.valueOf(flightSeatsList.get(i).number)));
-                        items.add(new CenterItem(flightSeatsList.get(i).id, String.valueOf(flightSeatsList.get(i).number)));
+                        //item = new EmptyItem(id, seatNumber, !isAvailable);
+                        item = new CenterItem(id, seatNumber, !isAvailable);
                     } else if (remainder == 4 || remainder == 5) {
-                        items.add(new CenterItem(flightSeatsList.get(i).id, String.valueOf(flightSeatsList.get(i).number)));
+                        item = new CenterItem(id, seatNumber, !isAvailable);
                     } else if (remainder == 6) {
-                        items.add(new CenterItem(flightSeatsList.get(i).id, String.valueOf(flightSeatsList.get(i).number)));
-                        //items.add(new EmptyItem(flightSeatsList.get(i).id, String.valueOf(flightSeatsList.get(i).number)));
+                        item = new CenterItem(id, seatNumber, !isAvailable);
+                        //item = new EmptyItem(id, seatNumber, !isAvailable);
                     } else {
-                        items.add(new EmptyItem(flightSeatsList.get(i).id, String.valueOf(flightSeatsList.get(i).number)));
+                        item = new EmptyItem(id, seatNumber, !isAvailable);
                     }
+                    items.add(item);
                 }
             }
 
@@ -176,15 +180,14 @@ public class PassengerSeatsDialogFragment extends DialogFragment implements OnSe
             recyclerView.setLayoutManager(manager);
             adapter = new AirplaneFlightSeatAdapter(context, items);
             recyclerView.setAdapter(adapter);
+            adapter.refreshLayout();
 
             final AppCompatButton btnSelectSeat = (AppCompatButton) itemView.findViewById(R.id.btn_select_seat);
-            // btnSelectSeat.setVisibility(View.GONE);
             btnSelectSeat.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     if (adapter.getSelectedItems().size() > 0) {
                         myDialogListener.userSelectedAValue(items.get(adapter.getSelectedItems().get(0)));
-                        // listener is object of your MyDialogListener, which you have set from // Activity.
                         dismiss();
                     }
                 }

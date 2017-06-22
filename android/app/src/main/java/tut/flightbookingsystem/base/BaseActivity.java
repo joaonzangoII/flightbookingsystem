@@ -21,9 +21,6 @@ import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.Spinner;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.List;
@@ -32,15 +29,15 @@ import java.util.Locale;
 import tut.flightbookingsystem.Constant;
 import tut.flightbookingsystem.LoginActivity;
 import tut.flightbookingsystem.R;
-import tut.flightbookingsystem.manager.SessionManager;
 import tut.flightbookingsystem.SettingsActivity;
 import tut.flightbookingsystem.adapter.DrinkSpinnerAdapter;
 import tut.flightbookingsystem.adapter.FoodSpinnerAdapter;
 import tut.flightbookingsystem.manager.RequestManager;
+import tut.flightbookingsystem.manager.SessionManager;
 import tut.flightbookingsystem.model.Drink;
 import tut.flightbookingsystem.model.Food;
-import tut.flightbookingsystem.model.Meal;
 import tut.flightbookingsystem.model.Passenger;
+import tut.flightbookingsystem.util.Utils;
 
 public class BaseActivity extends AppCompatActivity implements View.OnClickListener, SwipeRefreshLayout.OnRefreshListener {
     private static String TAG = BaseActivity.class.getName();
@@ -50,6 +47,8 @@ public class BaseActivity extends AppCompatActivity implements View.OnClickListe
     private int selected_food_id;
     private Spinner foodsSpinner;
     private Spinner drinksSpinner;
+    protected DrinkSpinnerAdapter drinksAdapter;
+    protected FoodSpinnerAdapter foodsAdapter;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -174,102 +173,28 @@ public class BaseActivity extends AppCompatActivity implements View.OnClickListe
 
     }
 
-    public AlertDialog.Builder createDialog(final Passenger passenger,
-                                            final boolean isMeal) {
+
+    public AlertDialog.Builder createDialog(final String task) {
         final AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
-        final List<Food> foods = session.getFoods();
-        final View dialogView = getInflater().inflate(R.layout.add_meal_layout, null);
-        if (isMeal) {
-            alertDialogBuilder.setMessage("");
-            dialogView.setVisibility(View.VISIBLE);
-        } else {
-            dialogView.setVisibility(View.GONE);
-            alertDialogBuilder.setMessage("Are you sure you want to delete the user meal?");
-        }
-
-        final List<Drink> drinks = session.getDrinks();
-        final FoodSpinnerAdapter adapterFoods = new FoodSpinnerAdapter
-                (this, R.layout.spinners_item_layout, foods);
-        final DrinkSpinnerAdapter drinksAdapter = new DrinkSpinnerAdapter
-                (this, R.layout.spinners_item_layout, drinks);
-
-        foodsSpinner = (Spinner) dialogView.findViewById(R.id.foodSpinner);
-        foodsSpinner.setAdapter(adapterFoods);
-        foodsSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> adapterView,
-                                       View view,
-                                       int i,
-                                       long l) {
-                selected_food_id = i;
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> adapterView) {
-
-            }
-        });
-
-        drinksSpinner = (Spinner) dialogView.findViewById(R.id.drinksSpinner);
-        drinksSpinner.setAdapter(drinksAdapter);
-        drinksSpinner.setAdapter(drinksAdapter);
-        drinksSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> adapterView,
-                                       View view,
-                                       int i,
-                                       long l) {
-                selected_drink_id = i;
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> adapterView) {
-
-            }
-        });
-
-        if (passenger.meal != null) {
-            drinksSpinner.setSelection(drinksAdapter.getById(passenger.meal.drink_id));
-            foodsSpinner.setSelection(adapterFoods.getById(passenger.meal.food_id));
-        }
-
-        alertDialogBuilder.setTitle("Select Meal Choice");
-        alertDialogBuilder.setView(dialogView);
+        alertDialogBuilder.setMessage("Are you sure you want to perform this task?");
+        alertDialogBuilder.setTitle(String.format("%s", Utils.properCase(task)));
         return alertDialogBuilder;
     }
 
-    public void addMeal(final Passenger passenger) {
-        final AlertDialog.Builder alertDialogBuilder = createDialog(passenger, true);
+    public void addOrUpdateDrink(final Passenger passenger,
+                                 final String action,
+                                 final Handler requestHandler) {
+        final AlertDialog.Builder alertDialogBuilder = createDialog("drink");
         alertDialogBuilder.setPositiveButton("YES", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialogInterface, int i) {
-                final Meal meal = new Meal();
-                meal.drink_id = drinksSpinner.getSelectedItemId();
-                meal.food_id = foodsSpinner.getSelectedItemId();
-                passenger.meal = meal;
-            }
-        });
-
-        alertDialogBuilder.setNegativeButton("NO", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(final DialogInterface dialogInterface,
-                                final int i) {
-            }
-        });
-        alertDialogBuilder.create().show();
-    }
-
-    public void deleteMeal(final Passenger passenger,
-                           final Handler requestHandler) {
-        final AlertDialog.Builder alertDialogBuilder = createDialog(passenger, false);
-        alertDialogBuilder.setPositiveButton("YES", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialogInterface, int i) {
-                final Gson gson = new GsonBuilder().create();
-                RequestManager.deleteMeal(session,
+                                int i) {
+                RequestManager.addOrUpdateTask(session,
                         BaseActivity.this,
-                        passenger.booking.user_id,
-                        gson.toJson(passenger),
+                        passenger.id,
+                        drinksSpinner.getSelectedItemId(),
+                        "drink",
+                        action,
                         requestHandler);
             }
         });
@@ -278,27 +203,25 @@ public class BaseActivity extends AppCompatActivity implements View.OnClickListe
             @Override
             public void onClick(final DialogInterface dialogInterface,
                                 final int i) {
-                dialogInterface.dismiss();
             }
         });
         alertDialogBuilder.create().show();
     }
 
-    public void addEditMeal(final Passenger passenger,
-                            final Handler requestHandler) {
-        final AlertDialog.Builder alertDialogBuilder = createDialog(passenger, true);
+    public void addOrUpdateFood(final Passenger passenger,
+                                final String action,
+                                final Handler requestHandler) {
+        final AlertDialog.Builder alertDialogBuilder = createDialog("food");
         alertDialogBuilder.setPositiveButton("YES", new DialogInterface.OnClickListener() {
             @Override
-            public void onClick(DialogInterface dialogInterface, int i) {
-                final Meal meal = new Meal();
-                meal.drink_id = drinksSpinner.getSelectedItemId();
-                meal.food_id = foodsSpinner.getSelectedItemId();
-                passenger.meal = meal;
-                final Gson gson = new GsonBuilder().create();
-                RequestManager.updateMeal(session,
+            public void onClick(final DialogInterface dialogInterface,
+                                int i) {
+                RequestManager.addOrUpdateTask(session,
                         BaseActivity.this,
-                        passenger.booking.user_id,
-                        gson.toJson(passenger),
+                        passenger.id,
+                        foodsSpinner.getSelectedItemId(),
+                        "food",
+                        action,
                         requestHandler);
             }
         });
@@ -347,4 +270,62 @@ public class BaseActivity extends AppCompatActivity implements View.OnClickListe
         goToActivity(LoginActivity.class, true);
     }
 
+
+    public Spinner getFoodsAdapter(final View view) {
+
+        final List<Food> foods = session.getFoods();
+        foods.add(new Food(null, "Select Food", ""));
+        foodsAdapter = new FoodSpinnerAdapter
+                (this, R.layout.spinners_item_layout, foods);
+        foodsAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        foodsSpinner = (Spinner) view.findViewById(R.id.foodSpinner);
+        foodsSpinner.setAdapter(foodsAdapter);
+        // show hint
+        foodsSpinner.setSelection(foodsAdapter.getCount());
+        foodsSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView,
+                                       View view,
+                                       int i,
+                                       long l) {
+                selected_food_id = i;
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
+
+        return foodsSpinner;
+    }
+
+    public Spinner getDrinksAdapter(final View view) {
+        final List<Drink> drinks = session.getDrinks();
+        drinks.add(new Drink(null, "Select Drink", ""));
+
+        drinksAdapter = new DrinkSpinnerAdapter
+                (this, R.layout.spinners_item_layout, drinks);
+        drinksAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        drinksSpinner = (Spinner) view.findViewById(R.id.drinksSpinner);
+        drinksSpinner.setAdapter(drinksAdapter);
+        // show hint
+        drinksSpinner.setSelection(drinksSpinner.getCount());
+        drinksSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView,
+                                       View view,
+                                       int i,
+                                       long l) {
+                selected_drink_id = i;
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
+
+        return drinksSpinner;
+    }
 }

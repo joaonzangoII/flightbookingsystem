@@ -12,6 +12,9 @@
     <string name="prompt_number_of_people">Passengers #</string>
     <string name="prompt_departure">Origin*</string>
     <string name="prompt_destination">Destination*</string>
+    <string name="prompt_food">Select Food</string>
+    <string name="prompt_drink">Select Drink</string>
+
     <string name="departure_date">Departure Date</string>
     <string name="prompt_travel_class">Travel Class*</string>
     <string name="arrival_date">Arrival Date</string>

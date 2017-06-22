@@ -13,7 +13,6 @@ import java.util.List;
 
 import tut.flightbookingsystem.R;
 import tut.flightbookingsystem.listener.OnSeatSelected;
-import tut.flightbookingsystem.listener.RecyclerClickListener;
 import tut.flightbookingsystem.model.AbstractItem;
 import tut.flightbookingsystem.model.CenterItem;
 import tut.flightbookingsystem.model.EdgeItem;
@@ -37,12 +36,14 @@ public class AirplaneFlightSeatAdapter extends SelectableAdapter<RecyclerView.Vi
         final TextView txtLabel;
         final ImageView imgSeatNormal;
         private final ImageView imgSeatSelected;
+        private final ImageView imgSeatTaken;
 
         public EdgeViewHolder(View itemView) {
             super(itemView);
             txtLabel = (TextView) itemView.findViewById(R.id.txt_label);
             imgSeatNormal = (ImageView) itemView.findViewById(R.id.img_seat);
             imgSeatSelected = (ImageView) itemView.findViewById(R.id.img_seat_selected);
+            imgSeatTaken = (ImageView) itemView.findViewById(R.id.img_seat_taken);
         }
     }
 
@@ -50,12 +51,14 @@ public class AirplaneFlightSeatAdapter extends SelectableAdapter<RecyclerView.Vi
         final TextView txtLabel;
         final ImageView imgSeatNormal;
         private final ImageView imgSeatSelected;
+        private final ImageView imgSeatTaken;
 
         public CenterViewHolder(View itemView) {
             super(itemView);
             txtLabel = (TextView) itemView.findViewById(R.id.txt_label);
             imgSeatNormal = (ImageView) itemView.findViewById(R.id.img_seat);
             imgSeatSelected = (ImageView) itemView.findViewById(R.id.img_seat_selected);
+            imgSeatTaken = (ImageView) itemView.findViewById(R.id.img_seat_taken);
         }
 
     }
@@ -111,31 +114,92 @@ public class AirplaneFlightSeatAdapter extends SelectableAdapter<RecyclerView.Vi
                            final long id,
                            final String label) {
         this.position = position;
+        final AbstractItem item = mItems.get(position);
         if (clazz instanceof EdgeViewHolder) {
-            ((EdgeViewHolder) clazz).txtLabel.setText(label);
-            ((EdgeViewHolder) clazz).imgSeatNormal.setOnClickListener(new View.OnClickListener() {
+            final EdgeViewHolder vh = ((EdgeViewHolder) clazz);
+            vh.txtLabel.setText(label);
+            vh.imgSeatNormal.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(final View v) {
                     clearSelection();
                     toggleSelection(position);
-                    mOnSeatSelected.onSeatSelected(mItems.get(position));
-                    Log.e("SELECTED", String.valueOf(mItems.get(position).getId()));
+                    mOnSeatSelected.onSeatSelected(item);
                 }
             });
-            ((EdgeViewHolder) clazz).imgSeatSelected.setVisibility(isSelected(position) ? View.VISIBLE : View.INVISIBLE);
+
+            isTakenOrNot(position, vh);
+
         } else {
-            ((CenterViewHolder) clazz).txtLabel.setText(label);
-            ((CenterViewHolder) clazz).imgSeatNormal.setOnClickListener(new View.OnClickListener() {
+            final CenterViewHolder vh = ((CenterViewHolder) clazz);
+            vh.txtLabel.setText(label);
+            vh.imgSeatNormal.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(final View v) {
                     clearSelection();
                     toggleSelection(position);
-                    mOnSeatSelected.onSeatSelected(mItems.get(position));
-                    Log.e("SELECTED", String.valueOf(mItems.get(position).getId()));
+                    mOnSeatSelected.onSeatSelected(item);
                 }
             });
-            ((CenterViewHolder) clazz).imgSeatSelected.setVisibility(isSelected(position) ? View.VISIBLE : View.INVISIBLE);
+
+            isTakenOrNot(position, vh);
         }
+    }
+
+    public void isTakenOrNot(int position, Object clazz) {
+        final AbstractItem item = mItems.get(position);
+        Log.e("ITEM", "Position" + position +
+                " > TAKEN: " +
+                item.getIsTaken() +
+                " > Is Selected Position: " +
+                isSelected(position));
+        if (item.getIsTaken()) {
+            if (clazz instanceof EdgeViewHolder) {
+                final EdgeViewHolder vh = ((EdgeViewHolder) clazz);
+                vh.imgSeatTaken.setVisibility(View.VISIBLE);
+                vh.imgSeatNormal.setVisibility(View.INVISIBLE);
+                vh.imgSeatSelected.setVisibility(View.INVISIBLE);
+            } else {
+                final CenterViewHolder vh = ((CenterViewHolder) clazz);
+                vh.imgSeatTaken.setVisibility(View.VISIBLE);
+                vh.imgSeatNormal.setVisibility(View.INVISIBLE);
+                vh.imgSeatSelected.setVisibility(View.INVISIBLE);
+            }
+        } else {
+            if (clazz instanceof EdgeViewHolder) {
+                final EdgeViewHolder vh = ((EdgeViewHolder) clazz);
+                if (isSelected(position)) {
+                    vh.imgSeatSelected.setVisibility(View.VISIBLE);
+                    vh.imgSeatNormal.setVisibility(View.INVISIBLE);
+                    vh.imgSeatTaken.setVisibility(View.INVISIBLE);
+                } else {
+                    vh.imgSeatNormal.setVisibility(View.VISIBLE);
+                    vh.imgSeatSelected.setVisibility(View.INVISIBLE);
+                    vh.imgSeatTaken.setVisibility(View.INVISIBLE);
+                }
+            } else {
+                final CenterViewHolder vh = ((CenterViewHolder) clazz);
+                if (isSelected(position)) {
+                    vh.imgSeatSelected.setVisibility(View.VISIBLE);
+                    vh.imgSeatNormal.setVisibility(View.INVISIBLE);
+                    vh.imgSeatTaken.setVisibility(View.INVISIBLE);
+                } else {
+                    vh.imgSeatNormal.setVisibility(View.VISIBLE);
+                    vh.imgSeatSelected.setVisibility(View.INVISIBLE);
+                    vh.imgSeatTaken.setVisibility(View.INVISIBLE);
+                }
+            }
+        }
+    }
+
+    public void refreshLayout() {
+        //        for (int x = 0; x < mItems.size(); x++) {
+        //            final AbstractItem item = mItems.get(x);
+        //            if (item.getIsTaken()) {
+        //                setIsSelected(x);
+        //            } else {
+        //                setIsNotSelected(x);
+        //            }
+        //        }
     }
 
     private Object getItem(final int position) {

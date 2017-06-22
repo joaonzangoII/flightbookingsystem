@@ -3,6 +3,7 @@ package tut.flightbookingsystem.manager;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.util.Log;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -17,6 +18,7 @@ import tut.flightbookingsystem.model.Country;
 import tut.flightbookingsystem.model.Drink;
 import tut.flightbookingsystem.model.FlightSeat;
 import tut.flightbookingsystem.model.Food;
+import tut.flightbookingsystem.model.Passenger;
 import tut.flightbookingsystem.model.Schedule;
 import tut.flightbookingsystem.model.TravelClass;
 import tut.flightbookingsystem.model.User;
@@ -36,6 +38,8 @@ public class SessionManager {
     private static final String KEY_LOGGEDIN_USER = "loggedUser";
     private static final String KEY_SERVER_URL = "server_url";
     private static final String KEY_COUNTRIES = "countries";
+    private static final String KEY_PASSENGER = "passenger";
+    private static final String KEY_BOOKING_PASSENGERS = "booking_passengers";
     private static final String KEY_TRAVEL_CLASSES = "travel_classes";
     private static final String KEY_AIRPORTS = "airports";
     private static final String KEY_FOODS = "foods";
@@ -71,9 +75,57 @@ public class SessionManager {
         return gson.fromJson(data, type);
     }
 
-    public void setServerUrl(final String serverUrl) {
-        editor.putString(KEY_SERVER_URL, serverUrl);
+    public void setPassenger(final String passenger) {
+        editor.putString(KEY_PASSENGER, passenger);
         editor.apply();  // commit changes
+    }
+
+    public Passenger getPassenger() {
+        final Gson gson = new GsonBuilder().create();
+        final Type type = new TypeToken<Passenger>() {
+        }.getType();
+        return gson.fromJson(pref.getString(KEY_PASSENGER, null), type);
+    }
+
+    public void setBookingPassengers(final String passengers) {
+        editor.putString(KEY_BOOKING_PASSENGERS, passengers);
+        editor.apply();  // commit changes
+    }
+
+    public List<Passenger> getBookingPassengers() {
+        final Gson gson = new GsonBuilder().create();
+        final Type type = new TypeToken<List<Passenger>>() {
+        }.getType();
+        return gson.fromJson(pref.getString(KEY_BOOKING_PASSENGERS, "[]"), type);
+    }
+
+    public void addorUpdateToBookingPassengers(final Passenger passenger) {
+        final List<Passenger> passengers = getBookingPassengers();
+        boolean isAdded = false;
+        int foundAt = 0;
+        for (int x = 0; x < passengers.size(); x++) {
+            final Passenger cA = passengers.get(x);
+            if (cA.id == passenger.id) {
+                isAdded = true;
+                foundAt = x;
+            }
+        }
+
+        final Passenger mPassenger;
+        if (isAdded) {
+            mPassenger = passengers.get(foundAt);
+            Log.e("FOUND", String.valueOf(mPassenger.id));
+            mPassenger.flight_seat_id = passenger.flight_seat_id ;
+            passengers.set(foundAt, mPassenger);
+            // Log.e("ADDING", mCartItem.toString());
+        } else {
+            mPassenger = passenger;
+            passengers.add(mPassenger);
+        }
+
+        final Gson gson = new GsonBuilder().create();
+        editor.putString(KEY_BOOKING_PASSENGERS, gson.toJson(passengers));
+        editor.apply();
     }
 
     public void setSchedule(final String schedule) {
@@ -192,6 +244,11 @@ public class SessionManager {
         editor.putBoolean(KEY_IS_LOGGEDIN, false);
         editor.putString(KEY_LOGGEDIN_USER, null);
         editor.apply(); // commit changes
+    }
+
+    public void setServerUrl(final String serverUrl) {
+        editor.putString(KEY_SERVER_URL, serverUrl);
+        editor.apply();  // commit changes
     }
 
     public String getServerUrl() {

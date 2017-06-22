@@ -14,11 +14,14 @@ public class Passenger implements Serializable, Parcelable {
     public String date_of_birth;
     public String gender;
     public String food_and_drink;
-    public Meal meal;
+    public Long drink_id;
+    public Long food_id;
     public long booking_id;
-    public Booking booking;
     public long flight_seat_id;
+    public MealDrink drink;
+    public MealFood food;
     public FlightSeat flight_seat;
+    public Booking booking;
     public String created_at;
     public String updated_at;
 
@@ -45,12 +48,20 @@ public class Passenger implements Serializable, Parcelable {
         dest.writeString(food_and_drink);
         dest.writeString(id_number);
         dest.writeString(date_of_birth);
+        if (drink_id != null) {
+            dest.writeLong(drink_id);
+        }
+        if (food_id != null) {
+            dest.writeLong(food_id);
+        }
         dest.writeLong(flight_seat_id);
         dest.writeLong(booking_id);
+        dest.writeSerializable(drink);
+        dest.writeSerializable(food);
         dest.writeSerializable(flight_seat);
-        dest.writeSerializable(meal);
-        dest.writeSerializable(created_at);
-        dest.writeSerializable(updated_at);
+        dest.writeSerializable(booking);
+        dest.writeString(created_at);
+        dest.writeString(updated_at);
     }
 
     public static final Creator<Passenger> CREATOR = new Creator<Passenger>() {

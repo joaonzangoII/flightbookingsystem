@@ -8,15 +8,22 @@ public abstract class AbstractItem {
 
     private long id;
     private String label;
+    private boolean isTaken;
 
     public AbstractItem(final long id,
-                        final String label) {
+                        final String label,
+                        final boolean isTaken) {
         this.id = id;
         this.label = label;
+        this.isTaken = isTaken;
     }
 
     public long getId() {
         return id;
+    }
+
+    public boolean getIsTaken() {
+        return isTaken;
     }
 
     public String getLabel() {

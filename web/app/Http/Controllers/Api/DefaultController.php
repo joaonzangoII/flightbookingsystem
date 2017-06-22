@@ -21,6 +21,7 @@ use App\Schedule;
 use App\Aircraft;
 use App\AircraftSeat;
 use App\FlightStatus;
+use App\Passenger;
 
 class DefaultController extends Controller
 {
@@ -58,12 +59,22 @@ class DefaultController extends Controller
     }
 
     public function getMyBookings(Request $request, User $user){
-      $bookings = Booking::with('passengers', 'passengers.booking', 'passengers.meal', 'passengers.meal.drink',
-                            'passengers.meal.food', 'passengers.flight_seat',
-                            'passengers.meal.food.food_type', 'passengers.meal.drink',
-                            'passengers.flight_seat.travel_class', 'aircraft',
-                            'departure_flight', 'departure_flight.aircraft', 'departure_flight.schedule',
-                            'return_flight', 'return_flight.aircraft', 'return_flight.schedule')
+      $bookings = Booking::with('passengers',
+                                'passengers.booking',
+                                'passengers.drink',
+                                'passengers.drink.drink',
+                                'passengers.food',
+                                'passengers.food.food',
+                                'passengers.food.food.food_type',
+                                'passengers.flight_seat',
+                                'passengers.flight_seat.travel_class',
+                                'aircraft',
+                                'departure_flight',
+                                'departure_flight.aircraft',
+                                'departure_flight.schedule',
+                                'return_flight',
+                                'return_flight.aircraft',
+                                'return_flight.schedule')
                             ->where('user_id', $user->id)
                             ->latest()
                             ->get();
@@ -71,11 +82,21 @@ class DefaultController extends Controller
     }
 
     public function getBookings(){
-      $bookings = Booking::with('passengers', 'passengers.booking', 'passengers.meal', 'passengers.meal.drink',
-                                'passengers.meal.food', 'aircraft', 'departure_flight',
-                                'passengers.meal.food.food_type', 'passengers.meal.drink',
-                                'passengers.flight_seat', 'passengers.flight_seat.travel_class',
-                                'departure_flight.schedule', 'return_flight', 'return_flight.schedule')
+      $bookings = Booking::with('passengers',
+                                'passengers.booking',
+                                'passengers.drink',
+                                'passengers.drink.drink',
+                                'passengers.food',
+                                'passengers.food.food.food_type',
+                                'passengers.flight_seat',
+                                'passengers.flight_seat.travel_class',
+                                'aircraft',
+                                'departure_flight',
+                                'departure_flight.aircraft',
+                                'departure_flight.schedule',
+                                'return_flight',
+                                'return_flight.aircraft',
+                                'return_flight.schedule')
                           ->latest()
                           ->get();
       return $bookings;
@@ -85,6 +106,12 @@ class DefaultController extends Controller
       $countries = Country::latest()
                           ->get();
       return $countries;
+    }
+
+    public function getPassengers(){
+      $passengers = Passenger::latest()
+                             ->get();
+      return $passengers;
     }
 
     public function getAirports(){
@@ -131,10 +158,5 @@ class DefaultController extends Controller
     public function getFlightStatuses(){
       $flight_statuses = FlightStatus::all();
       return $flight_statuses;
-    }
-
-    public function getFlights(){
-      $flights = Flight::with('flight_status', 'aircraft')->get();
-      return $flights;
     }
 }

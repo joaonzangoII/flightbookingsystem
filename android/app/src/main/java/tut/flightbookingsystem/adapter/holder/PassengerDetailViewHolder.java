@@ -7,12 +7,13 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.widget.AppCompatEditText;
+import android.support.v7.widget.AppCompatSpinner;
 import android.text.Editable;
 import android.text.InputType;
 import android.text.TextWatcher;
 import android.view.MotionEvent;
 import android.view.View;
-import android.widget.Button;
+import android.widget.AdapterView;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -21,72 +22,129 @@ import com.thoughtbot.expandablerecyclerview.viewholders.ChildViewHolder;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.List;
 import java.util.Locale;
 
 import tut.flightbookingsystem.PassengerSeatsDialogFragment;
 import tut.flightbookingsystem.R;
+import tut.flightbookingsystem.adapter.DrinkSpinnerAdapter;
+import tut.flightbookingsystem.adapter.FoodSpinnerAdapter;
 import tut.flightbookingsystem.listener.MyDialogListener;
 import tut.flightbookingsystem.listener.RecyclerClickListener;
+import tut.flightbookingsystem.manager.SessionManager;
 import tut.flightbookingsystem.model.AbstractItem;
+import tut.flightbookingsystem.model.Drink;
 import tut.flightbookingsystem.model.FlightSeat;
+import tut.flightbookingsystem.model.Food;
 import tut.flightbookingsystem.model.Passenger;
+import tut.flightbookingsystem.util.Utils;
 
 public class PassengerDetailViewHolder extends ChildViewHolder {
     private DatePickerDialog departureDatePickerDialog;
-    public TextView txt_title;
-    public AppCompatEditText edt_firstnames;
-    public AppCompatEditText edt_surname;
-    public AppCompatEditText edt_id_number;
-    public AppCompatEditText txt_date_of_birth;
-    public Button btn_add_meal;
-    public AppCompatEditText txt_select_seat_id;
+    public TextView txtTitle;
+    public AppCompatEditText edtFirstnames;
+    public AppCompatEditText edtSurname;
+    public AppCompatEditText edtIdNumber;
+    public AppCompatEditText txtDateOfBirth;
+    public AppCompatEditText txtSelectSeatId;
+    public AppCompatSpinner spnDrinkId;
+    public AppCompatSpinner spnFoodId;
     // public Spinner spn_select_seat_id;
 
     public PassengerDetailViewHolder(final View itemView) {
         super(itemView);
-        txt_title = (TextView) itemView.findViewById(R.id.passengerNumber);
-        edt_firstnames = (AppCompatEditText) itemView.findViewById(R.id.firstnames);
-        edt_surname = (AppCompatEditText) itemView.findViewById(R.id.surname);
-        edt_id_number = (AppCompatEditText) itemView.findViewById(R.id.id_number);
-        txt_date_of_birth = (AppCompatEditText) itemView.findViewById(R.id.date_of_birth);
-        txt_date_of_birth.setInputType(InputType.TYPE_NULL);
-        txt_select_seat_id = (AppCompatEditText) itemView.findViewById(R.id.select_seat_id);
-        btn_add_meal = (Button) itemView.findViewById(R.id.add_meal);
+        txtTitle = (TextView) itemView.findViewById(R.id.passengerNumber);
+        edtFirstnames = (AppCompatEditText) itemView.findViewById(R.id.firstnames);
+        edtSurname = (AppCompatEditText) itemView.findViewById(R.id.surname);
+        edtIdNumber = (AppCompatEditText) itemView.findViewById(R.id.id_number);
+        txtDateOfBirth = (AppCompatEditText) itemView.findViewById(R.id.date_of_birth);
+        txtDateOfBirth.setInputType(InputType.TYPE_NULL);
+        txtSelectSeatId = (AppCompatEditText) itemView.findViewById(R.id.select_seat_id);
+        spnDrinkId = (AppCompatSpinner) itemView.findViewById(R.id.drink_id);
+        spnFoodId = (AppCompatSpinner) itemView.findViewById(R.id.food_id);
     }
 
-    public void bind(final Passenger passenger,
+    public void bind(final SessionManager session,
+                     final Passenger passenger,
                      final int position,
                      final RecyclerClickListener.OnItemClickCallback onItemClickCallback) {
         if (passenger != null) {
-            edt_firstnames.setText(passenger.firstnames);
-            edt_surname.setText(passenger.surname);
-            edt_id_number.setText(passenger.id_number);
+            edtFirstnames.setText(passenger.firstnames);
+            edtSurname.setText(passenger.surname);
+            edtIdNumber.setText(passenger.id_number);
             final Calendar c = Calendar.getInstance();
-            if (txt_date_of_birth.getText().toString().equals("")) {
-                setDate(txt_date_of_birth,
+            if (txtDateOfBirth.getText().toString().equals("")) {
+                setDate(txtDateOfBirth,
                         c.get(Calendar.YEAR),
                         c.get(Calendar.MONTH),
                         c.get(Calendar.DAY_OF_MONTH));
             } else {
-                txt_date_of_birth.setText(passenger.date_of_birth);
+                txtDateOfBirth.setText(passenger.date_of_birth);
             }
 
-            txt_date_of_birth.setOnClickListener(new View.OnClickListener() {
+            txtDateOfBirth.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     departureDatePickerDialog.show();
                 }
             });
 
-            departureDatePickerDialog = datepicker(itemView.getContext(), txt_date_of_birth);
-            btn_add_meal.setOnClickListener(new RecyclerClickListener(position, onItemClickCallback));
-            itemView.setOnClickListener(new RecyclerClickListener(position, onItemClickCallback));
-            setListenerAndData(edt_firstnames, "firstnames", passenger);
-            setListenerAndData(edt_surname, "surname", passenger);
-            setListenerAndData(edt_id_number, "id_number", passenger);
-            setListenerAndData(txt_date_of_birth, "date_of_birth", passenger);
+            departureDatePickerDialog = datepicker(itemView.getContext(), txtDateOfBirth);
 
-            txt_select_seat_id.setOnTouchListener(new View.OnTouchListener() {
+            final List<Drink> drinks = session.getDrinks();
+            drinks.add(new Drink(null, "Select Drink", ""));
+            final DrinkSpinnerAdapter drinksAdapter = new DrinkSpinnerAdapter
+                    (itemView.getContext(), R.layout.spinners_item_layout, drinks);
+            drinksAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+            spnDrinkId.setAdapter(drinksAdapter);
+            spnDrinkId.setSelection(drinksAdapter.getCount());
+            spnDrinkId.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                @Override
+                public void onItemSelected(AdapterView<?> adapterView,
+                                           View view,
+                                           int i,
+                                           long l) {
+                    passenger.drink_id = (long) i;
+                    // passenger.drink.drink_id = i;
+                }
+
+                @Override
+                public void onNothingSelected(AdapterView<?> adapterView) {
+
+                }
+            });
+
+            final List<Food> foods = session.getFoods();
+            foods.add(new Food(null, "Select Food", ""));
+            final FoodSpinnerAdapter foodsAdapter = new FoodSpinnerAdapter
+                    (itemView.getContext(), R.layout.spinners_item_layout, foods);
+            foodsAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+            spnFoodId.setAdapter(foodsAdapter);
+            spnFoodId.setSelection(foodsAdapter.getCount());
+            spnFoodId.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                @Override
+                public void onItemSelected(AdapterView<?> adapterView,
+                                           View view,
+                                           int i,
+                                           long l) {
+                    passenger.food_id = (long) i;
+                    // passenger.food.food_id = i;
+                }
+
+                @Override
+                public void onNothingSelected(AdapterView<?> adapterView) {
+
+                }
+            });
+
+
+            itemView.setOnClickListener(new RecyclerClickListener(position, onItemClickCallback));
+            setListenerAndData(edtFirstnames, "firstnames", passenger);
+            setListenerAndData(edtSurname, "surname", passenger);
+            setListenerAndData(edtIdNumber, "id_number", passenger);
+            setListenerAndData(txtDateOfBirth, "date_of_birth", passenger);
+
+            txtSelectSeatId.setOnTouchListener(new View.OnTouchListener() {
                 @Override
                 public boolean onTouch(final View v,
                                        final MotionEvent event) {
@@ -103,16 +161,21 @@ public class PassengerDetailViewHolder extends ChildViewHolder {
                         dialog.setMyDialogListener(new MyDialogListener() {
                             public void userSelectedAValue(final Object value) {
                                 if (value instanceof AbstractItem) {
-                                    passenger.flight_seat_id = ((AbstractItem) value).getId();
-                                    txt_select_seat_id.setText(((AbstractItem) value).getLabel());
+                                    final AbstractItem item = ((AbstractItem) value);
+                                    passenger.flight_seat_id = item.getId();
+                                    txtSelectSeatId.setText(item.getLabel());
+                                    session.setPassenger(Utils.jsonToString(passenger));
+                                    session.addorUpdateToBookingPassengers(passenger);
                                 } else if (value instanceof FlightSeat) {
-                                    passenger.flight_seat_id = ((FlightSeat) value).id;
-                                    txt_select_seat_id.setText(String.valueOf(((FlightSeat) value).number));
+                                    final FlightSeat item = ((FlightSeat) value);
+                                    passenger.flight_seat_id = item.id;
+                                    txtSelectSeatId.setText(String.valueOf(item.number));
+                                    session.addorUpdateToBookingPassengers(passenger);
                                 } else {
                                     passenger.flight_seat_id = (int) value;
-                                    txt_select_seat_id.setText(String.valueOf(value));
+                                    txtSelectSeatId.setText(String.valueOf(value));
+                                    session.addorUpdateToBookingPassengers(passenger);
                                 }
-                                //Toast.makeText(itemView.getContext(), value.getClass().getCanonicalName(), Toast.LENGTH_SHORT).show();
                             }
 
                             public void userCanceled() {

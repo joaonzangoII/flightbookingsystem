@@ -1,7 +1,7 @@
 package tut.flightbookingsystem.adapter;
 
 import android.content.Context;
-import android.support.v7.widget.AppCompatButton;
+import android.support.v7.widget.AppCompatImageButton;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,10 +14,14 @@ import java.util.List;
 import tut.flightbookingsystem.R;
 import tut.flightbookingsystem.listener.RecyclerClickListener;
 import tut.flightbookingsystem.model.Booking;
+import tut.flightbookingsystem.model.Drink;
 import tut.flightbookingsystem.model.FlightSeat;
-import tut.flightbookingsystem.model.Meal;
+import tut.flightbookingsystem.model.Food;
+import tut.flightbookingsystem.model.MealDrink;
+import tut.flightbookingsystem.model.MealFood;
 import tut.flightbookingsystem.model.Passenger;
 import tut.flightbookingsystem.util.LocalDate;
+import tut.flightbookingsystem.util.Utils;
 
 public class MyBookingsDetailAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     private RecyclerClickListener.OnItemClickCallback onItemClickCallback;
@@ -81,12 +85,16 @@ public class MyBookingsDetailAdapter extends RecyclerView.Adapter<RecyclerView.V
 
     @Override
     public int getItemCount() {
-        return passengersList == null ? 1 : 1 + passengersList.size();
+        return passengersList == null
+                ? 1
+                : 1 + passengersList.size();
     }
 
     @Override
     public int getItemViewType(int position) {
-        return position == 0 ? TYPE_INFO : TYPE_PASSENGER;
+        return position == 0
+                ? TYPE_INFO
+                : TYPE_PASSENGER;
     }
 
     public LayoutInflater getLayoutInflater() {
@@ -106,32 +114,69 @@ public class MyBookingsDetailAdapter extends RecyclerView.Adapter<RecyclerView.V
             final TextView travelClass = (TextView) cardview.findViewById(R.id.travel_class);
             final TextView seatNumber = (TextView) cardview.findViewById(R.id.seat_number);
             final TextView foodType = (TextView) cardview.findViewById(R.id.food_type);
-            final TextView food_and_drink = (TextView) cardview.findViewById(R.id.food_and_drink);
-            final AppCompatButton btnAddMeal = (AppCompatButton) cardview.findViewById(R.id.btn_add_meal);
-            final AppCompatButton btnDeleteMeal = (AppCompatButton) cardview.findViewById(R.id.btn_delete_meal);
+            final TextView foodAndDrink = (TextView) cardview.findViewById(R.id.food_and_drink);
+            final TextView foodTextView = (TextView) cardview.findViewById(R.id.food);
+            final TextView drinkTextView = (TextView) cardview.findViewById(R.id.drink);
 
-            firstnames.setText(String.format("First Names: %1$s", passenger.firstnames));
-            surname.setText(String.format("Surname: %1$s", passenger.surname));
+            final AppCompatImageButton btnAddMeal = (AppCompatImageButton)
+                    cardview.findViewById(R.id.btn_add_meal);
+            final AppCompatImageButton btnDeleteMeal = (AppCompatImageButton)
+                    cardview.findViewById(R.id.btn_delete_meal);
+
+            firstnames.setText(Utils.fromHtml(
+                    String.format("<b>First Names:</b> %1$s", passenger.firstnames)));
+            surname.setText(Utils.fromHtml(String.format("<b>Surname:</b> %1$s", passenger.surname)));
             final FlightSeat flight_seat = passenger.flight_seat;
             if (flight_seat != null) {
-                seatNumber.setText(String.format("Seat Number: %1$s", passenger.flight_seat.number));
+                seatNumber.setText(Utils.fromHtml(
+                        String.format("<b>Seat Number:</b> %1$s", passenger.flight_seat.number)));
                 if (flight_seat.travel_class != null) {
                     if (flight_seat.travel_class.name != null) {
-                        travelClass.setText(String.format("Travel Class: %1$s", flight_seat.travel_class.name));
+                        travelClass.setText(Utils.fromHtml(
+                                String.format("<b>Travel Class:</b> %1$s", flight_seat.travel_class.name)));
                     }
                 }
             }
 
-            final Meal meal = passenger.meal;
-            if (meal != null) {
-                if (meal.food != null) {
-                    food_and_drink.setText(String.format("Meal:  %1$s", passenger.food_and_drink));
-                    btnDeleteMeal.setVisibility(View.VISIBLE);
-                    if (meal.food.food_type != null) {
-                        btnAddMeal.setText("Edit Meal");
-                        foodType.setText(String.format("Food Type:  %1$s", meal.food.food_type.name));
+            //            final MealFood mealFood = passenger.food;
+            //            final MealDrink mealDrink = passenger.drink;
+            //            if (mealFood != null) {
+            //                final Food food = mealFood.food;
+            //                if (food.food_type != null) {
+            //                    btnAddMeal.setImageResource(R.drawable.edit);
+            //                    foodType.setText(Utils.fromHtml(
+            //                            String.format("<b>Food Type:</b> %1$s", food.food_type.name)));
+            //                    foodType.setVisibility(View.VISIBLE);
+            //                } else {
+            //                    btnAddMeal.setImageResource(R.drawable.add);
+            //                    foodType.setText("No Food Selected yet");
+            //                }
+            //            }
+
+            final MealDrink mealDrink = passenger.drink;
+            final MealFood mealFood = passenger.food;
+            foodAndDrink.setText(Utils.fromHtml(
+                    String.format("<b>Meal:</b> %1$s", passenger.food_and_drink)));
+            foodAndDrink.setVisibility(View.VISIBLE);
+
+            if (mealDrink != null) {
+                final Drink drink = mealDrink.drink;
+                drinkTextView.setText(Utils.fromHtml(
+                        String.format("<b>Drink:</b> %1$s", drink.name)));
+            } else {
+                btnDeleteMeal.setVisibility(View.GONE);
+            }
+
+            if (mealFood != null) {
+                final Food food = mealFood.food;
+                foodTextView.setText(Utils.fromHtml(
+                        String.format("<b>Food:</b> %1$s", food.name)));
+                if (food != null) {
+                    if (food.food_type != null) {
+                        foodType.setText(Utils.fromHtml(
+                                String.format("<b>Food Type:</b> %1$s", food.food_type.name)));
+                        foodType.setVisibility(View.VISIBLE);
                     } else {
-                        btnAddMeal.setText("Add Meal");
                         foodType.setText("No Meal Added yet");
                     }
                 }
@@ -139,8 +184,10 @@ public class MyBookingsDetailAdapter extends RecyclerView.Adapter<RecyclerView.V
                 btnDeleteMeal.setVisibility(View.GONE);
             }
 
+
             btnAddMeal.setOnClickListener(new RecyclerClickListener(position, onItemClickCallback));
             btnDeleteMeal.setOnClickListener(new RecyclerClickListener(position, onItemClickCallback));
+            cardview.setOnClickListener(new RecyclerClickListener(position, onItemClickCallback));
         }
     }
 

@@ -27,19 +27,17 @@
             android:textSize="16sp"
             android:textStyle="bold" />
 
-        <!--<Button-->
-        <!--android:id="@+id/button"-->
-        <!--android:layout_width="20dp"-->
-        <!--android:layout_height="20dp"-->
-        <!--android:layout_alignParentEnd="true"-->
-        <!--android:layout_alignParentRight="true"-->
-        <!--android:layout_centerVertical="true"-->
-        <!--android:layout_gravity="end"-->
-        <!--android:background="@drawable/triangle"-->
-        <!--android:gravity="center"-->
-        <!--android:paddingEnd="@dimen/nav_header_vertical_spacing"-->
-        <!--android:paddingLeft="@dimen/nav_header_vertical_spacing"-->
-        <!--android:paddingRight="@dimen/nav_header_vertical_spacing"-->
-        <!--android:paddingTop="@dimen/nav_header_vertical_spacing" />-->
+        <Button
+            android:id="@+id/button"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_gravity="end"
+            android:background="@drawable/triangle"
+            android:gravity="center"
+            android:padding="5dp"
+            android:layout_marginTop="@dimen/nav_header_vertical_spacing" />
     </RelativeLayout>
 </android.support.v7.widget.CardView>

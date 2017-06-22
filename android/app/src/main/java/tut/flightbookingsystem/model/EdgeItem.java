@@ -2,8 +2,9 @@ package tut.flightbookingsystem.model;
 
 public class EdgeItem extends AbstractItem {
     public EdgeItem(final long id,
-                    final String label) {
-        super(id, label);
+                    final String label,
+                    final boolean isTaken) {
+        super(id, label, isTaken);
     }
 
     @Override

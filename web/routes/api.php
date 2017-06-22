@@ -57,7 +57,7 @@ Route::name('findaircraftbyid')->get('/aircrafts/{aircraft_id}', 'Api\DefaultCon
 Route::name('food')->get('/foods', 'Api\DefaultController@getFoods');
 Route::name('drink')->get('/drinks', 'Api\DefaultController@getDrinks');
 Route::name('flightstatus')->get('/flight-statuses', 'Api\DefaultController@getFlightStatuses');
-Route::name('flights')->get('/flights', 'Api\DefaultController@getFlights');
+Route::name('passengers')->get('/passengers', 'Api\DefaultController@getPassengers');
 
 Route::name('find-seats')->get('/aircraft-seats/{aircraft_id}/{travel_class_id}',
                                 function(Request $request,
@@ -76,7 +76,7 @@ Route::name('flight-seats')->get('/flight-seats/{flight_id}/{travel_class_id}',
                                          String $travel_class_id){
   $flight_seats = FlightSeat::with('travel_class', 'flight_seat_price')
                        ->where('flight_id', $flight_id)
-                       ->where('available', true)
+                      //  ->where('available', true)
                        ->where('travel_class_id', $travel_class_id)
                        ->get();
 
@@ -125,11 +125,16 @@ Route::name('flight-seats-all')->get('/flight-seats/{flight_id}',
   return $flight_seats;
 });
 
+Route::name('flights')->get('/flights', 'Api\FlightsController@index');
+Route::name('flights.one')->get('/flights/{flight}', 'Api\FlightsController@getFlightDetail');
 Route::name('find_flights')->post('/find-flights', 'Api\FlightsController@getFlights');
 Route::name('timetable')->post('/flights-timetable', 'Api\FlightsController@getFlightsTimetable');
 Route::name('login')->post('/login', 'Api\AuthController@login');
 Route::name('register')->post('/register', 'Api\AuthController@register');
-Route::name('booking')->post('/make-booking', 'Api\FlightsController@store_booking');
-Route::name('booking.update.meal')->post('/update-meal', 'Api\FlightsController@update_meal');
-Route::name('booking.delete.meal')->post('/delete-meal', 'Api\FlightsController@delete_meal');
+Route::name('booking')->post('/make-booking', 'Api\FlightsController@storeBooking');
+Route::name('booking.update.meal')->post('/update-meal', 'Api\FlightsController@updateMeal');
+Route::name('booking.delete.meal')->post('/delete-meal', 'Api\FlightsController@deleteMeal');
+
+Route::name('booking.update.delete.drink')->post('/add-update-drink', 'Api\FlightsController@addOrUpdateDrink');
+Route::name('booking.update.delete.food')->post('/add-update-food', 'Api\FlightsController@addOrUpdateFood');
 Route::name('sms')->get('/sms/send/{to}', 'Api\DefaultController@send_sms');
