@@ -138,21 +138,6 @@ public class MyBookingsDetailAdapter extends RecyclerView.Adapter<RecyclerView.V
                 }
             }
 
-            //            final MealFood mealFood = passenger.food;
-            //            final MealDrink mealDrink = passenger.drink;
-            //            if (mealFood != null) {
-            //                final Food food = mealFood.food;
-            //                if (food.food_type != null) {
-            //                    btnAddMeal.setImageResource(R.drawable.edit);
-            //                    foodType.setText(Utils.fromHtml(
-            //                            String.format("<b>Food Type:</b> %1$s", food.food_type.name)));
-            //                    foodType.setVisibility(View.VISIBLE);
-            //                } else {
-            //                    btnAddMeal.setImageResource(R.drawable.add);
-            //                    foodType.setText("No Food Selected yet");
-            //                }
-            //            }
-
             final MealDrink mealDrink = passenger.drink;
             final MealFood mealFood = passenger.food;
             foodAndDrink.setText(Utils.fromHtml(
@@ -164,6 +149,8 @@ public class MyBookingsDetailAdapter extends RecyclerView.Adapter<RecyclerView.V
                 drinkTextView.setText(Utils.fromHtml(
                         String.format("<b>Drink:</b> %1$s", drink.name)));
             } else {
+                drinkTextView.setText(Utils.fromHtml(
+                        String.format("<b>Drink:</b> %1$s", "None")));
                 btnDeleteMeal.setVisibility(View.GONE);
             }
 
@@ -181,6 +168,8 @@ public class MyBookingsDetailAdapter extends RecyclerView.Adapter<RecyclerView.V
                     }
                 }
             } else {
+                foodTextView.setText(Utils.fromHtml(
+                        String.format("<b>Food:</b> %1$s", "None")));
                 btnDeleteMeal.setVisibility(View.GONE);
             }
 

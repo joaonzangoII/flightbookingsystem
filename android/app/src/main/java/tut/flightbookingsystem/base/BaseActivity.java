@@ -43,8 +43,8 @@ public class BaseActivity extends AppCompatActivity implements View.OnClickListe
     private static String TAG = BaseActivity.class.getName();
     protected SessionManager session;
     protected SimpleDateFormat dateFormatter;
-    private int selected_drink_id;
-    private int selected_food_id;
+    private Long selected_drink_id;
+    private Long selected_food_id;
     private Spinner foodsSpinner;
     private Spinner drinksSpinner;
     protected DrinkSpinnerAdapter drinksAdapter;
@@ -274,21 +274,24 @@ public class BaseActivity extends AppCompatActivity implements View.OnClickListe
     public Spinner getFoodsAdapter(final View view) {
 
         final List<Food> foods = session.getFoods();
-        foods.add(new Food(null, "Select Food", ""));
+        foods.add(0, new Food(0, "Select Food", ""));
         foodsAdapter = new FoodSpinnerAdapter
                 (this, R.layout.spinners_item_layout, foods);
-        foodsAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         foodsSpinner = (Spinner) view.findViewById(R.id.foodSpinner);
         foodsSpinner.setAdapter(foodsAdapter);
         // show hint
-        foodsSpinner.setSelection(foodsAdapter.getCount());
+        foodsSpinner.setSelection(0);
         foodsSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView,
                                        View view,
                                        int i,
                                        long l) {
-                selected_food_id = i;
+                if (i == 0) {
+                    selected_food_id = null;
+                } else {
+                    selected_food_id = (long) i;
+                }
             }
 
             @Override
@@ -302,22 +305,24 @@ public class BaseActivity extends AppCompatActivity implements View.OnClickListe
 
     public Spinner getDrinksAdapter(final View view) {
         final List<Drink> drinks = session.getDrinks();
-        drinks.add(new Drink(null, "Select Drink", ""));
-
+        drinks.add(0, new Drink(0, "Select Drink", ""));
         drinksAdapter = new DrinkSpinnerAdapter
                 (this, R.layout.spinners_item_layout, drinks);
-        drinksAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         drinksSpinner = (Spinner) view.findViewById(R.id.drinksSpinner);
         drinksSpinner.setAdapter(drinksAdapter);
         // show hint
-        drinksSpinner.setSelection(drinksSpinner.getCount());
+        drinksSpinner.setSelection(0);
         drinksSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView,
                                        View view,
                                        int i,
                                        long l) {
-                selected_drink_id = i;
+                if (i == 0) {
+                    selected_drink_id = null;
+                } else {
+                    selected_drink_id = (long) i;
+                }
             }
 
             @Override

@@ -4,7 +4,7 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
+import android.widget.BaseAdapter;
 import android.widget.TextView;
 
 import java.util.Collections;
@@ -12,7 +12,7 @@ import java.util.List;
 
 import tut.flightbookingsystem.model.Drink;
 
-public class DrinkSpinnerAdapter extends ArrayAdapter<Drink> {
+public class DrinkSpinnerAdapter extends BaseAdapter {
     private final int mLayoutResourceId;
     public List<Drink> drinks = Collections.emptyList();
     public Context context;
@@ -21,7 +21,6 @@ public class DrinkSpinnerAdapter extends ArrayAdapter<Drink> {
     public DrinkSpinnerAdapter(Context context,
                                int resource,
                                List<Drink> drinks) {
-        super(context, resource, drinks);
         this.context = context;
         this.mLayoutResourceId = resource;
         this.drinks = drinks;
@@ -30,13 +29,17 @@ public class DrinkSpinnerAdapter extends ArrayAdapter<Drink> {
 
     @Override
     public int getCount() {
-        final int count = super.getCount();
-        return count > 0 ? count - 1 : count;
+        return drinks == null ? 0 : drinks.size();
     }
 
     @Override
     public Drink getItem(int i) {
         return drinks.get(i);
+    }
+
+    @Override
+    public long getItemId(int i) {
+        return drinks.get(i).id;
     }
 
     @Override

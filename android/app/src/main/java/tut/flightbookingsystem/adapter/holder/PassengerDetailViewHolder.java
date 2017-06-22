@@ -92,20 +92,23 @@ public class PassengerDetailViewHolder extends ChildViewHolder {
             departureDatePickerDialog = datepicker(itemView.getContext(), txtDateOfBirth);
 
             final List<Drink> drinks = session.getDrinks();
-            drinks.add(new Drink(null, "Select Drink", ""));
+            drinks.add(0, new Drink(0, "Select Drink", ""));
             final DrinkSpinnerAdapter drinksAdapter = new DrinkSpinnerAdapter
                     (itemView.getContext(), R.layout.spinners_item_layout, drinks);
-            drinksAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
             spnDrinkId.setAdapter(drinksAdapter);
-            spnDrinkId.setSelection(drinksAdapter.getCount());
+            spnDrinkId.setSelection(0);
+
             spnDrinkId.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                 @Override
                 public void onItemSelected(AdapterView<?> adapterView,
                                            View view,
                                            int i,
                                            long l) {
-                    passenger.drink_id = (long) i;
-                    // passenger.drink.drink_id = i;
+                    if (i == 0) {
+                        passenger.drink_id = null;
+                    } else {
+                        passenger.drink_id = (long) i;
+                    }
                 }
 
                 @Override
@@ -115,20 +118,23 @@ public class PassengerDetailViewHolder extends ChildViewHolder {
             });
 
             final List<Food> foods = session.getFoods();
-            foods.add(new Food(null, "Select Food", ""));
+            foods.add(0, new Food(0, "Select Food", ""));
             final FoodSpinnerAdapter foodsAdapter = new FoodSpinnerAdapter
                     (itemView.getContext(), R.layout.spinners_item_layout, foods);
-            foodsAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
             spnFoodId.setAdapter(foodsAdapter);
-            spnFoodId.setSelection(foodsAdapter.getCount());
+            spnFoodId.setSelection(0);
+
             spnFoodId.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                 @Override
                 public void onItemSelected(AdapterView<?> adapterView,
                                            View view,
                                            int i,
                                            long l) {
-                    passenger.food_id = (long) i;
-                    // passenger.food.food_id = i;
+                    if (i == 0) {
+                        passenger.food_id = null;
+                    } else {
+                        passenger.food_id = (long) i;
+                    }
                 }
 
                 @Override

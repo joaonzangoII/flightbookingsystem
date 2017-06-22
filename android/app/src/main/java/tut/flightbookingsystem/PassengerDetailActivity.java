@@ -115,10 +115,11 @@ public class PassengerDetailActivity extends BaseActivity implements View.OnClic
 
             if (mealDrink != null) {
                 final Drink drink = mealDrink.drink;
-
                 drinkTextView.setText(Utils.fromHtml(
                         String.format("<b>Drink:</b> %1$s", drink.name)));
             } else {
+                drinkTextView.setText(Utils.fromHtml(
+                        String.format("<b>Drink:</b> %1$s", "None")));
                 btnDeleteMeal.setVisibility(View.GONE);
             }
 
@@ -136,6 +137,8 @@ public class PassengerDetailActivity extends BaseActivity implements View.OnClic
                     }
                 }
             } else {
+                foodTextView.setText(Utils.fromHtml(
+                        String.format("<b>Food:</b> %1$s", "None")));
                 btnDeleteMeal.setVisibility(View.GONE);
             }
 

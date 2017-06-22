@@ -4,7 +4,7 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
+import android.widget.BaseAdapter;
 import android.widget.TextView;
 
 import java.util.Collections;
@@ -12,7 +12,7 @@ import java.util.List;
 
 import tut.flightbookingsystem.model.Food;
 
-public class FoodSpinnerAdapter extends ArrayAdapter<Food> {
+public class FoodSpinnerAdapter extends BaseAdapter{
     private final int mLayoutResourceId;
     public List<Food> foods = Collections.emptyList();
     public Context context;
@@ -21,7 +21,6 @@ public class FoodSpinnerAdapter extends ArrayAdapter<Food> {
     public FoodSpinnerAdapter(Context context,
                               int resource,
                               List<Food> foods) {
-        super(context, resource, foods);
         this.context = context;
         this.mLayoutResourceId = resource;
         this.foods = foods;
@@ -30,8 +29,7 @@ public class FoodSpinnerAdapter extends ArrayAdapter<Food> {
 
     @Override
     public int getCount() {
-        final int count = super.getCount();
-        return count > 0 ? count - 1 : count;
+        return foods == null ? 0 : foods.size();
     }
 
     @Override
@@ -41,16 +39,7 @@ public class FoodSpinnerAdapter extends ArrayAdapter<Food> {
 
     @Override
     public long getItemId(int i) {
-        return 0;
-        /*if (foods == null) {
-            return 0;
-        }
-
-        if (foods.get(i) == null) {
-            return 0;
-        } else {
-            return foods.get(i).id;
-        }*/
+        return foods.get(i).id;
     }
 
     @Override

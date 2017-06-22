@@ -3,7 +3,7 @@ package tut.flightbookingsystem.model;
 import java.io.Serializable;
 
 public class Food implements Serializable {
-    public Long id;
+    public long id;
     public String name;
     public String image;
     public String description;
@@ -12,7 +12,7 @@ public class Food implements Serializable {
     public String created_at;
     public String updated_at;
 
-    public Food(Long id,
+    public Food(long id,
                 final String name,
                 final String image) {
         this.id = id;
