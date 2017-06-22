@@ -109,7 +109,14 @@ class DefaultController extends Controller
     }
 
     public function getPassengers(){
-      $passengers = Passenger::latest()
+      $passengers = Passenger::with('booking',
+                                    'drink',
+                                    'drink.drink',
+                                    'food',
+                                    'food.food.food_type',
+                                    'flight_seat',
+                                    'flight_seat.travel_class')
+                             ->latest()
                              ->get();
       return $passengers;
     }

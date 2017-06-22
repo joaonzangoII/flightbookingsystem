@@ -71,11 +71,6 @@ class FlightsController extends Controller
       ]);
     }
 
-    // foreach ($passengersList as $key => $p)
-    // {
-    //
-    // }
-
     $data = [
         'user_id' => $user_id,
         'departure_flight_id' => $departure_flight_id,

@@ -49,19 +49,40 @@ class Passenger extends Model
     return $this->firstnames . ' ' . $this->surname;
   }
 
+  public function getFoodNameAttribute()
+  {
+    return is_null($this->food)
+    ? null
+    : $this->food->food->name;
+  }
+
+  public function getDrinkNameAttribute()
+  {
+    return is_null($this->drink)
+    ? null
+    : $this->drink->drink->name;
+  }
+
   public function getFoodAndDrinkAttribute()
   {
-    return "hello";
-    return is_null($this->meal)
-    ? null
-    : $this->food->food->name
-    . ' with '
-    . $this->drink->drink->name;
+    return implode(
+        ' with ',
+        array_filter(
+          [
+            $this->food_name,
+            $this->drink_name
+          ],
+          function($item) {
+            return ! empty($item);
+          }
+        )
+    );
   }
+
 
   public function getDrinkIdAttribute()
   {
-    if(is_null($this->drink));
+    if(is_null($this->drink))
     {
       return null;
     }
@@ -71,11 +92,11 @@ class Passenger extends Model
 
   public function getFoodIdAttribute()
   {
-    if(is_null($this->food));
+    if(is_null($this->food))
     {
       return null;
     }
 
-    return $this->food->food->id;
+    return $this->food->food_id;
   }
 }
