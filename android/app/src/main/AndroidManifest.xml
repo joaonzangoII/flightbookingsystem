@@ -82,6 +82,10 @@
         <activity
             android:name=".PassengerDetailActivity"
             android:parentActivityName=".MyBookingsDetailActivity" />
+
+        <activity
+            android:name=".ContactUsActivity"
+            android:parentActivityName=".MainActivity" />
     </application>
 
 </manifest>

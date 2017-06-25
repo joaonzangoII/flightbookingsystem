@@ -204,6 +204,8 @@ public class MainActivity extends BaseActivity
             goToActivity(DrinksActivity.class);
         } else if (id == R.id.airports) {
             goToActivity(AirportsActivity.class);
+        } else if (id == R.id.action_contacts) {
+            goToActivity(ContactUsActivity.class);
         } else {
             logout();
         }
