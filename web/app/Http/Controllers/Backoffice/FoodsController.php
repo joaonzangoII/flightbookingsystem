@@ -55,9 +55,14 @@ class FoodsController extends Controller
 
     public function update(Request $request, Food $food)
     {
-      dd($food);
-      $file = $request->file('image');
-      $food->update($request->all());
+      $data = $request->all();
+
+      if($request->has('image')){
+        $file = $request->file('image');
+        $data['image'] =  uploadImage($file, true);
+      }
+
+      $food->update($data);
       return redirect(route('backoffice.foods.index'));
     }
 }
