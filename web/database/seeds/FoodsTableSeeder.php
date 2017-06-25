@@ -21,7 +21,7 @@ class FoodsTableSeeder extends Seeder
       $description .= "Boerewors is a traditional Mzantsi sausage. The name Boerewors comes from the Afrikaans words Boer (farmer) Wors (sausage).";
       Food::create([
         'name' => 'Pap n Vleis',
-        'image' => 'https://ikhayalenyamablog.files.wordpress.com/2013/02/cape-town-menu.jpg',
+        'image' => '/images/foods/cape-town-menu.jpg',
         'description' => $description,
         'food_type_id' => $normal_food->id
       ]);
@@ -32,7 +32,7 @@ class FoodsTableSeeder extends Seeder
 
       Food::create([
         'name' => 'Bunny chow',
-        'image' => 'http://www.southafrica.net/cache/ce_cache/made/cb43030a00a807f4/Image_1_Bunny_chow_640_480_80auto_s.jpg',
+        'image' => '/images/foods/Image_1_Bunny_chow_640_480_80auto_s.jpg',
         'description' => $description,
         'food_type_id' => $normal_food->id
       ]);
@@ -43,7 +43,7 @@ class FoodsTableSeeder extends Seeder
       $description .= "The relish consists of various ingredients including chopped peppers, tomatoes,onions and most importantly - curry powder.";
       Food::create([
         'name' => 'Boerewors with chakalaka',
-        'image' => 'http://www.southafrica.net/cache/ce_cache/made/cb43030a00a807f4/Image_2_Borewors_and_chakalaka_640_853_80auto_s.jpg',
+        'image' => '/images/foods/Image_2_Borewors_and_chakalaka_640_853_80auto_s.jpg',
         'description' => $description,
         'food_type_id' => $normal_food->id
       ]);
@@ -54,14 +54,14 @@ class FoodsTableSeeder extends Seeder
       $description .= "Chances are they’ll want a second helping - it’s that good!";
       Food::create([
         'name' => 'Potjiekos',
-        'image' => 'http://www.southafrica.net/cache/ce_cache/made/cb43030a00a807f4/image_3_potjie_kos_640_427_80auto_s.JPG',
+        'image' => '/images/foods/image_3_potjie_kos_640_427_80auto_s.JPG',
         'description' => $description,
         'food_type_id' => $normal_food->id
       ]);
 
       Food::create([
         'name' => 'Cape Malay curry',
-        'image' => 'http://www.southafrica.net/cache/ce_cache/made/cb43030a00a807f4/Image_6_Malay_curry_640_338_80auto_s.jpg',
+        'image' => '/images/foods/Image_6_Malay_curry_640_338_80auto_s.jpg',
         'description' => "A dish popular in the Western Cape, this curry is rich in aroma, spices (including turmeric and saffron) and is enjoyed by locals including the Muslim community.",
         'food_type_id' => $normal_food->id
       ]);
@@ -70,7 +70,7 @@ class FoodsTableSeeder extends Seeder
       $description .= "From beef and game meat, such as kudu and ostrich, to the less popular chicken option, biltong is enjoyed at braais (shisanyama) and sporting events.";
       Food::create([
         'name' => 'Biltong',
-        'image' => 'http://www.southafrica.net/cache/ce_cache/made/cb43030a00a807f4/Image_7_Biltong_640_453_80auto_s.jpg',
+        'image' => '/images/foods/Image_7_Biltong_640_453_80auto_s.jpg',
         'description' => $description,
         'food_type_id' => $normal_food->id
       ]);

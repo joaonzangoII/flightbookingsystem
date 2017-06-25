@@ -158,7 +158,7 @@ class DefaultController extends Controller
     }
 
     public function getDrinks(){
-      $drinks = Drink::all();
+      $drinks = Drink::pluck('image');
       return $drinks;
     }
 

@@ -15,4 +15,8 @@ class Drink extends Model
     public function getEditLinkAttribute(){
       return route("backoffice.drinks.edit", $this->id);
     }
+
+    public function getImageAttribute($image){
+      return asset($image);
+    }
 }

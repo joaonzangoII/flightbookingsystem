@@ -14,107 +14,107 @@ class DrinksTableSeeder extends Seeder
       Drink::truncate();
       Drink::create([
         'name' => 'Coca Cola',
-        'image' => 'http://www.coca-cola.co.za/images/brands/coke.png',
+        'image' => '/images/drinks/coke.png',
       ]);
 
       Drink::create([
         'name' => 'Coca Cola Light',
-        'image' => 'http://www.coca-cola.co.za/images/brands/cocaLight.png',
+        'image' => '/images/drinks/cocaLight.png',
       ]);
 
       Drink::create([
         'name' => 'Coca Cola Zero',
-        'image' => 'http://www.coca-cola.co.za/images/brands/cokeZero.png',
+        'image' => '/images/drinks/cokeZero.png',
       ]);
 
       Drink::create([
         'name' => 'Tab',
-        'image' => 'http://www.coca-cola.co.za/images/brands/tab.png',
+        'image' => '/images/drinks/tab.png',
       ]);
 
       Drink::create([
         'name' => 'Fanta Orange',
-        'image' => 'http://www.coca-cola.co.za/images/brands/fanta.png',
+        'image' => '/images/drinks/fanta.png',
       ]);
 
       Drink::create([
         'name' => 'Sprite',
-        'image' => 'http://www.coca-cola.co.za/images/brands/sprite.png',
+        'image' => '/images/drinks/sprite.png',
       ]);
 
       Drink::create([
         'name' => 'SpriteZero',
-        'image' => 'http://www.coca-cola.co.za/images/brands/spriteZero.png',
+        'image' => '/images/drinks/spriteZero.png',
       ]);
 
       Drink::create([
         'name' => 'Stoney',
-        'image' => 'http://www.coca-cola.co.za/images/brands/stoney.png',
+        'image' => '/images/drinks/stoney.png',
       ]);
 
       Drink::create([
         'name' => 'Schweppes Dry Lemon',
-        'image' => 'http://www.coca-cola.co.za/images/brands/schweppesDryLemonDryLemon.png',
+        'image' => '/images/drinks/schweppesDryLemonDryLemon.png',
       ]);
 
       Drink::create([
         'name' => 'Spar-Letta -  Creme Soda',
-        'image' => 'http://www.coca-cola.co.za/images/brands/sparletta.png',
+        'image' => '/images/drinks/sparletta.png',
       ]);
 
       Drink::create([
         'name' => 'Twist Lemon',
-        'image' => 'http://www.coca-cola.co.za/images/brands/twistLemon.png',
+        'image' => '/images/drinks/twistLemon.png',
       ]);
 
       Drink::create([
         'name' => 'Iron Brew',
-        'image' => 'http://www.coca-cola.co.za/images/brands/ironBrew.png',
+        'image' => '/images/drinks/ironBrew.png',
       ]);
 
       Drink::create([
         'name' => 'Fuze Tea',
-        'image' => 'http://www.coca-cola.co.za/images/brands/fuzeTeav2.png',
+        'image' => '/images/drinks/fuzeTeav2.png',
       ]);
 
       Drink::create([
         'name' => 'Mazoe Orange',
-        'image' => 'http://www.coca-cola.co.za/images/brands/mazoe.png',
+        'image' => '/images/drinks/mazoe.png',
       ]);
 
       Drink::create([
         'name' => 'Just Juice Orange',
-        'image' => 'http://www.coca-cola.co.za/images/brands/justJuice.png',
+        'image' => '/images/drinks/justJuice.png',
       ]);
 
       Drink::create([
         'name' => 'Minute Maid',
-        'image' => 'http://www.coca-cola.co.za/images/brands/minutemaid.png',
+        'image' => '/images/drinks/minutemaid.png',
       ]);
 
       Drink::create([
         'name' => 'Vitamin Water',
-        'image' => 'http://www.coca-cola.co.za/images/brands/glaceau.png',
+        'image' => '/images/drinks/glaceau.png',
       ]);
 
       Drink::create([
         'name' => 'Powerade',
-        'image' => 'http://www.coca-cola.co.za/images/brands/powerade.png',
+        'image' => '/images/drinks/powerade.png',
       ]);
 
       Drink::create([
         'name' => 'Valpre Still Water',
-        'image' => 'http://www.coca-cola.co.za/images/brands/valpre.png',
+        'image' => '/images/drinks/valpre.png',
       ]);
 
       Drink::create([
         'name' => 'Bonaqua Pump Water',
-        'image' => 'http://www.coca-cola.co.za/images/brands/bonaquaPump.png',
+        'image' => '/images/drinks/bonaquaPump.png',
       ]);
 
       Drink::create([
         'name' => 'Bonaqua Plain Still',
-        'image' => 'http://www.coca-cola.co.za/images/brands/bonaquaLarge.png',
+        'image' => '/images/drinks/bonaquaLarge.png',
       ]);
     }
 }

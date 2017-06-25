@@ -18,4 +18,8 @@ class Food extends Model
   public function getEditLinkAttribute(){
     return route("backoffice.foods.edit", $this->id);
   }
+
+  public function getImageAttribute($image){
+    return asset($image);
+  }
 }
