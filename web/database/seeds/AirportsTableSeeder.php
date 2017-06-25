@@ -54,7 +54,7 @@ class AirportsTableSeeder extends Seeder
         'name' => 'King Shaka International Airport',
         'iata_airport_code' => 'DUR',
         'city' => 'Durban',
-        'image' => '/uploads/images/dur.jpg',
+        'image' => '/uploads/images/dur.JPG',
         'description' => $description,
         'country_id' => $country_id
       ]);
