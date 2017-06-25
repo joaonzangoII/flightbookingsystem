@@ -8,7 +8,7 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Messages\NexmoMessage;
 
-class FlightBooked extends Notification
+class FlightBooked extends Notification implements ShouldQueue
 {
     use Queueable;
     var $booking;
@@ -30,7 +30,7 @@ class FlightBooked extends Notification
      */
     public function via($notifiable)
     {
-        return ['mail', 'nexmo', 'database'];
+        return ['database'];
     }
 
     /**
@@ -41,12 +41,13 @@ class FlightBooked extends Notification
      */
     public function toMail($notifiable)
     {
-        return (new MailMessage)
-                    ->line('A new booking with Reference ' .
-                            $this->booking->booking_number .
-                             ' was made on the system' )
-                    ->action('/')
-                    ->line(env("APP_NAME"));
+      $url = url('/backofice/bookings/'. $this->booking->slug);
+      return (new MailMessage)
+                  ->line('A new booking with Reference ' .
+                          $this->booking->booking_number .
+                          ' was made on the system' )
+                  ->action('View Booking', $url)
+                  ->line(env("APP_NAME"));
     }
 
     public function toNexmo($notifiable)
@@ -65,9 +66,9 @@ class FlightBooked extends Notification
     public function toArray($notifiable)
     {
         return [
-            "booking_number" => $this->booking->booking_number,
-            "user_id" => $this->booking->user_id,
-            "passenger_count" => $this->booking->passengers()->count(),
+            // "booking_number" => $this->booking->booking_number,
+            // "user_id" => $this->booking->user_id,
+            // "passenger_count" => $this->booking->passengers()->count(),
         ];
     }
 }

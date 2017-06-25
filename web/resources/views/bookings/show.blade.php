@@ -36,6 +36,8 @@
                      <td>ID Number</td>
                      <td>Date of Birth</td>
                      <td>Meal</td>
+                     <td>Drink</td>
+                     <td>Food</td>
                      <td>Meal Type</td>
                    </tr>
                   </thead>
@@ -46,7 +48,9 @@
                         <td>{{$passenger->id_number}}</td>
                         <td>{{$passenger->date_of_birth}}</td>
                         <td>{{$passenger->food_and_drink}}</td>
-                        <td>{{is_null($passenger->meal) ? '' : ucFirst($passenger->meal->food->food_type->name)}}</td>
+                        <td>{{is_null($passenger->drink) ? '' : ucFirst($passenger->drink->drink->name)}}</td>
+                        <td>{{is_null($passenger->food) ? '' : ucFirst($passenger->food->food->name)}}</td>
+                        <td>{{is_null($passenger->food) ? '' : ucFirst($passenger->food->food->food_type->name)}}</td>
                       </tr>
                     @endforeach
                   </tbody>

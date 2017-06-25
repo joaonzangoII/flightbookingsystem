@@ -8,7 +8,7 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Messages\NexmoMessage;
 
-class UserBookedFlight extends Notification
+class UserBookedFlight extends Notification implements ShouldQueue
 {
     use Queueable;
     var $booking;

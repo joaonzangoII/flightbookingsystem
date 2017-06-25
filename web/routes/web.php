@@ -16,3 +16,8 @@ Route::name('home')->get('/', 'HomeController@index');
 // Route::name('register')->get('register', 'Auth\RegisterController@showRegistrationForm');
 // Route::post('register.register', 'Auth\RegisterController@register');
 Auth::routes();
+// Route::name('routes')->get('/routes', function(Request $request){
+//   // $routes = Artisan::routeList();
+//   $routes =Route::getRoutes();;
+//   return $routes;
+// });

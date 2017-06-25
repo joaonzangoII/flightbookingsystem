@@ -20,7 +20,12 @@ class Flight extends Model
     return $this->hasOne('App\Schedule');
   }
 
+  public function flight_seat(){
+    return $this->hasMany('App\FlightSeat');
+  }
+
   public function flight_seat_prices(){
     return $this->hasMany('App\FlightSeatPrice');
   }
+
 }

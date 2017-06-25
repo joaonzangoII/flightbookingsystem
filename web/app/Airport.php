@@ -24,4 +24,8 @@ class Airport extends Model
     public function getEditLinkAttribute(){
       return route("backoffice.airports.edit", $this->id);
     }
+
+    public function getImageAttribute($image){
+      return asset($image);
+    }
 }

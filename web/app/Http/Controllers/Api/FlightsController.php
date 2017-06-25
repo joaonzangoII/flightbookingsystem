@@ -4,7 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-
+use Mail;
 use App\User;
 use App\Passenger;
 use App\Meal;
@@ -20,11 +20,13 @@ use App\Airport;
 use App\Food;
 use App\Drink;
 use App\Schedule;
+use App\FlightStatus;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Log;
 use Nexmo\Laravel\Facade\Nexmo;
 use App\Notifications\FlightBooked;
 use App\Notifications\UserBookedFlight;
+use Illuminate\Notifications\Notification;
 
 class FlightsController extends Controller
 {
@@ -42,6 +44,7 @@ class FlightsController extends Controller
     $passengersList = json_decode($passengers_str);
 
     $user = User::find($user_id);
+
     foreach ($passengersList as $key => $p) {
       $flight_seat_id = $p->flight_seat_id;
       $flight_seat = FlightSeat::where('id', $flight_seat_id)->first();
@@ -77,91 +80,134 @@ class FlightsController extends Controller
         'return_flight_id' => $departure_flight_id,
         'aircraft_id' => $aircraft_id,
     ];
-
     $data["booking_number"] = $this->booking_number();
-    $booking = Booking::create($data);
+
+    try{
+      $booking = Booking::create($data);
+    }
+    catch(\Exception $e)
+    {
+      return response()->json([
+        'code' => '500',
+        'erro' => true,
+        'messages' => $e
+      ]);
+    }
+
     $total = 0;
     $subtotal = 0;
 
     foreach ($passengersList as $key => $p)
     {
-      $passenger = Passenger::create([
-        'firstnames' => $p->firstnames,
-        'surname' => $p->surname,
-        'id_number' => $p->id_number,
-        'date_of_birth' => $p->date_of_birth,
-        'gender' => 'm',
-        'booking_id' => $booking->id,
-        'flight_seat_id' => $p->flight_seat_id,
-      ]);
 
-      $flight_seat_id = $passenger->flight_seat_id;
-      $seat_price = FlightSeatPrice::where('flight_seat_id', $flight_seat_id)
-                                   ->first();
-      if(is_null($seat_price))
-      {
-         return response()->json([
-           'code' => '500',
-           'erro' => true,
-           'messages' => [$seat_price]
-         ]);
-      }
+      try{
+        $passenger = Passenger::create([
+          'firstnames' => $p->firstnames,
+          'surname' => $p->surname,
+          'id_number' => $p->id_number,
+          'date_of_birth' => $p->date_of_birth,
+          'gender' => 'm',
+          'booking_id' => $booking->id,
+          'flight_seat_id' => $p->flight_seat_id,
+        ]);
 
-      $price = $seat_price->price;
-      $total = $total + $price;
-      $subtotal = $total;
-      $flight_seat = FlightSeat::where('id', $flight_seat_id)->first();
-      $flight_seat->available = false;
-      $flight_seat->save();
-
-      if(isset($p->drink_id))
-      {
-        if(!is_null($p->drink_id))
+        $flight_seat_id = $passenger->flight_seat_id;
+        
+        $seat_price = FlightSeatPrice::where('flight_seat_id', $flight_seat_id)
+                                     ->first();
+        if(is_null($seat_price))
         {
-          $drink = \App\MealDrink::create([
-            'passenger_id' => $passenger->id,
-            'drink_id' => $p->drink_id,
-          ]);
+           return response()->json([
+             'code' => '500',
+             'erro' => true,
+             'messages' => [$seat_price]
+           ]);
         }
-      }else{
-        $total = $total - ($price * 0.1);
-      }
 
-      if(isset($p->food_id))
-      {
-        if(!is_null($p->food_id))
+        $price = $seat_price->price;
+        $total = $total + $price;
+        $subtotal = $total;
+        $flight_seat = FlightSeat::where('id', $flight_seat_id)
+                                 ->first();
+        $flight_seat->available = false;
+        $flight_seat->save();
+
+        if(isset($p->drink_id))
         {
-          $food = \App\MealFood::create([
-            'passenger_id' => $passenger->id,
-            'food_id' => $p->food_id,
-          ]);
+          if(!is_null($p->drink_id))
+          {
+            $drink = \App\MealDrink::create([
+              'passenger_id' => $passenger->id,
+              'drink_id' => $p->drink_id,
+            ]);
+          }
+        }else{
+          $total = $total - ($price * 0.1);
         }
-      }else{
-        $total = $total - ($price * 0.1);
+
+        if(isset($p->food_id))
+        {
+          if(!is_null($p->food_id))
+          {
+            $food = \App\MealFood::create([
+              'passenger_id' => $passenger->id,
+              'food_id' => $p->food_id,
+            ]);
+          }
+        }else{
+          $total = $total - ($price * 0.1);
+        }
+      }
+      catch(\Exception $e)
+      {
+        $booking->delete();
+        return response()->json([
+          'code' => '500',
+          'erro' => true,
+          'messages' => $e
+        ]);
       }
     }
 
-    $booking = Booking::with('passengers',
-                             'passengers.booking',
-                             'passengers.drink',
-                             'passengers.food',
-                             'passengers.food.food',
-                             'passengers.food.food.food_type',
-                             'passengers.flight_seat',
-                             'passengers.flight_seat.travel_class',
-                             'aircraft','departure_flight',
-                             'departure_flight.aircraft',
-                             'departure_flight.schedule',
-                             'return_flight',
-                             'return_flight.aircraft',
-                             'return_flight.schedule')
-                    ->where('id', $booking->id)
-                    ->first();
+    if(!is_null($booking))
+    {
+      $booking = Booking::with('passengers',
+                               'passengers.booking',
+                               'passengers.drink',
+                               'passengers.food',
+                               'passengers.food.food',
+                               'passengers.food.food.food_type',
+                               'passengers.flight_seat',
+                               'passengers.flight_seat.travel_class',
+                               'aircraft','departure_flight',
+                               'departure_flight.aircraft',
+                               'departure_flight.schedule',
+                               'return_flight',
+                               'return_flight.aircraft',
+                               'return_flight.schedule')
+                      ->where('id', $booking->id)
+                      ->first();
 
-    $booking->update(["subtotal"=> $subtotal, "total"=> $total]);
+      $booking->update(["subtotal"=> $subtotal, "total"=> $total]);
+    }
 
-    // $booking->notify(new FlightBooked($booking));
-    $user->notify(new UserBookedFlight($booking));
+    try{
+      $user->notify(new UserBookedFlight($booking));
+      Mail::send('emails', ['booking' => $booking], function ($m) use ($booking)
+      {
+          $m->from(env("MAIL_USERNAME"), env("APP_NAME"));
+          $m->to(env("MAIL_USERNAME"), $booking->bookig_number)->subject('New Booking!');
+      });
+      //$booking->notify(new FlightBooked($booking));
+    }
+    catch(\Exception $e)
+    {
+      // return response()->json([
+      //   'code' => '500',
+      //   'erro' => true,
+      //   'messages' => $e
+      // ]);
+    }
 
     return response()->json([
       'code' => '200',
@@ -301,8 +347,11 @@ class FlightsController extends Controller
     $flight_return_date = $request->input('return_date');
     $flight_origin_airport_id = $request->input('origin_airport_id');
     $flight_destination_airport_id = $request->input('destination_airport_id');
+    $travel_class_id = $request->input('travel_class_id');
+    $num_people = $request->input('num_people');
 
     $schedules = Schedule::with('flight',
+                                'flight.flight_seat',
                                 'flight.aircraft',
                                 'flight.aircraft.aircraft_manufacturer')
                          ->where('origin_airport_id', $flight_origin_airport_id)
@@ -310,7 +359,23 @@ class FlightsController extends Controller
                          ->where('date', $flight_departure_date)
                          ->bookable()
                          ->get();
-    return $schedules;
+
+    // if()
+    // {
+    //    schedule
+    // }
+    //
+    // return response()->json([
+    //    'code' => '500',
+    //    'erro' => true,
+    //    'messages' => ["There is not enought seats available"]
+    // ]);
+
+    return response()->json([
+       'code' => '200',
+       'erro' => false,
+       'schedules' => $schedules
+    ]);
   }
 
   public function getFlightDetail(Request $request, String $flight){
@@ -380,5 +445,69 @@ class FlightsController extends Controller
          'myBookings' => $bookings,
          'schedules' => $schedules,
     ]);
+  }
+
+  public function flightStatus(Request $request)
+  {
+    $flight_status = FlightStatus::with('flights')
+                                 ->get();
+    return $flight_status;
+  }
+
+  public function findFlightSeats(Request $request)
+  {
+    $flight_seats = FlightSeat::with('travel_class', 'flight_seat_price')
+                              ->get();
+    return $flight_seats;
+  }
+
+  public function findFlightSeatsByFlightId(Request $request,
+                                  String $flight_id)
+  {
+    $flight_seats = FlightSeat::with('travel_class', 'flight_seat_price')
+                              ->where('flight_id', $flight_id)
+                              ->get();
+    return $flight_seats;
+  }
+
+  public function findFlightSeatsByTravelClass(Request $request,
+                                               String $flight_id,
+                                               String $travel_class_id,
+                                               String $available= null)
+  {
+    $available = is_null($available)
+                  ? null
+                  : is_true($available);
+    $flight_seats = FlightSeat::with('travel_class', 'flight_seat_price')
+                              ->where('flight_id', $flight_id)
+                              //->where('available', $available)
+                              ->where('travel_class_id', $travel_class_id);
+
+    if(!is_null($available)){
+      $flight_seats = $flight_seats->where('available', $available);
+    }
+
+    return $flight_seats->get();
+  }
+
+  public function findFlightSeatsPrices(Request $request,
+                                        String $flight_id)
+  {
+    $flight_seats = FlightSeatPrice::with('flight', 'flight_seat')
+                                   ->where('flight_id', $flight_id)
+                                   ->get();
+
+    return $flight_seats;
+  }
+
+  public function findAircraftSeatsByTravelClass(Request $request,
+                                                 String $aircraft_id,
+                                                 String $travel_class_id)
+  {
+    $aircraft_seats = AircraftSeat::with('travel_class')
+                                   ->where('aircraft_id', $aircraft_id)
+                                   ->where('travel_class_id', $travel_class_id)
+                                   ->get();
+    return $aircraft_seats;
   }
 }
