@@ -17,6 +17,10 @@
             android:title="Foods" />
 
         <item
+            android:id="@+id/airports"
+            android:title="Airports" />
+
+        <item
             android:id="@+id/drinks"
             android:title="Drinks" />
 

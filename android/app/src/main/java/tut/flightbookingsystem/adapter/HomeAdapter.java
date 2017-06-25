@@ -10,7 +10,8 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -102,6 +103,10 @@ public class HomeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         final MainItemsHolder vH = (MainItemsHolder) holder;
         final MainItem mainItem = getItem(position);
         if (mainItem != null) {
+            vH.widget_layout.setBackgroundColor(mContext.getResources()
+                    .getColor(mainItem.color));
+            GlideAdapter
+                    .setImage(mContext, R.drawable.ic_airplane, vH.imgImage);
             vH.txt_value.setText(mainItem.value);
             vH.txt_description.setText(mainItem.description);
             //vH.itemView.setOnClickListener(new RecyclerClickListener(position, onItemClickCallback));
@@ -111,7 +116,10 @@ public class HomeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     @Override
     public int getItemCount() {
-        int count = mSchedules.size() == 0 ? 0 : 1;
+        int count =
+                mSchedules.size() == 0
+                        ? 0
+                        : 1;
         return count + mMainItems.size();
     }
 
@@ -136,10 +144,7 @@ public class HomeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     @Nullable
     public MainItem getItem(final int position) {
         if (getItemViewType(position) == CHILD) {
-            if (position < mMainItems.size()) {
-                return mMainItems.get(position - 1);
-            }
-            return null;
+            return mMainItems.get(position - 1);
         } else {
             return null;
         }
@@ -170,12 +175,15 @@ public class HomeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     }
 
     class MainItemsHolder extends RecyclerView.ViewHolder {
+        private LinearLayout widget_layout;
+        private ImageView imgImage;
         private AppCompatTextView txt_value;
         private AppCompatTextView txt_description;
 
         public MainItemsHolder(final View itemView) {
             super(itemView);
-            //imgImage = (ImageView) itemView.findViewById(R.id.image);
+            imgImage = (ImageView) itemView.findViewById(R.id.image);
+            widget_layout = (LinearLayout) itemView.findViewById(R.id.widget_layout);
             txt_value = (AppCompatTextView) itemView.findViewById(R.id.value);
             txt_description = (AppCompatTextView) itemView.findViewById(R.id.description);
         }

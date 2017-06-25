@@ -1,4 +1,4 @@
-package tut.flightbookingsystem;
+package tut.flightbookingsystem.util;
 
 public class Constant {
     public static String DATA = "data";
@@ -12,6 +12,7 @@ public class Constant {
     public static String NUM_PEOPLE = "num_people";
     public static String BOOKING = "booking";
     public static String BOOKINGS = "bookings";
+    public static String AIRPORTS = "airports";
     public static String MY_BOOKINGS = "my_bookings";
     public static String DONE_LOADING = "done_loading";
     public static String FOODS = "foods";
@@ -20,4 +21,9 @@ public class Constant {
     public static String IS_BOOKING = "is_booking";
     public static String IS_GETTING_AIRPORTS = "is_getting_airports";
     public static String DATA_BUNDLE = "data_bundle";
+
+
+    public enum Status {
+
+    }
 }

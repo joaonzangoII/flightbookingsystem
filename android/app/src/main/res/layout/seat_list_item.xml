@@ -14,7 +14,7 @@
             android:layout_height="60dp"
             android:background="@drawable/img_border"
             android:scaleType="fitXY"
-            android:src="@drawable/grey" />
+            android:src="@drawable/grey_square" />
 
         <ImageView
             android:id="@+id/img_seat_selected"
@@ -22,7 +22,7 @@
             android:layout_height="60dp"
             android:background="@drawable/img_border"
             android:scaleType="fitXY"
-            android:src="@drawable/green"
+            android:src="@drawable/green_square"
             android:visibility="invisible" />
 
         <ImageView
@@ -31,7 +31,7 @@
             android:layout_height="60dp"
             android:background="@drawable/img_border"
             android:scaleType="fitXY"
-            android:src="@drawable/red"
+            android:src="@drawable/red_square"
             android:visibility="invisible" />
     </RelativeLayout>
 

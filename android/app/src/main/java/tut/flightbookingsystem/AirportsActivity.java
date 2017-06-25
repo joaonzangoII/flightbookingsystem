@@ -1,10 +1,12 @@
 package tut.flightbookingsystem;
 
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.widget.SwipeRefreshLayout;
-import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.ProgressBar;
@@ -17,22 +19,24 @@ import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 
-import tut.flightbookingsystem.adapter.DrinksAdapter;
+import tut.flightbookingsystem.adapter.AllAirportsdapter;
+import tut.flightbookingsystem.adapter.FoodsAdapter;
 import tut.flightbookingsystem.base.BaseActivity;
 import tut.flightbookingsystem.listener.RecyclerClickListener;
 import tut.flightbookingsystem.manager.RequestManager;
 import tut.flightbookingsystem.manager.SessionManager;
-import tut.flightbookingsystem.model.Drink;
+import tut.flightbookingsystem.model.Airport;
+import tut.flightbookingsystem.model.Food;
 import tut.flightbookingsystem.util.Constant;
 import tut.flightbookingsystem.views.SupportSwipeRefreshLayout;
 
-public class DrinksActivity extends BaseActivity {
-    private DrinksAdapter drinksAdapter;
-    private List<Drink> drinksList = new ArrayList<>();
+public class AirportsActivity extends BaseActivity implements
+        FoodItemDetail.OnFragmentInteractionListener {
+    private AllAirportsdapter airportsAdapter;
+    private List<Airport> airportsList = new ArrayList<>();
     private ProgressBar progressBar;
     private SupportSwipeRefreshLayout mSwipeRefreshLayout;
     private SessionManager session;
-
 
     private RecyclerClickListener.OnItemClickCallback onItemClickCallback =
             new RecyclerClickListener.OnItemClickCallback() {
@@ -46,17 +50,10 @@ public class DrinksActivity extends BaseActivity {
                 @Override
                 public void onItemClicked(final View view,
                                           int position) {
-                 /*   final Intent i = new Intent(FoodsActivity.this, BookingActivity.class);
                     if (position >= 0) {
-                                Schedule schedule = mSchedules.get(position);
-                                final Gson gson = new GsonBuilder().create();
-                                final Type type = new TypeToken<Schedule>() {
-                                }.getType();
-                                session.setSchedule(gson.toJson(schedule, type));
-                                Log.e(TAG, schedule.toString());
-                                i.putExtra(Constant.NUM_PEOPLE, Integer.valueOf(num_people));
-                                startActivity(i);
-                    }*/
+                        final Airport airport = airportsList.get(position);
+                        //showEditDialog(food);
+                    }
                 }
             };
 
@@ -66,11 +63,11 @@ public class DrinksActivity extends BaseActivity {
             final Bundle data = message.getData();
             if (!data.getBoolean(Constant.ERROR)) {
                 final Gson gson = new GsonBuilder().create();
-                final Type type = new TypeToken<List<Drink>>() {
+                final Type type = new TypeToken<List<Airport>>() {
                 }.getType();
                 progressBar.setVisibility(View.GONE);
-                drinksList = gson.fromJson(data.getString(Constant.DRINKS), type);
-                drinksAdapter.setItems(drinksList);
+                airportsList = gson.fromJson(data.getString(Constant.AIRPORTS), type);
+                airportsAdapter.setItems(airportsList);
                 onItemsLoadComplete();
             }
             return false;
@@ -80,23 +77,20 @@ public class DrinksActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_drinks);
-        setTitle("Drinks");
+        setContentView(R.layout.activity_foods);
+        setTitle("Airports");
         session = new SessionManager(this);
-
         final RecyclerView recyclerView = (RecyclerView) findViewById(R.id.my_recycler_view);
         mSwipeRefreshLayout = (SupportSwipeRefreshLayout) findViewById(R.id.swipeRefreshLayout);
 
         progressBar = (ProgressBar) findViewById(R.id.progress_bar);
         progressBar.setVisibility(View.VISIBLE);
-
-        RequestManager.getDrinks(session, requestHandler);
-
-        recyclerView.setLayoutManager(new GridLayoutManager(this, 2));
-        drinksAdapter = new DrinksAdapter();
-        drinksAdapter.setItems(drinksList);
-        drinksAdapter.setOnItemClickCallback(onItemClickCallback);
-        recyclerView.setAdapter(drinksAdapter);
+        RequestManager.getAirports(session, requestHandler);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        airportsAdapter = new AllAirportsdapter();
+        airportsAdapter.setItems(airportsList);
+        airportsAdapter.setOnItemClickCallback(onItemClickCallback);
+        recyclerView.setAdapter(airportsAdapter);
 
         mSwipeRefreshLayout.setInternalRecyclerView(recyclerView);
         mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
@@ -109,15 +103,22 @@ public class DrinksActivity extends BaseActivity {
     }
 
     void refreshItems() {
-        RequestManager.getDrinks(session, requestHandler);
-        // Load complete
+        RequestManager.getAirports(session, requestHandler);
     }
 
     void onItemsLoadComplete() {
-        // Update the adapter and notify data set changed
-        // ...
-
         // Stop refresh animation
         mSwipeRefreshLayout.setRefreshing(false);
+    }
+
+    private void showEditDialog(final Food food) {
+        FragmentManager fm = getSupportFragmentManager();
+        FoodItemDetail foodItemDetail = FoodItemDetail.newInstance(food);
+        foodItemDetail.show(fm, "fragment_food_detail");
+    }
+
+    @Override
+    public void onFragmentInteraction(Uri uri) {
+
     }
 }

@@ -22,7 +22,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
-import tut.flightbookingsystem.adapter.AirportsAdapter;
+import tut.flightbookingsystem.adapter.AirportsSpinnerAdapter;
 import tut.flightbookingsystem.adapter.PeopleAdapter;
 import tut.flightbookingsystem.adapter.TravelClassSpinnerAdapter;
 import tut.flightbookingsystem.base.BaseActivity;
@@ -31,6 +31,7 @@ import tut.flightbookingsystem.manager.SessionManager;
 import tut.flightbookingsystem.model.Airport;
 import tut.flightbookingsystem.model.Schedule;
 import tut.flightbookingsystem.model.TravelClass;
+import tut.flightbookingsystem.util.Constant;
 import tut.flightbookingsystem.util.Utils;
 
 public class FindFlightActivity extends BaseActivity {
@@ -46,8 +47,8 @@ public class FindFlightActivity extends BaseActivity {
     private AppCompatEditText returnDate;
     private DatePickerDialog departureDatePickerDialog;
     private DatePickerDialog returnDatePickerDialog;
-    private AirportsAdapter originAirportsAdapter;
-    private AirportsAdapter destinationAirportsAdapter;
+    private AirportsSpinnerAdapter originAirportsSpinnerAdapter;
+    private AirportsSpinnerAdapter destinationAirportsSpinnerAdapter;
 
     final Handler requestHandler = new Handler(new Handler.Callback() {
         @Override
@@ -55,8 +56,8 @@ public class FindFlightActivity extends BaseActivity {
             final Bundle data = message.getData();
             if (!data.getBoolean(Constant.ERROR)) {
                 if (data.getBoolean(Constant.IS_GETTING_AIRPORTS)) {
-                    originAirportsAdapter.setItems(session.getAirports());
-                    destinationAirportsAdapter.setItems(session.getAirports());
+                    originAirportsSpinnerAdapter.setItems(session.getAirports());
+                    destinationAirportsSpinnerAdapter.setItems(session.getAirports());
                 } else {
                     final Gson gson = new GsonBuilder().create();
                     final Type type = new TypeToken<List<Schedule>>() {
@@ -84,7 +85,6 @@ public class FindFlightActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_find_flight);
-
         setTitle("Find Flight");
         session = new SessionManager(this);
         mSchedules = new ArrayList<>();
@@ -95,10 +95,9 @@ public class FindFlightActivity extends BaseActivity {
             people.add(String.format("%1$d people", (x + 1)));
         }
 
-//Creating the instance of ArrayAdapter containing list of language names
-        originAirportsAdapter = new AirportsAdapter
+        originAirportsSpinnerAdapter = new AirportsSpinnerAdapter
                 (this, R.layout.spinners_item_layout, airportsList);
-        destinationAirportsAdapter = new AirportsAdapter
+        destinationAirportsSpinnerAdapter = new AirportsSpinnerAdapter
                 (this, R.layout.spinners_item_layout, airportsList);
 
         final TravelClassSpinnerAdapter adapterTravelClass = new TravelClassSpinnerAdapter
@@ -108,10 +107,10 @@ public class FindFlightActivity extends BaseActivity {
                 (this, R.layout.spinners_item_layout, people);
 
         final Spinner originAirport = (Spinner) findViewById(R.id.departure);
-        originAirport.setAdapter(originAirportsAdapter);
+        originAirport.setAdapter(originAirportsSpinnerAdapter);
 
         final Spinner destinationAirport = (Spinner) findViewById(R.id.destination);
-        destinationAirport.setAdapter(destinationAirportsAdapter);
+        destinationAirport.setAdapter(destinationAirportsSpinnerAdapter);
 
         final Spinner spnTravelClass = (Spinner) findViewById(R.id.travel_class);
         spnTravelClass.setAdapter(adapterTravelClass);
@@ -147,6 +146,8 @@ public class FindFlightActivity extends BaseActivity {
                         destinationAirport.getSelectedItemId(),
                         departureDate.getText().toString(),
                         returnDate.getText().toString(),
+                        travel_class_id,
+                        num_people,
                         requestHandler);
             }
         });

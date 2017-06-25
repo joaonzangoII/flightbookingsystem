@@ -30,7 +30,7 @@
                     android:layout_gravity="center_horizontal"
                     android:background="@drawable/img_border"
                     android:scaleType="fitXY"
-                    android:src="@drawable/grey" />
+                    android:src="@drawable/grey_square" />
 
                 <TextView
                     android:layout_width="match_parent"
@@ -54,7 +54,7 @@
                     android:layout_gravity="center_horizontal"
                     android:background="@drawable/img_border"
                     android:scaleType="fitXY"
-                    android:src="@drawable/green" />
+                    android:src="@drawable/green_square" />
 
                 <TextView
                     android:layout_width="match_parent"
@@ -79,7 +79,7 @@
                     android:layout_gravity="center_horizontal"
                     android:background="@drawable/img_border"
                     android:scaleType="fitXY"
-                    android:src="@drawable/red" />
+                    android:src="@drawable/red_square" />
 
                 <TextView
                     android:layout_width="match_parent"

@@ -25,6 +25,7 @@ import tut.flightbookingsystem.listener.RecyclerClickListener;
 import tut.flightbookingsystem.manager.RequestManager;
 import tut.flightbookingsystem.manager.SessionManager;
 import tut.flightbookingsystem.model.Food;
+import tut.flightbookingsystem.util.Constant;
 import tut.flightbookingsystem.views.SupportSwipeRefreshLayout;
 
 public class FoodsActivity extends BaseActivity implements FoodItemDetail.OnFragmentInteractionListener {

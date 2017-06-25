@@ -69,6 +69,9 @@
             android:name=".FoodsActivity"
             android:parentActivityName=".MainActivity" />
         <activity
+            android:name=".AirportsActivity"
+            android:parentActivityName=".MainActivity" />
+        <activity
             android:name=".DrinksActivity"
             android:parentActivityName=".MainActivity" />
         <activity android:name=".QueryResultsActivity" />

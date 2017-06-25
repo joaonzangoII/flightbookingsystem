@@ -13,14 +13,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import tut.flightbookingsystem.MainActivity;
 import tut.flightbookingsystem.R;
-import tut.flightbookingsystem.base.BaseActivity;
 import tut.flightbookingsystem.manager.SessionManager;
 import tut.flightbookingsystem.model.Schedule;
 
@@ -103,19 +100,17 @@ public class MainCarouselPagerAdapter extends BaseLoopPagerAdapter {
         }
 
         final Schedule schedule = mSchedules.get(position);
-        GlideAdapter.setImage(mContext, schedule.destination_airport.getImage(sessionManager), holder.image);
-        holder.departure.setText(String.format("From:%1$s(%2$s)",
+        GlideAdapter
+                .setImage(mContext, schedule.destination_airport.getImage(sessionManager), holder.image);
+        holder.departure.setText(String.format("From: %1$s(%2$s)",
                 schedule.origin_airport.name,
                 schedule.origin_airport.iata_airport_code));
-        holder.arrival.setText(String.format("To:%1$s(%2$s)",
+        holder.arrival.setText(String.format("To: %1$s(%2$s)",
                 schedule.destination_airport.name,
                 schedule.destination_airport.iata_airport_code));
         holder.date.setText(String.format("%1$s",
                 schedule.date));
         holder.price.setText(String.format("R%.2f", schedule.flight.getStartPrice()));
-        //        click_listener(convertView, servicoModel);
-        //        click_listener(holder.viewPagerItem.nome, servicoModel);
-
         return convertView;
     }
 

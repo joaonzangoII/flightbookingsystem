@@ -22,6 +22,7 @@ public class Airport implements Serializable {
     }
 
     public String getImage(final SessionManager session) {
-        return String.format("%1$s%2$s", session.getServerUrl(), image);
+        // return String.format("%1$s%2$s", session.getServerUrl(), image);
+        return image;
     }
 }

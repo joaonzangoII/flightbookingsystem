@@ -23,6 +23,7 @@ import tut.flightbookingsystem.manager.RequestManager;
 import tut.flightbookingsystem.manager.SessionManager;
 import tut.flightbookingsystem.model.FlightSeat;
 import tut.flightbookingsystem.model.Schedule;
+import tut.flightbookingsystem.util.Constant;
 
 public class QueryResultsActivity extends BaseActivity {
     private SessionManager session;

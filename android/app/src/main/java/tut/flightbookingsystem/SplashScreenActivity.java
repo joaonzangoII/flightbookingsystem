@@ -11,6 +11,7 @@ import android.widget.ProgressBar;
 import tut.flightbookingsystem.base.AuthBaseActivity;
 import tut.flightbookingsystem.manager.RequestManager;
 import tut.flightbookingsystem.manager.SessionManager;
+import tut.flightbookingsystem.util.Constant;
 
 public class SplashScreenActivity extends AuthBaseActivity {
     private Button btnLogin;

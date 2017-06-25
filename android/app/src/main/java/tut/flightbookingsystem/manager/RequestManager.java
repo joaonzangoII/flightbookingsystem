@@ -19,9 +19,9 @@ import org.json.JSONObject;
 import java.util.HashMap;
 import java.util.Map;
 
-import tut.flightbookingsystem.Constant;
 import tut.flightbookingsystem.MyApplication;
 import tut.flightbookingsystem.model.User;
+import tut.flightbookingsystem.util.Constant;
 import tut.flightbookingsystem.util.Utils;
 
 public class RequestManager {
@@ -69,7 +69,6 @@ public class RequestManager {
                                 bundle.putBoolean(Constant.ERROR, true);
                                 msg.setData(bundle);
                                 requestHandler.sendMessage(msg);
-                                // Error in login. Get the error message
                                 final String errorMsg = jObj.getString("messages");
                                 Toast.makeText(getApplicationContext(), errorMsg, Toast.LENGTH_LONG).show();
                             }
@@ -160,14 +159,17 @@ public class RequestManager {
                                 bundle.putBoolean(Constant.ERROR, true);
                                 msg.setData(bundle);
                                 requestHandler.sendMessage(msg);
-                                // Error in login. Get the error message
                                 final String errorMsg = jObj.getString("messages");
-                                Toast.makeText(getApplicationContext(), errorMsg, Toast.LENGTH_LONG).show();
+                                Toast.makeText(getApplicationContext(),
+                                        errorMsg,
+                                        Toast.LENGTH_LONG).show();
                             }
                         } catch (final JSONException e) {
                             // JSON error
                             e.printStackTrace();
-                            Toast.makeText(getApplicationContext(), "Json error: " + e.getMessage(), Toast.LENGTH_LONG).show();
+                            Toast.makeText(getApplicationContext(),
+                                    "Json error: " + e.getMessage(),
+                                    Toast.LENGTH_LONG).show();
                         }
                         setLoading(context, false);
                     }
@@ -259,6 +261,8 @@ public class RequestManager {
                                    final long destination_airport_id,
                                    final String departure_date,
                                    final String return_date,
+                                   final long travel_class,
+                                   final String num_people,
                                    final Handler requestHandler) {
         final Message msg = requestHandler.obtainMessage();
         final Bundle bundle = new Bundle();
@@ -271,12 +275,32 @@ public class RequestManager {
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
-                        Log.e(tag_string_req, response);
-                        setLoading(context, false);
-                        bundle.putString(Constant.STR_SCHEDULE, response);
-                        bundle.putBoolean(Constant.ERROR, false);
-                        msg.setData(bundle);
-                        requestHandler.sendMessage(msg);
+                        try {
+                            final JSONObject jObj = new JSONObject(response);
+                            final boolean error = jObj.getBoolean("erro");
+                            if (!error) {
+                                Log.e(tag_string_req, response);
+                                setLoading(context, false);
+                                bundle.putString(Constant.STR_SCHEDULE,
+                                        jObj.getJSONArray("schedules").toString());
+                                bundle.putBoolean(Constant.ERROR, false);
+                                msg.setData(bundle);
+                                requestHandler.sendMessage(msg);
+                            } else {
+                                bundle.putBoolean(Constant.ERROR, true);
+                                final String errorMsg = jObj.getString("messages");
+                                Toast.makeText(getApplicationContext(),
+                                        errorMsg,
+                                        Toast.LENGTH_LONG).show();
+                            }
+
+                        } catch (final JSONException error) {
+                            error.printStackTrace();
+                            Toast.makeText(
+                                    getApplicationContext(),
+                                    error.getMessage(),
+                                    Toast.LENGTH_LONG).show();
+                        }
                     }
                 }, new Response.ErrorListener() {
             @Override
@@ -285,7 +309,6 @@ public class RequestManager {
                 Toast.makeText(getApplicationContext(),
                         Utils.getVolleyMessage(error),
                         Toast.LENGTH_LONG).show();
-                //session.setServicosByCategoria("[]");
                 setLoading(context, false);
                 bundle.putBoolean(Constant.ERROR, true);
                 requestHandler.sendMessage(msg);
@@ -298,6 +321,8 @@ public class RequestManager {
                 params.put("destination_airport_id", String.valueOf(destination_airport_id));
                 params.put("departure_date", departure_date);
                 params.put("return_date", return_date);
+                params.put("travel_class_id", String.valueOf(travel_class));
+                params.put("num_people", num_people);
                 return params;
             }
 
@@ -330,7 +355,8 @@ public class RequestManager {
                             final JSONObject jObj = new JSONObject(response);
                             final boolean error = jObj.getBoolean("erro");
                             if (!error) {
-                                bundle.putString(Constant.BOOKING, jObj.getJSONObject("booking").toString());
+                                bundle.putString(Constant.BOOKING,
+                                        jObj.getJSONObject("booking").toString());
                                 bundle.putBoolean(Constant.ERROR, false);
                                 bundle.putBoolean(Constant.IS_BOOKING, true);
                                 msg.setData(bundle);
@@ -341,11 +367,14 @@ public class RequestManager {
                                 bundle.putBoolean(Constant.ERROR, true);
                                 requestHandler.sendMessage(msg);
                                 final String errorMsg = jObj.getString("messages");
-                                Toast.makeText(getApplicationContext(), errorMsg, Toast.LENGTH_LONG).show();
+                                Toast.makeText(getApplicationContext(),
+                                        errorMsg, Toast.LENGTH_LONG).show();
                             }
                         } catch (final JSONException error) {
                             error.printStackTrace();
-                            Toast.makeText(getApplicationContext(), error.getMessage(), Toast.LENGTH_LONG).show();
+                            Toast.makeText(getApplicationContext(),
+                                    error.getMessage(),
+                                    Toast.LENGTH_LONG).show();
                         }
                         setLoading(context, false);
                     }
@@ -378,12 +407,12 @@ public class RequestManager {
     }
 
     public static void addOrUpdateTask(final SessionManager session,
-                                        final Context context,
-                                        final long passenger_id,
-                                        final long task_id,
-                                        final String task,
-                                        final String action,
-                                        final Handler requestHandler) {
+                                       final Context context,
+                                       final long passenger_id,
+                                       final long task_id,
+                                       final String task,
+                                       final String action,
+                                       final Handler requestHandler) {
         final Message msg = requestHandler.obtainMessage();
         final Bundle bundle = new Bundle();
         String url = session.getServerUrl();
@@ -647,6 +676,7 @@ public class RequestManager {
                     public void onResponse(String response) {
                         Log.e(tag_string_req, response);
                         session.setAirports(response);
+                        bundle.putString(Constant.AIRPORTS, response);
                         bundle.putBoolean(Constant.ERROR, false);
                         bundle.putBoolean(Constant.IS_GETTING_AIRPORTS, true);
                         msg.setData(bundle);

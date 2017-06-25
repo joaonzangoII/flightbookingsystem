@@ -6,7 +6,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 
-import tut.flightbookingsystem.Constant;
+import tut.flightbookingsystem.util.Constant;
 import tut.flightbookingsystem.R;
 import tut.flightbookingsystem.SettingsActivity;
 

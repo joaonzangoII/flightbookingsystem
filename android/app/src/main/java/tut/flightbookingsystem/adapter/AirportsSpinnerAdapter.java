@@ -12,16 +12,16 @@ import java.util.List;
 
 import tut.flightbookingsystem.model.Airport;
 
-public class AirportsAdapter extends ArrayAdapter<Airport> /*implements Filterable*/ {
+public class AirportsSpinnerAdapter extends ArrayAdapter<Airport> /*implements Filterable*/ {
     public List<Airport> airportsList = Collections.emptyList();
     public Context context;
     public int mLayoutResourceId;
     public LayoutInflater layoutInflater;
     public int INVALID_ID = -1;
 
-    public AirportsAdapter(Context context,
-                           int resource,
-                           List<Airport> airportsList) {
+    public AirportsSpinnerAdapter(Context context,
+                                  int resource,
+                                  List<Airport> airportsList) {
         super(context, resource, airportsList);
         this.context = context;
         this.mLayoutResourceId = resource;

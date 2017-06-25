@@ -25,6 +25,7 @@ import tut.flightbookingsystem.model.Food;
 import tut.flightbookingsystem.model.MealDrink;
 import tut.flightbookingsystem.model.MealFood;
 import tut.flightbookingsystem.model.Passenger;
+import tut.flightbookingsystem.util.Constant;
 import tut.flightbookingsystem.util.Utils;
 
 public class PassengerDetailActivity extends BaseActivity implements View.OnClickListener {
@@ -67,9 +68,9 @@ public class PassengerDetailActivity extends BaseActivity implements View.OnClic
         final TextView travelClass = (TextView) findViewById(R.id.travel_class);
         final TextView seatNumber = (TextView) findViewById(R.id.seat_number);
         final TextView foodType = (TextView) findViewById(R.id.food_type);
-        final TextView foodAndDrink = (TextView) findViewById(R.id.food_and_drink);
         final TextView foodTextView = (TextView) findViewById(R.id.food);
         final TextView drinkTextView = (TextView) findViewById(R.id.drink);
+        final TextView foodAndDrink = (TextView) findViewById(R.id.food_and_drink);
         final AppCompatImageButton btnAddMeal = (AppCompatImageButton) findViewById(R.id.btn_add_meal);
         final AppCompatImageButton btnDeleteMeal = (AppCompatImageButton) findViewById(R.id.btn_delete_meal);
 
@@ -92,6 +93,7 @@ public class PassengerDetailActivity extends BaseActivity implements View.OnClic
         }
 
         if (passenger != null) {
+            setTitle(passenger.name);
             firstnames.setText(Utils.fromHtml(
                     String.format("<b>First Names:</b> %1$s", passenger.firstnames)));
             surname.setText(Utils.fromHtml(String.format("<b>Surname:</b> %1$s", passenger.surname)));

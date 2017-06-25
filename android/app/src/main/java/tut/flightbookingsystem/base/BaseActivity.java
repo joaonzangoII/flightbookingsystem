@@ -26,7 +26,7 @@ import java.util.Calendar;
 import java.util.List;
 import java.util.Locale;
 
-import tut.flightbookingsystem.Constant;
+import tut.flightbookingsystem.util.Constant;
 import tut.flightbookingsystem.LoginActivity;
 import tut.flightbookingsystem.R;
 import tut.flightbookingsystem.SettingsActivity;

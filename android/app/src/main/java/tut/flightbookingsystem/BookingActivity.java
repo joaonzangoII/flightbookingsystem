@@ -27,6 +27,7 @@ import tut.flightbookingsystem.model.AbstractItem;
 import tut.flightbookingsystem.model.Passenger;
 import tut.flightbookingsystem.model.PassengerHeader;
 import tut.flightbookingsystem.model.Schedule;
+import tut.flightbookingsystem.util.Constant;
 import tut.flightbookingsystem.util.LocalDate;
 
 public class BookingActivity extends BaseActivity implements OnSeatSelected {

@@ -24,6 +24,7 @@ import tut.flightbookingsystem.listener.RecyclerClickListener;
 import tut.flightbookingsystem.manager.RequestManager;
 import tut.flightbookingsystem.manager.SessionManager;
 import tut.flightbookingsystem.model.Booking;
+import tut.flightbookingsystem.util.Constant;
 
 public class MyBookingsActivity extends BaseActivity {
     public static final String TAG = MyBookingsActivity.class.getSimpleName();

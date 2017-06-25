@@ -7,6 +7,7 @@ import android.support.v7.widget.AppCompatImageButton;
 import android.support.v7.widget.CardView;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -18,11 +19,16 @@ import java.lang.reflect.Type;
 
 import tut.flightbookingsystem.base.BaseActivity;
 import tut.flightbookingsystem.model.Booking;
+import tut.flightbookingsystem.model.Drink;
 import tut.flightbookingsystem.model.FlightSeat;
 import tut.flightbookingsystem.model.Food;
+import tut.flightbookingsystem.model.MealDrink;
 import tut.flightbookingsystem.model.MealFood;
 import tut.flightbookingsystem.model.Passenger;
+import tut.flightbookingsystem.util.BookingStatus;
+import tut.flightbookingsystem.util.Constant;
 import tut.flightbookingsystem.util.LocalDate;
+import tut.flightbookingsystem.util.Utils;
 
 public class BookingConfirmationActivity extends BaseActivity {
     private Booking mBooking;
@@ -36,6 +42,7 @@ public class BookingConfirmationActivity extends BaseActivity {
         final Type type = new TypeToken<Booking>() {
         }.getType();
         final Bundle args = getIntent().getBundleExtra(Constant.DATA);
+
         mBooking = (Booking) gson.fromJson(args.getString(Constant.BOOKING), type);
         ((TextView) findViewById(R.id.booking_date))
                 .setText(String.format("%1$s", mBooking.created_at));
@@ -59,8 +66,9 @@ public class BookingConfirmationActivity extends BaseActivity {
                 LocalDate.getTime(mBooking.departure_flight.schedule.arrival_time)));
         ((TextView) findViewById(R.id.duration))
                 .setText(String.format("Duration: %1$s", mBooking.departure_flight.schedule.duration));
-        ((TextView) findViewById(R.id.status))
-                .setText(String.format("", mBooking.status));
+        ((ImageView) findViewById(R.id.status))
+                .setBackground(BookingStatus.getColor(this, mBooking.status));
+
         final LinearLayout passengerLayout = (LinearLayout) findViewById(R.id.passengerLayout);
         final TextView textView = (TextView) findViewById(R.id.json);
         textView.setText(args.getString(Constant.BOOKING));
@@ -90,7 +98,10 @@ public class BookingConfirmationActivity extends BaseActivity {
         final TextView travelClass = (TextView) cardview.findViewById(R.id.travel_class);
         final TextView seatNumber = (TextView) cardview.findViewById(R.id.seat_number);
         final TextView foodType = (TextView) cardview.findViewById(R.id.food_type);
+        final TextView foodTextView = (TextView) cardview.findViewById(R.id.food);
+        final TextView drinkTextView = (TextView) cardview.findViewById(R.id.drink);
         final TextView foodAndDrink = (TextView) cardview.findViewById(R.id.food_and_drink);
+
         final AppCompatImageButton btnAddMeal = (AppCompatImageButton) cardview.findViewById(R.id.btn_add_meal);
         final AppCompatImageButton btnDeleteMeal = (AppCompatImageButton) cardview.findViewById(R.id.btn_delete_meal);
         btnAddMeal.setVisibility(View.GONE);
@@ -108,17 +119,38 @@ public class BookingConfirmationActivity extends BaseActivity {
             }
         }
 
+        final MealDrink mealDrink = passenger.drink;
         final MealFood mealFood = passenger.food;
         foodAndDrink.setText(String.format("Meal:  %1$s", passenger.food_and_drink));
         foodAndDrink.setVisibility(View.VISIBLE);
 
         if (mealFood != null) {
             final Food food = mealFood.food;
+            foodTextView.setText(Utils.fromHtml(
+                    String.format("<b>Food:</b> %1$s", food.name)));
             if (food != null) {
                 if (food.food_type != null) {
-                    foodType.setText(String.format("Food Type:  %1$s", food.food_type.name));
+                    foodType.setText(Utils.fromHtml(
+                            String.format("<b>Food Type:</b> %1$s", food.food_type.name)));
+                    foodType.setVisibility(View.VISIBLE);
+                } else {
+                    foodType.setText("No Meal Added yet");
                 }
             }
+        } else {
+            foodTextView.setText(Utils.fromHtml(
+                    String.format("<b>Food:</b> %1$s", "None")));
+            btnDeleteMeal.setVisibility(View.GONE);
+        }
+
+        if (mealDrink != null) {
+            final Drink drink = mealDrink.drink;
+            drinkTextView.setText(Utils.fromHtml(
+                    String.format("<b>Drink:</b> %1$s", drink.name)));
+        } else {
+            drinkTextView.setText(Utils.fromHtml(
+                    String.format("<b>Drink:</b> %1$s", "None")));
+            btnDeleteMeal.setVisibility(View.GONE);
         }
 
         return cardview;

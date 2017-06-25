@@ -27,7 +27,7 @@
             android:textSize="16sp"
             android:textStyle="bold" />
 
-        <Button
+        <ImageView
             android:id="@+id/button"
             android:layout_width="20dp"
             android:layout_height="20dp"

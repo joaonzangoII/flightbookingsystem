@@ -17,6 +17,7 @@ import tut.flightbookingsystem.base.AuthBaseActivity;
 import tut.flightbookingsystem.manager.RequestManager;
 import tut.flightbookingsystem.manager.SessionManager;
 import tut.flightbookingsystem.model.Country;
+import tut.flightbookingsystem.util.Constant;
 
 public class RegisterActivity extends AuthBaseActivity {
     // private String [] countries = {"South Africa", "Botswana", "Lesotho", "Swaziland", "Mozambique", "Zimbabwe"};

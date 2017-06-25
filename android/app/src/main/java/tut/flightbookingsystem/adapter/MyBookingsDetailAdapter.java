@@ -1,11 +1,13 @@
 package tut.flightbookingsystem.adapter;
 
 import android.content.Context;
+import android.media.Image;
 import android.support.v7.widget.AppCompatImageButton;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -20,6 +22,7 @@ import tut.flightbookingsystem.model.Food;
 import tut.flightbookingsystem.model.MealDrink;
 import tut.flightbookingsystem.model.MealFood;
 import tut.flightbookingsystem.model.Passenger;
+import tut.flightbookingsystem.util.BookingStatus;
 import tut.flightbookingsystem.util.LocalDate;
 import tut.flightbookingsystem.util.Utils;
 
@@ -187,7 +190,7 @@ public class MyBookingsDetailAdapter extends RecyclerView.Adapter<RecyclerView.V
 
         public void bind(final View view,
                          final Booking mBooking) {
-            final TextView txtStatus = (TextView) view.findViewById(R.id.status);
+            final ImageView imgStatus = (ImageView) view.findViewById(R.id.status);
             final TextView txtBookingNumber = (TextView) view.findViewById(R.id.booking_number);
             final TextView created_at = (TextView) view.findViewById(R.id.booking_date);
             final TextView txtTotal = (TextView) view.findViewById(R.id.total);
@@ -201,16 +204,17 @@ public class MyBookingsDetailAdapter extends RecyclerView.Adapter<RecyclerView.V
             final TextView txtArrivalTime = (TextView) view.findViewById(R.id.arrival_time);
             final TextView txtDuration = (TextView) view.findViewById(R.id.duration);
 
-            txtStatus.setText(String.format("%1$s", mBooking.status));
+            imgStatus.setBackground(BookingStatus.getColor(itemView.getContext(),
+                    mBooking.status));
             txtBookingNumber.setText(String.format("%1$s", mBooking.booking_number));
             created_at.setText(String.format("%1$s", LocalDate.formatDate(mBooking.created_at)));
             txtTotal.setText(String.format("R%1$s", mBooking.total));
             txtFlight.setText(String.format("Flight: %1$s", mBooking.departure_flight.aircraft.name));
             txtFlightDate.setText(String.format("Date: %1$s", mBooking.departure_flight.schedule.date));
-            txtOriginAirport.setText(String.format("From: %1$s(%2$s)",
+            txtOriginAirport.setText(String.format("%1$s(%2$s)",
                     mBooking.departure_flight.schedule.origin_airport.name,
                     mBooking.departure_flight.schedule.origin_airport.iata_airport_code));
-            txtDestinationAirport.setText(String.format("To:%1$s(%2$s)",
+            txtDestinationAirport.setText(String.format("%1$s(%2$s)",
                     mBooking.departure_flight.schedule.destination_airport.name,
                     mBooking.departure_flight.schedule.destination_airport.iata_airport_code));
             txtDepartureDate.setText(String.format("%1$s",

@@ -35,6 +35,7 @@ import tut.flightbookingsystem.manager.SessionManager;
 import tut.flightbookingsystem.model.Booking;
 import tut.flightbookingsystem.model.MainItem;
 import tut.flightbookingsystem.model.Schedule;
+import tut.flightbookingsystem.util.Constant;
 import tut.flightbookingsystem.util.Utils;
 
 public class MainActivity extends BaseActivity
@@ -66,9 +67,21 @@ public class MainActivity extends BaseActivity
 
                 mainItems = new ArrayList<>();
                 if (myBookingsList != null) {
-                    mainItems.add(new MainItem(1, Utils.intFormat(myBookingsList.size()), "Number of Bookings"));
-                    mainItems.add(new MainItem(2, Utils.stringFormat(moneySpent(myBookingsList)), "Money Spent"));
-                    mainItems.add(new MainItem(3, Utils.intFormat(passengersBooked(myBookingsList)), "Passengers Booked"));
+                    mainItems.add(
+                            new MainItem(1,
+                                    R.color.CadetBlue,
+                                    Utils.intFormat(myBookingsList.size()),
+                                    "Number of Bookings"));
+                    mainItems.add(
+                            new MainItem(2,
+                                    R.color.ForestGreen,
+                                    Utils.stringFormat(moneySpent(myBookingsList)),
+                                    "Money Spent"));
+                    mainItems.add(
+                            new MainItem(3,
+                                    R.color.Bisque,
+                                    Utils.intFormat(passengersBooked(myBookingsList)),
+                                    "Passengers Booked"));
                 }
 
                 myHomeAdapter.setItems(mainItems, mSchedules);
@@ -154,9 +167,9 @@ public class MainActivity extends BaseActivity
             if (myBookingsList != null) {
                 mainItems = new ArrayList<>();
                 if (myBookingsList != null) {
-                    mainItems.add(new MainItem(1, Utils.intFormat(myBookingsList.size()), "Number of Bookings"));
-                    mainItems.add(new MainItem(2, Utils.stringFormat(moneySpent(myBookingsList)), "Money Spent"));
-                    mainItems.add(new MainItem(3, Utils.intFormat(passengersBooked(myBookingsList)), "Passengers Booked"));
+                    //                    mainItems.add(new MainItem(1, Utils.intFormat(myBookingsList.size()), "Number of Bookings"));
+                    //                    mainItems.add(new MainItem(2, Utils.stringFormat(moneySpent(myBookingsList)), "Money Spent"));
+                    //                    mainItems.add(new MainItem(3, Utils.intFormat(passengersBooked(myBookingsList)), "Passengers Booked"));
                 }
             }
 
@@ -189,6 +202,8 @@ public class MainActivity extends BaseActivity
             goToActivity(FoodsActivity.class);
         } else if (id == R.id.drinks) {
             goToActivity(DrinksActivity.class);
+        } else if (id == R.id.airports) {
+            goToActivity(AirportsActivity.class);
         } else {
             logout();
         }
