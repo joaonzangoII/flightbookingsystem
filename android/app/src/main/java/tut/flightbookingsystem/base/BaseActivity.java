@@ -39,7 +39,9 @@ import tut.flightbookingsystem.model.Food;
 import tut.flightbookingsystem.model.Passenger;
 import tut.flightbookingsystem.util.Utils;
 
-public class BaseActivity extends AppCompatActivity implements View.OnClickListener, SwipeRefreshLayout.OnRefreshListener {
+public class BaseActivity extends
+        AppCompatActivity implements
+        View.OnClickListener, SwipeRefreshLayout.OnRefreshListener {
     private static String TAG = BaseActivity.class.getName();
     protected SessionManager session;
     protected SimpleDateFormat dateFormatter;

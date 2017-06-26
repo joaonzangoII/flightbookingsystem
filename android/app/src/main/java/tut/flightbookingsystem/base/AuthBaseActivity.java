@@ -10,10 +10,6 @@ import tut.flightbookingsystem.util.Constant;
 import tut.flightbookingsystem.R;
 import tut.flightbookingsystem.SettingsActivity;
 
-/**
- * Created by joaonzangoii on 5/18/17.
- */
-
 public class AuthBaseActivity extends AppCompatActivity {
 
     @Override

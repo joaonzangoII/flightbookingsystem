@@ -34,6 +34,7 @@
                    <tr>
                      <td>Name</td>
                      <td>ID Number</td>
+                     <td>Seat Number</td>
                      <td>Date of Birth</td>
                      <td>Meal</td>
                      <td>Drink</td>
@@ -46,6 +47,7 @@
                       <tr>
                         <td>{{$passenger->name}}</td>
                         <td>{{$passenger->id_number}}</td>
+                        <td>{{$passenger->flight_seat->number}}</td>
                         <td>{{$passenger->date_of_birth}}</td>
                         <td>{{$passenger->food_and_drink}}</td>
                         <td>{{is_null($passenger->drink) ? '' : ucFirst($passenger->drink->drink->name)}}</td>
